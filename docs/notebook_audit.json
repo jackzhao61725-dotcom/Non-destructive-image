@@ -1,0 +1,1351 @@
+{
+  "notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "summary": {
+    "total_cells": 96,
+    "markdown_cells": 51,
+    "code_cells": 45
+  },
+  "constraints": [
+    "No physics changes",
+    "No numerical algorithm changes",
+    "No parameter changes",
+    "No notebook code changes during audit"
+  ],
+  "cells": [
+    {
+      "cell": 0,
+      "type": "markdown",
+      "first_line": "# Phase-contrast and dark-ground imaging on the Oxford Er apparatus — design calculations (revised)",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 53
+    },
+    {
+      "cell": 1,
+      "type": "markdown",
+      "first_line": "## 1. Imports and fundamental constants",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 1
+    },
+    {
+      "cell": 2,
+      "type": "code",
+      "first_line": "import numpy as np",
+      "functions_defined": [],
+      "approx_plot_call_count": 1,
+      "source_line_count": 18
+    },
+    {
+      "cell": 3,
+      "type": "markdown",
+      "first_line": "## 2. Apparatus and condensate parameters",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 4
+    },
+    {
+      "cell": 4,
+      "type": "code",
+      "first_line": "# ---- 166Er and the 401 nm transition (K24 3.2.2) ----",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 31
+    },
+    {
+      "cell": 5,
+      "type": "markdown",
+      "first_line": "## 3. Atomic and optical constants",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 3
+    },
+    {
+      "cell": 6,
+      "type": "code",
+      "first_line": "sigma0 = 3*lam**2 / (2*np.pi)",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 10
+    },
+    {
+      "cell": 7,
+      "type": "markdown",
+      "first_line": "## 4. Condensate profile (Thomas-Fermi)",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 9
+    },
+    {
+      "cell": 8,
+      "type": "code",
+      "first_line": "omega = 2*np.pi*trap_Hz",
+      "functions_defined": [
+        "_frac_residual"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 29
+    },
+    {
+      "cell": 9,
+      "type": "markdown",
+      "first_line": "## 5. Dispersive phase shift",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 15
+    },
+    {
+      "cell": 10,
+      "type": "code",
+      "first_line": "def delta_of(Delta_Hz):",
+      "functions_defined": [
+        "delta_of",
+        "phi_peak",
+        "od_resonant_equiv"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 16
+    },
+    {
+      "cell": 11,
+      "type": "markdown",
+      "first_line": "### Table 1 — Peak phase shift at representative detunings",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 1
+    },
+    {
+      "cell": 12,
+      "type": "code",
+      "first_line": "detunings_GHz = [0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0]",
+      "functions_defined": [],
+      "approx_plot_call_count": 3,
+      "source_line_count": 20
+    },
+    {
+      "cell": 13,
+      "type": "markdown",
+      "first_line": "## 6. Photon scattering and per-shot loss",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 23
+    },
+    {
+      "cell": 14,
+      "type": "code",
+      "first_line": "def intensity_at_atoms(P_mW):",
+      "functions_defined": [
+        "intensity_at_atoms",
+        "N_scatt",
+        "Nmax_loss",
+        "Nmax_heat"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 37
+    },
+    {
+      "cell": 15,
+      "type": "markdown",
+      "first_line": "## 7. Image formation — phase to camera intensity",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 37
+    },
+    {
+      "cell": 16,
+      "type": "code",
+      "first_line": "phi = np.linspace(0, 2.6, 600)",
+      "functions_defined": [],
+      "approx_plot_call_count": 7,
+      "source_line_count": 20
+    },
+    {
+      "cell": 17,
+      "type": "markdown",
+      "first_line": "### 7.3 Fourier-optics simulation through the real arm",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 19
+    },
+    {
+      "cell": 18,
+      "type": "code",
+      "first_line": "Ngrid, FOV = 1024, 100e-6",
+      "functions_defined": [
+        "_tf_profile",
+        "sim_image",
+        "blur_for_axis"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 33
+    },
+    {
+      "cell": 19,
+      "type": "markdown",
+      "first_line": "### 7.4 Simulated camera frames and lineouts",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 6
+    },
+    {
+      "cell": 20,
+      "type": "code",
+      "first_line": "Mag = f2/f1; pix_obj = pix_cam/Mag",
+      "functions_defined": [
+        "N_phot_pix",
+        "to_camera"
+      ],
+      "approx_plot_call_count": 13,
+      "source_line_count": 45
+    },
+    {
+      "cell": 21,
+      "type": "markdown",
+      "first_line": "## 8. Photon shot-noise SNR",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 32
+    },
+    {
+      "cell": 22,
+      "type": "code",
+      "first_line": "def I_full(phi):",
+      "functions_defined": [
+        "I_full",
+        "regime_of",
+        "SNR_shot_ideal",
+        "SNR_pixel",
+        "SNR_reselem_sim"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 54
+    },
+    {
+      "cell": 23,
+      "type": "markdown",
+      "first_line": "## 9. Maximum non-destructive shots — threshold family [revised]",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 16
+    },
+    {
+      "cell": 24,
+      "type": "code",
+      "first_line": "# Nmax_loss and Nmax_heat are defined in section 6.3 (the loss model); applied here.",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 11
+    },
+    {
+      "cell": 25,
+      "type": "markdown",
+      "first_line": "### Figure — shot budget vs detuning for the candidate thresholds",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 1
+    },
+    {
+      "cell": 26,
+      "type": "code",
+      "first_line": "Dg = np.linspace(0.5, 4.0, 400)",
+      "functions_defined": [],
+      "approx_plot_call_count": 3,
+      "source_line_count": 30
+    },
+    {
+      "cell": 27,
+      "type": "markdown",
+      "first_line": "## 10. Spatial resolution",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 4
+    },
+    {
+      "cell": 28,
+      "type": "code",
+      "first_line": "NA_e = (D_probe/2)/f1",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 15
+    },
+    {
+      "cell": 29,
+      "type": "markdown",
+      "first_line": "## 11. Operating-point summary",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 26
+    },
+    {
+      "cell": 30,
+      "type": "code",
+      "first_line": "# ---- operating-point report (folded from former section 13) ----",
+      "functions_defined": [
+        "operating_point_report"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 32
+    },
+    {
+      "cell": 31,
+      "type": "markdown",
+      "first_line": "## 12. Pulse duration and the $(\\Delta, P, \\tau)$ operating point [new]",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 23
+    },
+    {
+      "cell": 32,
+      "type": "code",
+      "first_line": "# ===== CELL D: pulse duration & realistic destruction models =====",
+      "functions_defined": [
+        "reabs_frac",
+        "Nmax_cleanloss",
+        "Nmax_heating"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 53
+    },
+    {
+      "cell": 33,
+      "type": "markdown",
+      "first_line": "### 12.1 Pulse-duration sweep at the reference detuning",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 5
+    },
+    {
+      "cell": 34,
+      "type": "code",
+      "first_line": "# ===== CELL F: tau sweep — SNR rises, DGI clears the read-noise floor, N_max falls at fixed N_max*tau =====",
+      "functions_defined": [],
+      "approx_plot_call_count": 8,
+      "source_line_count": 47
+    },
+    {
+      "cell": 35,
+      "type": "markdown",
+      "first_line": "### 12.2 $(\\Delta, P, \\tau)$ optimisation",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 7
+    },
+    {
+      "cell": 36,
+      "type": "code",
+      "first_line": "# ===== CELL H: (Delta, P, tau) optimisation — operating map + invariance frontier + recommendation =====",
+      "functions_defined": [
+        "_pci_block",
+        "SNRres_fast"
+      ],
+      "approx_plot_call_count": 11,
+      "source_line_count": 69
+    },
+    {
+      "cell": 37,
+      "type": "markdown",
+      "first_line": "### 12.3 Recommendation and revised headline numbers",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 19
+    },
+    {
+      "cell": 38,
+      "type": "code",
+      "first_line": "",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 0
+    },
+    {
+      "cell": 39,
+      "type": "markdown",
+      "first_line": "---",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 23
+    },
+    {
+      "cell": 40,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [
+        "tf_state",
+        "SNR_pixel_phi",
+        "run_sequence",
+        "accumulate"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 115
+    },
+    {
+      "cell": 41,
+      "type": "markdown",
+      "first_line": "## 14. Evolution of the run",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 14
+    },
+    {
+      "cell": 42,
+      "type": "code",
+      "first_line": "# ---- 14. Evolution of the run: condensate, temperature, phase, SNR ----------",
+      "functions_defined": [],
+      "approx_plot_call_count": 12,
+      "source_line_count": 67
+    },
+    {
+      "cell": 43,
+      "type": "markdown",
+      "first_line": "## 15. The cloud fading on camera",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 7
+    },
+    {
+      "cell": 44,
+      "type": "code",
+      "first_line": "# ---- 15. The cloud fading on camera: PCI frames across the run (heating model)",
+      "functions_defined": [
+        "sim_image_state",
+        "camera_from_image"
+      ],
+      "approx_plot_call_count": 8,
+      "source_line_count": 66
+    },
+    {
+      "cell": 45,
+      "type": "markdown",
+      "first_line": "## 16. Detuning sweep: the SNR–destruction trade-off",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 15
+    },
+    {
+      "cell": 46,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [
+        "snr_abs_pix",
+        "snr_pci_pix",
+        "usable_snr",
+        "usable_curve",
+        "make_strip"
+      ],
+      "approx_plot_call_count": 6,
+      "source_line_count": 112
+    },
+    {
+      "cell": 47,
+      "type": "markdown",
+      "first_line": "---",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 38
+    },
+    {
+      "cell": 48,
+      "type": "markdown",
+      "first_line": "### The physical picture: why unequal σ± phases *rotate* the polarization [added]",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 23
+    },
+    {
+      "cell": 49,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [
+        "theta_F_peak"
+      ],
+      "approx_plot_call_count": 3,
+      "source_line_count": 34
+    },
+    {
+      "cell": 50,
+      "type": "markdown",
+      "first_line": "### 17.2 Two detection schemes, and how the imaging simulation differs from PCI/DGI",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 31
+    },
+    {
+      "cell": 51,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [
+        "sim_faraday_fields",
+        "faraday_maps"
+      ],
+      "approx_plot_call_count": 14,
+      "source_line_count": 72
+    },
+    {
+      "cell": 52,
+      "type": "markdown",
+      "first_line": "### 17.3 SNR, and why the destruction budget carries over unchanged",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 13
+    },
+    {
+      "cell": 53,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [
+        "SNR_faraday_sim"
+      ],
+      "approx_plot_call_count": 0,
+      "source_line_count": 34
+    },
+    {
+      "cell": 54,
+      "type": "markdown",
+      "first_line": "### 17.4 Faraday imaging over the multi-shot run",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 6
+    },
+    {
+      "cell": 55,
+      "type": "code",
+      "first_line": "# ---- re-image the SAME Sec-13 run (seq_h) with dual-port Faraday, frame by frame ----",
+      "functions_defined": [
+        "_bin_center"
+      ],
+      "approx_plot_call_count": 6,
+      "source_line_count": 29
+    },
+    {
+      "cell": 56,
+      "type": "markdown",
+      "first_line": "---",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 19
+    },
+    {
+      "cell": 57,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [],
+      "approx_plot_call_count": 7,
+      "source_line_count": 29
+    },
+    {
+      "cell": 58,
+      "type": "markdown",
+      "first_line": "### 18.2 Stage 2 -- the optical signal imprinted on the probe",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 6
+    },
+    {
+      "cell": 59,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [],
+      "approx_plot_call_count": 9,
+      "source_line_count": 24
+    },
+    {
+      "cell": 60,
+      "type": "markdown",
+      "first_line": "### 18.3 Stages 3-4 -- propagation and mode-specific contrast",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 9
+    },
+    {
+      "cell": 61,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [],
+      "approx_plot_call_count": 6,
+      "source_line_count": 28
+    },
+    {
+      "cell": 62,
+      "type": "markdown",
+      "first_line": "### 18.4 Stage 5 -- detection and the final result",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 6
+    },
+    {
+      "cell": 63,
+      "type": "code",
+      "first_line": "# ============================================================================",
+      "functions_defined": [],
+      "approx_plot_call_count": 10,
+      "source_line_count": 52
+    },
+    {
+      "cell": 64,
+      "type": "markdown",
+      "first_line": "Reading the five stages back to front: a headline SNR number anywhere in this notebook is the",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 8
+    },
+    {
+      "cell": 65,
+      "type": "markdown",
+      "first_line": "---",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 21
+    },
+    {
+      "cell": 66,
+      "type": "markdown",
+      "first_line": "### 19.1 Steps 1–5: the shared road to invisibility",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 16
+    },
+    {
+      "cell": 67,
+      "type": "code",
+      "first_line": "# ---- STEP 1: the phase map -------------------------------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 8,
+      "source_line_count": 20
+    },
+    {
+      "cell": 68,
+      "type": "markdown",
+      "first_line": "#### Step 2 — the field after the atoms: the camera would see *nothing*",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 12
+    },
+    {
+      "cell": 69,
+      "type": "code",
+      "first_line": "# ---- STEP 2: intensity blank, phase structured -------------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 9,
+      "source_line_count": 17
+    },
+    {
+      "cell": 70,
+      "type": "markdown",
+      "first_line": "#### Step 3 — split the field: a big carrier and a small wavelet at 90°",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 16
+    },
+    {
+      "cell": 71,
+      "type": "code",
+      "first_line": "# ---- STEP 3: the wavelet map + the phasor from actual simulated values -------",
+      "functions_defined": [],
+      "approx_plot_call_count": 7,
+      "source_line_count": 29
+    },
+    {
+      "cell": 72,
+      "type": "markdown",
+      "first_line": "#### Step 4 — the Fourier plane: the one place the two arrows sit apart",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 17
+    },
+    {
+      "cell": 73,
+      "type": "code",
+      "first_line": "# ---- STEP 4: the Fourier plane, before and after the aperture ----------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 8,
+      "source_line_count": 27
+    },
+    {
+      "cell": 74,
+      "type": "markdown",
+      "first_line": "#### Step 5 — through a *perfect* imaging system: still invisible",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 17
+    },
+    {
+      "cell": 75,
+      "type": "code",
+      "first_line": "# ---- STEP 5: the image plane with no trick installed --------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 7,
+      "source_line_count": 16
+    },
+    {
+      "cell": 76,
+      "type": "markdown",
+      "first_line": "### 19.2 PCI — rotate the carrier (Steps 6–7)",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 18
+    },
+    {
+      "cell": 77,
+      "type": "code",
+      "first_line": "# ---- STEP 6: phasor before / after the plate + the image that appears ---------",
+      "functions_defined": [],
+      "approx_plot_call_count": 8,
+      "source_line_count": 30
+    },
+    {
+      "cell": 78,
+      "type": "markdown",
+      "first_line": "#### Step 7 — onto the camera: pixels, photons, noise",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 14
+    },
+    {
+      "cell": 79,
+      "type": "code",
+      "first_line": "# ---- STEP 7: PCI, the recorded frame ------------------------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 11,
+      "source_line_count": 18
+    },
+    {
+      "cell": 80,
+      "type": "markdown",
+      "first_line": "### 19.3 DGI — delete the carrier (Steps 8–9)",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 18
+    },
+    {
+      "cell": 81,
+      "type": "code",
+      "first_line": "# ---- STEP 8: carrier deleted, the wavelet's own light ------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 7,
+      "source_line_count": 24
+    },
+    {
+      "cell": 82,
+      "type": "markdown",
+      "first_line": "#### Step 9 — the dark frame on the camera",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 14
+    },
+    {
+      "cell": 83,
+      "type": "code",
+      "first_line": "# ---- STEP 9: DGI, the recorded frame ------------------------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 11,
+      "source_line_count": 17
+    },
+    {
+      "cell": 84,
+      "type": "markdown",
+      "first_line": "### 19.4 Dark-field Faraday — let the light rotate (Steps 10–11)",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 23
+    },
+    {
+      "cell": 85,
+      "type": "code",
+      "first_line": "# ---- STEP 10: the rotated field ------------------------------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 9,
+      "source_line_count": 33
+    },
+    {
+      "cell": 86,
+      "type": "markdown",
+      "first_line": "#### Step 11 — the crossed analyzer: keep only what rotated",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 16
+    },
+    {
+      "cell": 87,
+      "type": "code",
+      "first_line": "# ---- STEP 11: dark-field Faraday, recorded --------------------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 11,
+      "source_line_count": 17
+    },
+    {
+      "cell": 88,
+      "type": "markdown",
+      "first_line": "### 19.5 Dual-port Faraday — measure the direction twice (Steps 12–13)",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 18
+    },
+    {
+      "cell": 89,
+      "type": "code",
+      "first_line": "# ---- STEP 12: the two ports and the balance they keep ---------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 12,
+      "source_line_count": 21
+    },
+    {
+      "cell": 90,
+      "type": "markdown",
+      "first_line": "#### Step 13 — record both ports; the ratio shrugs off the laser",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 17
+    },
+    {
+      "cell": 91,
+      "type": "code",
+      "first_line": "# ---- STEP 13: two noisy ports -> one clean angle; then shake the laser -----------",
+      "functions_defined": [],
+      "approx_plot_call_count": 15,
+      "source_line_count": 50
+    },
+    {
+      "cell": 92,
+      "type": "markdown",
+      "first_line": "### 19.6 Step 14 — the price of looking: the run as a filmstrip",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 17
+    },
+    {
+      "cell": 93,
+      "type": "code",
+      "first_line": "# ---- STEP 14: watching the condensate die, frame by frame ------------------------",
+      "functions_defined": [],
+      "approx_plot_call_count": 6,
+      "source_line_count": 23
+    },
+    {
+      "cell": 94,
+      "type": "markdown",
+      "first_line": "---",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 12
+    },
+    {
+      "cell": 95,
+      "type": "markdown",
+      "first_line": "---",
+      "functions_defined": [],
+      "approx_plot_call_count": 0,
+      "source_line_count": 60
+    }
+  ],
+  "functions": [
+    {
+      "name": "_frac_residual",
+      "cell": 8,
+      "arguments": [
+        "Ntot"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "delta_of",
+      "cell": 10,
+      "arguments": [
+        "Delta_Hz"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "phi_peak",
+      "cell": 10,
+      "arguments": [
+        "Delta_Hz",
+        "n_col_peak"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "od_resonant_equiv",
+      "cell": 10,
+      "arguments": [
+        "Delta_Hz",
+        "n_col_peak"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "intensity_at_atoms",
+      "cell": 14,
+      "arguments": [
+        "P_mW"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "N_scatt",
+      "cell": 14,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "tau_s"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "Nmax_loss",
+      "cell": 14,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "frac",
+        "tau_s",
+        "eta"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "Nmax_heat",
+      "cell": 14,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "eps_K",
+        "tau_s"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "_tf_profile",
+      "cell": 18,
+      "arguments": [
+        "Ra",
+        "Rb"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "sim_image",
+      "cell": 18,
+      "arguments": [
+        "axis",
+        "phi_peak_val",
+        "mode",
+        "OD"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "blur_for_axis",
+      "cell": 18,
+      "arguments": [
+        "axis",
+        "phi_test"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "N_phot_pix",
+      "cell": 20,
+      "arguments": [
+        "P_mW",
+        "tau_s",
+        "QE"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "to_camera",
+      "cell": 20,
+      "arguments": [
+        "Iratio",
+        "P_mW",
+        "QE"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "I_full",
+      "cell": 22,
+      "arguments": [
+        "phi"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "regime_of",
+      "cell": 22,
+      "arguments": [
+        "phi"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "SNR_shot_ideal",
+      "cell": 22,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "axis",
+        "tau_s"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "SNR_pixel",
+      "cell": 22,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "axis",
+        "tau_s"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "SNR_reselem_sim",
+      "cell": 22,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "axis",
+        "tau_s",
+        "half"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "operating_point_report",
+      "cell": 30,
+      "arguments": [
+        "Delta_GHz",
+        "P_mW",
+        "axis",
+        "tau_s"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "reabs_frac",
+      "cell": 32,
+      "arguments": [
+        "Delta_Hz"
+      ],
+      "docstring": "Angle-averaged reabsorption probability of a spontaneously emitted (Rayleigh)\nphoton: residual OD along each principal axis, averaged over emission solid angle.\nGrows as ~1/delta^2, so it bites hardest at low detuning / high OD."
+    },
+    {
+      "name": "Nmax_cleanloss",
+      "cell": 32,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "frac",
+        "tau_s",
+        "eta"
+      ],
+      "docstring": "Optimistic bound: every recoiled atom is promptly LOST (eta secondaries each)."
+    },
+    {
+      "name": "Nmax_heating",
+      "cell": 32,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "frac",
+        "tau_s",
+        "reabs"
+      ],
+      "docstring": "Realistic for a deep trap (E_rec = 359 nK << ODT depth ~uK): the recoiled atom\ndoes NOT leave - it stays, thermalises, and HEATS the cloud, melting the (~22%)\ncondensate. Closed form from the trapped-Bose-gas energy E(T)=A T^4 below Tc,\nA = 3(zeta4/zeta3) kB/Tc^3; condensate number N0(s) = Ntot[1-(T/Tc)^3]."
+    },
+    {
+      "name": "_pci_block",
+      "cell": 36,
+      "arguments": [
+        "Delta_Hz",
+        "axis",
+        "half"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "SNRres_fast",
+      "cell": 36,
+      "arguments": [
+        "block",
+        "P_mW",
+        "tau_s"
+      ],
+      "docstring": null
+    },
+    {
+      "name": "tf_state",
+      "cell": 40,
+      "arguments": [
+        "N0_now"
+      ],
+      "docstring": "Thomas-Fermi mu, n_peak, R(x,y,z), peak column density(x,y,z) for a given\ncondensate number -- identical formulas to section 4, just re-evaluated as\natoms are lost."
+    },
+    {
+      "name": "SNR_pixel_phi",
+      "cell": 40,
+      "arguments": [
+        "phi",
+        "P_mW",
+        "axis",
+        "tau_s",
+        "blur"
+      ],
+      "docstring": "Realistic per-pixel PCI SNR for an explicit phase value (full transfer\nmodel, peak intensity, plate-t_p^2 background, fixed axis NA blur).\nReturns NaN if phi >= pi (phase-wrapped: no single-valued linear SNR)."
+    },
+    {
+      "name": "run_sequence",
+      "cell": 40,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "tau_s",
+        "axis",
+        "loss_frac",
+        "model",
+        "reabs",
+        "max_shots"
+      ],
+      "docstring": "Step through a continuous run frame-by-frame. Frame s sees the cloud\nAFTER s previous probe pulses of destruction (frame 0 = fresh cloud).\n\nReturns a dict of per-frame arrays: shot index, condensate number N0,\ncondensate-loss fraction, temperature T (K, heating only), peak phase, and\nrealistic per-pixel SNR. The frame counts reproduce Nmax_heating /\nNmax_cleanloss (defined in section 12) by construction."
+    },
+    {
+      "name": "accumulate",
+      "cell": 40,
+      "arguments": [
+        "snr"
+      ],
+      "docstring": "RMS-accumulated SNR vs frame: sqrt(cumsum(SNR_s^2)). NaN frames (phase-\nwrapped) contribute nothing."
+    },
+    {
+      "name": "sim_image_state",
+      "cell": 44,
+      "arguments": [
+        "axis",
+        "phi_val",
+        "R_state",
+        "mode",
+        "OD"
+      ],
+      "docstring": "Same Fourier-optics propagation as section 7's sim_image(), but with the\nThomas-Fermi radii supplied explicitly so the cloud can SHRINK as N0 falls."
+    },
+    {
+      "name": "camera_from_image",
+      "cell": 44,
+      "arguments": [
+        "Iratio",
+        "P_mW",
+        "tau_s"
+      ],
+      "docstring": "Bin to camera pixels (15 grid cells = one object pixel) and add Poisson\nphoton noise + Gaussian read noise -- identical recipe to section 7.4."
+    },
+    {
+      "name": "snr_abs_pix",
+      "cell": 46,
+      "arguments": [
+        "D",
+        "ncol",
+        "P",
+        "tau_s"
+      ],
+      "docstring": "Resonant-absorption-imaging SNR: signal is the optical density, with shot+read\nnoise on both the with-atom frame (transmits e^-OD) and the light frame."
+    },
+    {
+      "name": "snr_pci_pix",
+      "cell": 46,
+      "arguments": [
+        "D",
+        "ncol",
+        "P",
+        "tau_s",
+        "blur"
+      ],
+      "docstring": "Dispersive PCI SNR with absorption folded into the complex transmission\nt = exp(i*phi - OD/2) -- so it stays correct as the probe approaches resonance."
+    },
+    {
+      "name": "usable_snr",
+      "cell": 46,
+      "arguments": [
+        "D",
+        "ncol",
+        "P",
+        "tau_s",
+        "blur"
+      ],
+      "docstring": "Best achievable single-shot SNR at this detuning: PCI where it is single-valued\n(phi < pi), otherwise resonant absorption."
+    },
+    {
+      "name": "usable_curve",
+      "cell": 46,
+      "arguments": [
+        "D",
+        "n_images"
+      ],
+      "docstring": "Per-image usable SNR over a fixed N-image run as the condensate depletes\n(heating model); decays to ~0 once the BEC is gone."
+    },
+    {
+      "name": "make_strip",
+      "cell": 46,
+      "arguments": [
+        "Delta_GHz",
+        "n_frames"
+      ],
+      "docstring": "Concatenate n_frames consecutive single-shot PCI camera frames (vertical\ncigars) into one strip; the condensate depletes frame-to-frame (uses section 15)."
+    },
+    {
+      "name": "theta_F_peak",
+      "cell": 49,
+      "arguments": [
+        "Delta_Hz",
+        "n_col_peak"
+      ],
+      "docstring": "Peak Faraday-rotation angle (rad): identical dispersive lineshape to phi_peak (Sec. 5),\nscaled by kappa_F. We isolate the pure-rotation observable (phi_+ = +theta_F, phi_- = -theta_F),\ni.e. a fully spin-polarized column with the small common-mode scalar phase neglected."
+    },
+    {
+      "name": "sim_faraday_fields",
+      "cell": 51,
+      "arguments": [
+        "axis",
+        "theta_F_val"
+      ],
+      "docstring": "NA-limited complex field just after the imaging system, separately for the two circular\npolarizations, recombined into the linear (x,y) basis.\n\nDerivation (Jones calculus, input polarization along x, absorption neglected as in Sec. 5):\n  x-hat = (eps_- - eps_+)/sqrt(2)   [eps_+/- = circular basis vectors]\nEach component propagates through the SAME NA-limited system as sim_image()'s 'clear' branch\n(Sec. 7.3), picking up its own phase +theta_F / -theta_F (pure rotation -- Sec. 17.1 neglects\nthe small common-mode scalar phase of a fully stretched-state sample). Writing P[.] for the\nNA-limited propagation (fft -> pupil -> ifft):\n  E_x = ( P[e^{+i theta_F}] + P[e^{-i theta_F}] ) / 2\n  E_y = ( P[e^{+i theta_F}] - P[e^{-i theta_F}] ) * i / 2\nIn the infinite-NA (pupil=1) limit this collapses to the exact textbook result\nE_x=cos(theta_F), E_y=-sin(theta_F): a pure rotation of the input polarization, verified\nnumerically to machine precision while developing this section."
+    },
+    {
+      "name": "faraday_maps",
+      "cell": 51,
+      "arguments": [
+        "Delta_Hz",
+        "axis"
+      ],
+      "docstring": "Noiseless I/I0 maps for both detection schemes, from the actual NA-limited simulation\n(not the idealised point formula) -- the Faraday analogue of sim_image()."
+    },
+    {
+      "name": "SNR_faraday_sim",
+      "cell": 53,
+      "arguments": [
+        "Delta_Hz",
+        "P_mW",
+        "axis",
+        "scheme"
+      ],
+      "docstring": "Realistic per-pixel SNR at cloud centre, read directly off the simulated NA-limited field."
+    },
+    {
+      "name": "_bin_center",
+      "cell": 55,
+      "arguments": [
+        "I"
+      ],
+      "docstring": null
+    }
+  ],
+  "duplicated_patterns": [
+    {
+      "pattern": "15-by-15 camera binning and noise",
+      "locations": [
+        "to_camera",
+        "camera_from_image",
+        "_bin_center",
+        "SNR_reselem_sim",
+        "_pci_block",
+        "SNR_faraday_sim"
+      ],
+      "candidate_helper": "bin_to_camera_pixels"
+    },
+    {
+      "pattern": "Thomas-Fermi 2D profile expression",
+      "locations": [
+        "_tf_profile",
+        "sim_image_state",
+        "pedagogical plotting cells"
+      ],
+      "candidate_helper": "thomas_fermi_profile_2d"
+    },
+    {
+      "pattern": "FFT pupil propagation",
+      "locations": [
+        "sim_image",
+        "sim_image_state",
+        "sim_faraday_fields"
+      ],
+      "candidate_helper": "propagate_scattered_field"
+    },
+    {
+      "pattern": "Camera noise addition",
+      "locations": [
+        "to_camera",
+        "camera_from_image"
+      ],
+      "candidate_helper": "add_camera_noise"
+    }
+  ],
+  "target_section_mapping": {
+    "02 Atomic Model": [
+      "_frac_residual",
+      "_tf_profile",
+      "tf_state"
+    ],
+    "03 Light-Atom Interaction": [
+      "delta_of",
+      "phi_peak",
+      "od_resonant_equiv",
+      "intensity_at_atoms",
+      "N_scatt",
+      "reabs_frac",
+      "theta_F_peak"
+    ],
+    "04 PCI": [
+      "sim_image",
+      "blur_for_axis",
+      "_pci_block"
+    ],
+    "05 DGI": [
+      "sim_image"
+    ],
+    "06 Faraday": [
+      "sim_faraday_fields",
+      "faraday_maps",
+      "SNR_faraday_sim"
+    ],
+    "07 Camera": [
+      "N_phot_pix",
+      "to_camera",
+      "camera_from_image",
+      "_bin_center"
+    ],
+    "08 Shot Noise": [
+      "I_full",
+      "regime_of",
+      "SNR_shot_ideal",
+      "SNR_pixel",
+      "SNR_reselem_sim",
+      "SNR_pixel_phi",
+      "SNRres_fast",
+      "snr_abs_pix",
+      "snr_pci_pix",
+      "usable_snr"
+    ],
+    "09 Multi-shot Simulation": [
+      "Nmax_loss",
+      "Nmax_heat",
+      "Nmax_cleanloss",
+      "Nmax_heating",
+      "run_sequence",
+      "accumulate",
+      "sim_image_state",
+      "usable_curve",
+      "make_strip"
+    ],
+    "10 Analysis": [
+      "operating_point_report"
+    ]
+  },
+  "regression_checks": [
+    "key scalar outputs",
+    "PCI/DGI representative image arrays",
+    "Faraday representative arrays",
+    "multi-shot sequence arrays",
+    "deterministic saved figures or noisy summary statistics"
+  ]
+}
