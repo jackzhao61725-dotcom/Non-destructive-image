@@ -1,0 +1,900 @@
+{
+  "notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "baseline_kind": "stored_notebook_outputs",
+  "note": "Extracted from outputs already stored in the reference notebook; notebook was not executed.",
+  "code_cells_with_outputs": 42,
+  "cells": [
+    {
+      "cell": 6,
+      "execution_count": 3,
+      "first_source_line": "sigma0 = 3*lam**2 / (2*np.pi)",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "sigma_0  = 7.678e-10 cm^2\nI_sat    = 59.80 mW/cm^2   (K24 quotes ~60)\nE_rec/kB = 358.7 nK\nv_rec    = 5.995 mm/s\n"
+        }
+      ]
+    },
+    {
+      "cell": 8,
+      "execution_count": 4,
+      "first_source_line": "omega = 2*np.pi*trap_Hz",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "omega_bar/2pi = 98.5 Hz   a_ho = 0.786 um\nmu/kB    = 47.6 nK\nn_peak   = 3.400e+14 cm^-3\nR(x,y,z) = (1.19, 24.82, 1.49) um\nN check  = 2.50e+04  (input 2.50e+04)\n   ncol along x: 5.376e+10 cm^-2\n   ncol along y: 1.125e+12 cm^-2\n   ncol along z: 6.760e+10 cm^-2\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "\n[rev] self-consistent: N_tot = 1.16e+05, T_c = 217 nK, condensate fraction = 0.22\n[rev] => bimodal fit runs against a large thermal pedestal (~78%); cross-check K24 6.3.1\n[rev] mu/E_rec = 0.133  ->  one scattered photon delivers 7.5x mu\n"
+        }
+      ]
+    },
+    {
+      "cell": 10,
+      "execution_count": 5,
+      "first_source_line": "def delta_of(Delta_Hz):",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "At Delta=1.5 GHz: delta = 101.7\n  phi_x (across cigar) = 0.203 rad\n  phi_y (along cigar)  = 4.247 rad\n  residual OD_x        = 0.0040  (absorption negligible)\n"
+        }
+      ]
+    },
+    {
+      "cell": 12,
+      "execution_count": 6,
+      "first_source_line": "detunings_GHz = [0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0]",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "b5aab75f5bd72e1ca84c361f6f93e34be187d2389688852e56533298c28d690e",
+              "bytes": 50236
+            },
+            "text/plain": {
+              "sha256": "8acf0b80bcb58c32d383573f0cb2545b5c2c421c221e5c02ee1a19c105e9b2da",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 14,
+      "execution_count": 7,
+      "first_source_line": "def intensity_at_atoms(P_mW):",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "elastic cross-section sigma_el = 3.65e-12 cm^2\nmean free path at n_peak       = 8.1 um\n  vs  R = (1.19, 24.82, 1.49) um\n  -> across-cigar recoils (1.2, 1.5 um) mostly escape;\n     along-cigar recoils (24.8 um) collide -> eta ~ 1.3-1.5\n\nN_gamma at (1.5 GHz, 2 mW), peak intensity = 5.30e-03\n  (original area-averaged convention would give 2.65e-03)\n\n[check] recoil displacement during 40 us pulse = 240 nm (<< pixel 1.46 um, resolution 3.06 um)\n[check] shortest trap period 3.41 ms >> pulse 40 us -> in-trap dynamics frozen during the shot; no motional blur\n"
+        }
+      ]
+    },
+    {
+      "cell": 16,
+      "execution_count": 8,
+      "first_source_line": "phi = np.linspace(0, 2.6, 600)",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "2eb4c74685a6fe8f81ac98f0a571505db00610ecf9933edda232c8a41d2ed197",
+              "bytes": 69256
+            },
+            "text/plain": {
+              "sha256": "27bb6be221d546b1b28929796ddafa94c4ef9daf8235f3c2c4a103eb48417b45",
+              "bytes": 33
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 18,
+      "execution_count": 9,
+      "first_source_line": "Ngrid, FOV = 1024, 100e-6",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "NA = 0.080, Rayleigh dx = 3.06 um\n  axis x across (image y,z): transverse R = (24.8, 1.5) um  ->  blur = 0.61\n  axis y along  (image x,z): transverse R = (1.2, 1.5) um  ->  blur = 0.24\n  axis z across (image x,y): transverse R = (1.2, 24.8) um  ->  blur = 0.50\n"
+        }
+      ]
+    },
+    {
+      "cell": 20,
+      "execution_count": 10,
+      "first_source_line": "Mag = f2/f1; pix_obj = pix_cam/Mag",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "048bf039cd0277b6ced1a62db3b355ea0242aaf4b58e6b7be97a481bbd487b2e",
+              "bytes": 106956
+            },
+            "text/plain": {
+              "sha256": "51b6fa694de277106f081a0621ccbf7e45f1054ee428a0928edeb967a93833f6",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 22,
+      "execution_count": 11,
+      "first_source_line": "def I_full(phi):",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "Across-cigar (x), reference detuning 1.5 GHz, regime: linear\n  P= 2.0 mW:  ideal(QE=1)= 23.9   realistic/pixel= 9.3   realistic/res-elem(sim)=18.9\n  P= 5.0 mW:  ideal(QE=1)= 37.7   realistic/pixel=14.9   realistic/res-elem(sim)=30.1\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "  P=10.0 mW:  ideal(QE=1)= 53.4   realistic/pixel=21.1   realistic/res-elem(sim)=42.7\n\nDGI single-shot of the BEC (5 mW): peak signal ~0.016 of I0 = 61.1 e- vs 7.0 e- read -> quantitative (> 3x read noise)\n\n[8.4 check] photon-limited total SNR = SNR_shot(QE=1) x sqrt(Nmax) over a full budget:\n   detuning   SNR_shot   Nmax(30%)   accumulated = SNR_shot*sqrt(Nmax)\n   0.75 GHz     47.7          13         171.7\n   1.00 GHz     35.8          23         171.7\n   1.50 GHz     23.9          52         171.7\n   2.00 GHz     17.9          92         171.7\n   3.00 GHz     11.9         207         171.7\n   -> ~constant: total photon-limited SNR is set by the destruction budget, not by (Delta,P,tau)\n"
+        }
+      ]
+    },
+    {
+      "cell": 24,
+      "execution_count": 12,
+      "first_source_line": "# Nmax_loss and Nmax_heat are defined in section 6.3 (the loss model); applied here.",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "At reference point (1.5 GHz, 2 mW), peak-intensity convention, eta = 1.3:\n  eps=mu (=13% loss)     N_max =    21\n  30% loss               N_max =    52\n  50% loss               N_max =   101\n  eps=kT_cloud           N_max =   105\n  1 photon/atom (eta=1)  N_max =   189\n\nFor comparison, the ORIGINAL notebook (area-avg intensity, eta=1, eps=mu): N_max = 50\n  -> the two corrections (peak intensity x2, eta=1.3) reduce eps=mu N_max from ~134 to ~21\n  -> but the recommended 30%-loss criterion gives N_max = 52, still clearing the 100-shot goal\n"
+        }
+      ]
+    },
+    {
+      "cell": 26,
+      "execution_count": 13,
+      "first_source_line": "Dg = np.linspace(0.5, 4.0, 400)",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": "/tmp/ipykernel_598/749755447.py:30: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.\n  plt.tight_layout(); plt.show()\n"
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "f76f38944feca9cb270849a8994e1e118bd5fb0c17532f45639c5c64b603de59",
+              "bytes": 122812
+            },
+            "text/plain": {
+              "sha256": "59f7bbf175214978d90d660803d2275fb2158b9579fc274ae374f4a08e27e0f7",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 28,
+      "execution_count": 14,
+      "first_source_line": "NA_e = (D_probe/2)/f1",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "existing arm NA=0.080: dx = 3.06 um\ntrichroic obj NA=0.40:     dx = 0.61 um\nRx(t) crosses dx at t = 1.29 ms\n\n[check] depth of focus  ~ lam/NA^2 = 63 um\n        cloud half-depth along x (across-cigar imaging) = 1.19 um  -> deep within DOF\n        cloud half-depth along y (along-cigar imaging)  = 24.82 um  -> within DOF (25<63), no defocus blur\n"
+        }
+      ]
+    },
+    {
+      "cell": 30,
+      "execution_count": 15,
+      "first_source_line": "# ---- operating-point report (folded from former section 13) ----",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "Reference summary (revised), across cigar (x):\n==========================================================\nOperating point:  Delta=1.50 GHz (delta=102)  P=2.00 mW  tau=40 us  axis=x (R=1.19 um)\n----------------------------------------------------------\npeak phase shift          phi   = 0.203 rad  (linear PCI, blur_axis=0.61)\nphotons/atom/shot         N_g   = 5.30e-03   (eta=1.3, peak intensity=True)\nSNR/shot ideal (QE=1, linear)   = 23.86\nSNR/shot realistic (per pixel)  = 9.32\nSNR/shot realistic (res-elem)   = 18.88\nN_max  eps=mu (=13% loss)       = 21\nN_max  30% loss (recommended)   = 52\nN_max  50% loss                 = 101\n==========================================================\n\nAlong cigar (y) at 1.5 GHz -- phase-wrapped, see guard:\n==========================================================\nOperating point:  Delta=1.50 GHz (delta=102)  P=2.00 mW  tau=40 us  axis=y (R=24.82 um)\n----------------------------------------------------------\npeak phase shift          phi   = 4.247 rad  (phase-wrapped, blur_axis=0.24)\nphotons/atom/shot         N_g   = 5.30e-03   (eta=1.3, peak intensity=True)\nSNR/shot ideal (QE=1, linear)   = 499.41\nSNR/shot realistic              = n/a  (phi>pi: phase-wrapped, inversion ambiguous;\n                                       linear PCI needs Delta>~12.7 GHz, or full Meppelink / TOF)\nN_max  eps=mu (=13% loss)       = 21\nN_max  30% loss (recommended)   = 52\nN_max  50% loss                 = 101\n==========================================================\n\nAlong cigar (y) detuned into the linear regime (Delta = 13 GHz):\n==========================================================\nOperating point:  Delta=13.00 GHz (delta=881)  P=2.00 mW  tau=40 us  axis=y (R=24.82 um)\n----------------------------------------------------------\npeak phase shift          phi   = 0.490 rad  (linear PCI, blur_axis=0.24)\nphotons/atom/shot         N_g   = 7.06e-05   (eta=1.3, peak intensity=True)\nSNR/shot ideal (QE=1, linear)   = 57.63\nSNR/shot realistic (per pixel)  = 9.70\nSNR/shot realistic (res-elem)   = 13.78\nN_max  eps=mu (=13% loss)       = 1551\nN_max  30% loss (recommended)   = 3888\nN_max  50% loss                 = 7556\n==========================================================\n"
+        }
+      ]
+    },
+    {
+      "cell": 32,
+      "execution_count": 16,
+      "first_source_line": "# ===== CELL D: pulse duration & realistic destruction models =====",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "Realistic destruction at the reference point (1.5 GHz, 2 mW, 15 us), 30% condensate loss:"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "\n   clean-loss (eta=1.3, optimistic)   N_max =    52\n   heating-melt (recoil stays)        N_max =    25\n   heating-melt + reabsorption        N_max =    24   <- realistic\n\nreabsorption fraction: 0.064 @1GHz, 0.030 @1.5GHz, 0.017 @2GHz  (grows ~1/delta^2)\n\nPulse-duration caps:\n   shortest trap period 3.41 ms -> tau < 0.1 T = 341 us (no in-trap motional blur)\n   recoil blur < resolution: tau < 510 us (NA=0.080, dx=3.06 um) | 102 us (NA=0.40, dx=0.61 um)\n   => tau_max = 341 us (existing arm),  102 us (future objective)\n\nKEY INVARIANT  N_max x tau is fixed by (Delta, P)  [destruction budget = total integration time]:\n   at (1.5 GHz, 2 mW): N_max x tau = 361 us, however it is sliced into shots.\n"
+        }
+      ]
+    },
+    {
+      "cell": 34,
+      "execution_count": 17,
+      "first_source_line": "# ===== CELL F: tau sweep — SNR rises, DGI clears the read-noise floor, N_max falls at fixed N_max*tau =====",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "11e89d5719b533f9c9bc444e0e9068fb171620b63c7e51167a440d77e0324e7a",
+              "bytes": 143226
+            },
+            "text/plain": {
+              "sha256": "cd5dc3ccbddf3926b5a0e98d409c4af3f5a426550a5d2916d91685714cd1713d",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 36,
+      "execution_count": 18,
+      "first_source_line": "# ===== CELL H: (Delta, P, tau) optimisation — operating map + invariance frontier + recommendation =====",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stderr",
+          "text": "/tmp/ipykernel_598/885871757.py:56: UserWarning: This figure includes Axes that are not compatible with tight_layout, so results might be incorrect.\n  plt.tight_layout(); plt.savefig('fig_optimisation.png',dpi=140,bbox_inches='tight',facecolor='white'); plt.show()\n"
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "5740f8720a72496b724b38ead0e131b57eeea86b7c26aba45719abc62bd992dc",
+              "bytes": 158825
+            },
+            "text/plain": {
+              "sha256": "17beaa1345beb972528547496645e3d6527315acf2c2c212174688918b860baa",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "RECOMMENDED OPERATING POINTS  (across-cigar x; realistic heating+reabs budget; 30% condensate loss)\nmode                     Δ/GHz  P/mW  τ/µs  phi_x N_max SNR/res SNR/pix DGI/e-\n------------------------------------------------------------------------------\nbalanced (Route A)         1.5   3.5    40  0.203    14    15.7     7.8     17\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "dynamics: many frames      1.5   3.5    15  0.203    37     9.3     4.6      6\nhi-SNR / quant. DGI        1.5   5.0    80  0.203     5    26.9    13.3     49\nhigher-Δ, more frames      2.5   5.0    40  0.122    27    11.5     5.7     25\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "max range (beat-lock)      3.0   8.0    40  0.101    25    12.2     6.0     39\n\nRule of thumb: τ set by the read-noise floor (DGI quantitative for τ >~ 40-50 µs at 3.5-5 mW);\nΔ set by calibration range + keeping phi_x measurable (~0.13-0.20); P by the chosen source route.\n"
+        }
+      ]
+    },
+    {
+      "cell": 40,
+      "execution_count": 19,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "======================================================================\nCONTINUOUS RUN @  Delta=1.5 GHz   P=3.5 mW   tau=40 us   axis=x\n----------------------------------------------------------------------\n  intensity at atoms (peak)  : I/Isat = 0.026\n  photons / atom / shot      : N_gamma = 9.27e-03   (reabsorption factor 0.030)\n  initial peak phase         : phi0 = 0.203 rad   (linear)\n  stop run at                : 30% condensate loss\n----------------------------------------------------------------------\n  usable frames to 30% loss   :  HEATING (realistic) ~14   |   LOSS (optimistic) ~30\n  total non-destructive time :  550 us (heating)   |   1183 us (loss)\n  Nmax x tau (set by Delta,P):  550 us   (invariant -- tau only re-slices it)\n======================================================================\n"
+        }
+      ]
+    },
+    {
+      "cell": 42,
+      "execution_count": 20,
+      "first_source_line": "# ---- 14. Evolution of the run: condensate, temperature, phase, SNR ----------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "218e3792f118206d3537f67aa4bf8537e9ab0c238a373cdc2bc91be470253ff0",
+              "bytes": 195341
+            },
+            "text/plain": {
+              "sha256": "f4e5097f171f76d5222ee285f030653727358c534ae872da0ef77bf046a74628",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 44,
+      "execution_count": 21,
+      "first_source_line": "# ---- 15. The cloud fading on camera: PCI frames across the run (heating model)",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "9c381990edeb2d2b8abc80f174c370461dfff42df61481a25d5321afb99a1406",
+              "bytes": 128286
+            },
+            "text/plain": {
+              "sha256": "6399f107e7c8eb23e6022f0fc00806376dd05fd722ec2a04b753de2e73b5f584",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 46,
+      "execution_count": 22,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "f1e95abd98a8debc697884c629183ff797d3238d088df900dd977621e19e9a45",
+              "bytes": 124974
+            },
+            "text/plain": {
+              "sha256": "e481a24c59d67e3d739853b7d774b0928b7224024c8224507758d40d57346a0e",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 49,
+      "execution_count": 23,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "21a06ebf6ac9be59ee041959b45b4efb95af4ae519957696ab0bc278cd2f201f",
+              "bytes": 34742
+            },
+            "text/plain": {
+              "sha256": "cbb0a8d74f4a1083faf0a54d21ed31bfe8965d0c9eec1243001ee65172b9202a",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "theta_F and phi share the same delta/(1+delta^2) lineshape -> the ratio column is exactly kappa_F=1.0 at every detuning (a direct check on the implementation above).\n"
+        }
+      ]
+    },
+    {
+      "cell": 51,
+      "execution_count": 24,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "d5f2d4c109e3213b75ab256fbc0560a78aaf8ecf3024057786cb9b9088d58e37",
+              "bytes": 121602
+            },
+            "text/plain": {
+              "sha256": "51b6fa694de277106f081a0621ccbf7e45f1054ee428a0928edeb967a93833f6",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "Dark-field peak signal : 0.0133 I0  (51.0 e- at the peak pixel)\nDual-port peak |S|     : 0.2285  (idealised point-formula 2*theta_F = 0.4058, diluted by the same NA blur that acts on PCI/DGI)\n"
+        }
+      ]
+    },
+    {
+      "cell": 53,
+      "execution_count": 25,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": " D (GHz)  SNR PCI/pix   SNR DGI  SNR dark-F  SNR dual-F\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "    0.75        17.93      8.00        7.00       16.69\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "    1.00        13.73      5.36        4.67       12.78\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "    1.50         9.32      2.85        2.45        8.65\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "    2.00         7.05      1.75        1.48        6.52\n"
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "    3.00         4.74      0.84        0.70        4.36\n\n(kappa_F=1.0, idealised bound. All four columns share the identical N_gamma/atom/shot and hence the identical N_max at each detuning -- Sec. 9/12's shot-budget numbers are unchanged and apply to every column above; only the SNR each mode extracts from that budget differs.)\n"
+        }
+      ]
+    },
+    {
+      "cell": 55,
+      "execution_count": 26,
+      "first_source_line": "# ---- re-image the SAME Sec-13 run (seq_h) with dual-port Faraday, frame by frame ----",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "aeb60892fc4f663e7b7132ab2c6fe32b5519b69d770d899317366622ce153540",
+              "bytes": 63795
+            },
+            "text/plain": {
+              "sha256": "63c0344b27c30be62881e6b291e9aaa53a0700c4c50a162f0e7370e7875928c7",
+              "bytes": 33
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "Same condensate decay (N_max, frame count) as Sec. 13-14 -- only the per-shot SNR trace changes with the imaging mode; the saturating accumulated-SNR curve of Sec. 14(d) applies here too, with this section's per-shot values substituted in.\n"
+        }
+      ]
+    },
+    {
+      "cell": 57,
+      "execution_count": 27,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "Stage 1 inputs -> the fresh Thomas-Fermi condensate (Sec. 4):\n  N0 = 2.50e+04 atoms,  a_s = 72 a0,  trap = (293, 14, 233) Hz\n  => mu/kB = 47.6 nK,  n_peak = 3.40e+14 cm^-3,  R = (1.19, 24.82, 1.49) um\n"
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "5f18ec46d413161b73f95a5acea3ac3b8e958e53e4f6acc9ace8e9d727a1879a",
+              "bytes": 84958
+            },
+            "text/plain": {
+              "sha256": "44f2e947f65b1f13af79f0a33e80e51501fbfd4db5517534fd06aeb6668217ea",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 59,
+      "execution_count": 28,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "49e83ac93f16dfdd8f0d773311adbc5781151cf2931889ae405ed6b97baaf396",
+              "bytes": 85682
+            },
+            "text/plain": {
+              "sha256": "a4e9f34e945a9af770e4566182771c2d20895b594bab01ef0a73320e9c02252a",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "Both maps share the identical spatial shape (Stage 1's column-density profile) -- only the physical origin and the size of the peak value differ (Sec. 5 vs Sec. 17.1).\n"
+        }
+      ]
+    },
+    {
+      "cell": 61,
+      "execution_count": 29,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "c665f9c65f52b9cdbfaea3fbabb482c4b19fdc63dab7aacb4339170c77168cc9",
+              "bytes": 78178
+            },
+            "text/plain": {
+              "sha256": "d639ab2a4e198a0247ef8813dbf5ebd160996df6b8ab1c978ecc2d57b3f51ea9",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "PCI and dual-port Faraday are LINEAR in their signal (phi, theta_F) and so visibly modulate around a nonzero background; DGI and dark-field Faraday are QUADRATIC and so appear as a faint bright sliver on an otherwise dark field -- the same linear/quadratic split as Sec. 17.3's SNR table, made visible.\n"
+        }
+      ]
+    },
+    {
+      "cell": 63,
+      "execution_count": 30,
+      "first_source_line": "# ============================================================================",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "652b19ff1c1f43b0070b1613565d3a6438a2cf81b177bfc00ec4c72ee6debdc8",
+              "bytes": 76188
+            },
+            "text/plain": {
+              "sha256": "d639ab2a4e198a0247ef8813dbf5ebd160996df6b8ab1c978ecc2d57b3f51ea9",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "f918bb4c4a0498fcf98d6ea0268399d9e07420bce34b36c28930643b333f42b9",
+              "bytes": 48989
+            },
+            "text/plain": {
+              "sha256": "e5dabbd7bc69803bcdb797eb22eec06215bb6087cd483a9cc404bbcb5a94a773",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 67,
+      "execution_count": 31,
+      "first_source_line": "# ---- STEP 1: the phase map -------------------------------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "b90ed53226dc89ad12e159aae2e62eb08e0daf506a88ea22075b7f40293b0785",
+              "bytes": 59390
+            },
+            "text/plain": {
+              "sha256": "f940893cf78c549bca08fb2de605b8031e128d07cb059de9e8a23b7305209893",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 69,
+      "execution_count": 32,
+      "first_source_line": "# ---- STEP 2: intensity blank, phase structured -------------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "a748b59e97478156af8aaf5decf90a222ea28ca2cf7ba09ad1bfacf6420d6298",
+              "bytes": 48018
+            },
+            "text/plain": {
+              "sha256": "7ddaa056c4b117c2da9d25c14319029ad509f2569fb60bcf324f9b54b143b44c",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "max deviation of |E|^2 from 1 over the whole field: 4.4e-16   -> exactly blank, not approximately blank.\n"
+        }
+      ]
+    },
+    {
+      "cell": 71,
+      "execution_count": 33,
+      "first_source_line": "# ---- STEP 3: the wavelet map + the phasor from actual simulated values -------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "068ada7e37f142570ac02aa9db37ccefb5e60217c33f28f3e7d71e988c33adf8",
+              "bytes": 68981
+            },
+            "text/plain": {
+              "sha256": "ef9e82c8bb184c62a57278be074a8eadb4ddd4aed9ba45a7ce9117e7551951ef",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 73,
+      "execution_count": 34,
+      "first_source_line": "# ---- STEP 4: the Fourier plane, before and after the aperture ----------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "fbf0165c67eae78b17b8872560a5428d5b186abebed85690f170852a86c4cde9",
+              "bytes": 66520
+            },
+            "text/plain": {
+              "sha256": "6a0dc6eba93fb3ae65b6c99d551238a035395678293325258b5cc1588e88c2a3",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "scattered power inside the NA circle: 0.712  -> the aperture keeps ~71% of the wavelet; this loss is the blur factor of Sec. 7 and is paid by every mode alike.\n"
+        }
+      ]
+    },
+    {
+      "cell": 75,
+      "execution_count": 35,
+      "first_source_line": "# ---- STEP 5: the image plane with no trick installed --------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "fd9969bf27c1d56735e9b8860f57041dc26370a71e509fd84170e925e37f6e12",
+              "bytes": 69670
+            },
+            "text/plain": {
+              "sha256": "0a8c4865d141d8cea26f2556ba994eae6ae2c932f0b7ab080bab3e270b9a5974",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "peak deviation from flatness: 0.006 of I0 -- second-order only, while the phase signal sitting in the field is 0.203 rad. Time for the tricks.\n"
+        }
+      ]
+    },
+    {
+      "cell": 77,
+      "execution_count": 36,
+      "first_source_line": "# ---- STEP 6: phasor before / after the plate + the image that appears ---------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "d7b08e35f62f11a28b952d03851b761abb7840d445d55f68228e797e6f50e90c",
+              "bytes": 90547
+            },
+            "text/plain": {
+              "sha256": "f8443d6e24fda0edfae290aa4875866c2585b09c104b6f417100208e5ab38888",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "centre of the simulated image: I/I0 = 1.158   (infinite-NA phasor value 1.325; the gap is Step 4's aperture loss)\n"
+        }
+      ]
+    },
+    {
+      "cell": 79,
+      "execution_count": 37,
+      "first_source_line": "# ---- STEP 7: PCI, the recorded frame ------------------------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "d15a21c4733e8d251775e4c6577511e274f44f637cd17009b08c88b1d82be224",
+              "bytes": 72796
+            },
+            "text/plain": {
+              "sha256": "0b4f952bc48162b10791396534d3a8dd766ae0363e12682277d819d27fbfb6bd",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 81,
+      "execution_count": 38,
+      "first_source_line": "# ---- STEP 8: carrier deleted, the wavelet's own light ------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "59dd56ced1e47026c2a485b388a1a0720444b3a00c6b976cf9438124fe134fb6",
+              "bytes": 66595
+            },
+            "text/plain": {
+              "sha256": "ef9e82c8bb184c62a57278be074a8eadb4ddd4aed9ba45a7ce9117e7551951ef",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "peak of the dark-ground image: 0.0160 of I0 (vs 4 sin^2(phi/2) = 0.0410 before aperture loss); background floor eps^2 = 1e-04.\n"
+        }
+      ]
+    },
+    {
+      "cell": 83,
+      "execution_count": 39,
+      "first_source_line": "# ---- STEP 9: DGI, the recorded frame ------------------------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "74e98fb316bc3d7fa4ea6f5b29e2b051e4d32d8250497c41afa89f4c35c316c3",
+              "bytes": 65064
+            },
+            "text/plain": {
+              "sha256": "0b4f952bc48162b10791396534d3a8dd766ae0363e12682277d819d27fbfb6bd",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 85,
+      "execution_count": 40,
+      "first_source_line": "# ---- STEP 10: the rotated field ------------------------------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "dd71d7d0737d8eb08681b6afe4e798d8362cdaa22a5e900e7644bf3361dfffa5",
+              "bytes": 91067
+            },
+            "text/plain": {
+              "sha256": "c27c8ae8ccf6e539f397b3f9cf2a0bdccfe2eba41b14473b1fb95eec6ef6c595",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "imprinted rotation: theta_F,peak = 0.203 rad = 11.6 deg (kappa_F = 1 placeholder, Sec. 17.1); largest tilt surviving the aperture into the image: 7.3 deg. The effect is small -- which is exactly why the crossed analyzer (sin^2) and the balanced ports (sin 2theta) are needed to read it out.\n"
+        }
+      ]
+    },
+    {
+      "cell": 87,
+      "execution_count": 41,
+      "first_source_line": "# ---- STEP 11: dark-field Faraday, recorded --------------------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "a90fcd55db655a9a8dd703e60f420cb7fceb048e6d1ec9d92cab9440cb1cc12e",
+              "bytes": 64849
+            },
+            "text/plain": {
+              "sha256": "0b4f952bc48162b10791396534d3a8dd766ae0363e12682277d819d27fbfb6bd",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 89,
+      "execution_count": 42,
+      "first_source_line": "# ---- STEP 12: the two ports and the balance they keep ---------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "65361e3ccf381dccac1138d74352a9f0837024fb0d6d1e5b8d8b67562821e56b",
+              "bytes": 71317
+            },
+            "text/plain": {
+              "sha256": "1d7a7368aedfa869a8e272308335fb11eb04685bce35ed66a014b28eec915375",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "energy check at the cloud centre: I_u + I_v = 0.9955 of I0  -> nothing discarded; S at the centre = 0.251, vs sin(2 theta_F) = 0.395 imprinted -- the gap is, once again, Step 4's aperture blur, not a new loss.\n"
+        }
+      ]
+    },
+    {
+      "cell": 91,
+      "execution_count": 43,
+      "first_source_line": "# ---- STEP 13: two noisy ports -> one clean angle; then shake the laser -----------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "fe721c3829f5fe3334f70ce6c66c6ad78f41972d47a96527b414e719900b72a5",
+              "bytes": 152176
+            },
+            "text/plain": {
+              "sha256": "88d9950e45d73309ab47431cef407afb10be617642eccc3c2da39a607b9d58f8",
+              "bytes": 34
+            }
+          }
+        }
+      ]
+    },
+    {
+      "cell": 93,
+      "execution_count": 44,
+      "first_source_line": "# ---- STEP 14: watching the condensate die, frame by frame ------------------------",
+      "outputs": [
+        {
+          "output_type": "display_data",
+          "data": {
+            "image/png": {
+              "sha256": "bf48a5449935bd85cbaf3cbe7ec5fefcc500f92724fc35516b4250ac4249578f",
+              "bytes": 53442
+            },
+            "text/plain": {
+              "sha256": "5bd5a5325865eabfff136c8870176b2b3228721550424bd64981ae91fc9f9c3b",
+              "bytes": 34
+            }
+          }
+        },
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": "signal spent per frame: phi falls 0.203 -> 0.163 rad over 15 frames while T climbs 200 -> 205 nK. Every mode of Steps 6-13 spends this same budget; only what it buys per frame differs.\n"
+        }
+      ]
+    }
+  ]
+}
