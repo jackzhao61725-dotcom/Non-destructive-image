@@ -92,14 +92,6 @@ plt.tight_layout(); plt.show()
 
 # %% [cell 14: code]
 def intensity_at_atoms(P_mW):
-    base = (P_mW*1e-3)/(np.pi*(D_probe/2)**2)   # area-averaged
-    return 2*base if use_peak_intensity else base
-
-def N_scatt(Delta_Hz, P_mW, tau_s=None):
-    if tau_s is None: tau_s = tau
-    s = intensity_at_atoms(P_mW)/Isat
-    d = delta_of(Delta_Hz)
-    return (Gamma/2) * s/(1 + s + d**2) * tau_s
 
 def Nmax_loss(Delta_Hz, P_mW, frac, tau_s=None, eta=None):
     # shots until a fraction `frac` of the condensate is lost:  N0(s)=N0 exp(-eta N_gamma s)

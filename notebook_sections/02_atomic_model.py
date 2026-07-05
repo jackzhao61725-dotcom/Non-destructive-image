@@ -17,15 +17,7 @@
 # condensate fraction, to be checked against K24 §6.3.1.
 
 # %% [cell 8: code]
-omega = 2*np.pi*trap_Hz
-omega_bar = (omega.prod())**(1/3)
-a_ho = np.sqrt(hbar/(m*omega_bar))
-mu = 0.5*(15*N0*a_s/a_ho)**(2/5) * hbar*omega_bar
-T_mu = mu/kB
-n_peak = mu*m/(4*np.pi*hbar**2*a_s)
-R = np.sqrt(2*mu/(m*omega**2))
-n_col = (4/3)*n_peak*R
-N_check = (8*np.pi/15) * n_peak * R.prod()
+
 
 print(f"omega_bar/2pi = {omega_bar/(2*np.pi):.1f} Hz   a_ho = {a_ho*1e6:.3f} um")
 print(f"mu/kB    = {T_mu*1e9:.1f} nK")
