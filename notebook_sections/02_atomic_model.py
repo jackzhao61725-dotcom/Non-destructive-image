@@ -17,25 +17,7 @@
 # condensate fraction, to be checked against K24 §6.3.1.
 
 # %% [cell 8: code]
-from non_destructive_image import build_thomas_fermi_state
 
-tf_initial = build_thomas_fermi_state(
-    atom_number=N0,
-    scattering_length=a_s,
-    trap_frequencies_hz=trap_Hz,
-    atomic_mass=m,
-    hbar=hbar,
-    boltzmann_constant=kB,
-)
-omega = tf_initial.trap_angular_frequencies
-omega_bar = tf_initial.geometric_mean_frequency
-a_ho = tf_initial.harmonic_oscillator_length
-mu = tf_initial.chemical_potential
-T_mu = tf_initial.chemical_potential_temperature
-n_peak = tf_initial.peak_density
-R = tf_initial.radii
-n_col = tf_initial.column_density
-N_check = tf_initial.atom_number_check
 
 print(f"omega_bar/2pi = {omega_bar/(2*np.pi):.1f} Hz   a_ho = {a_ho*1e6:.3f} um")
 print(f"mu/kB    = {T_mu*1e9:.1f} nK")

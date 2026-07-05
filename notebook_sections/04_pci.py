@@ -88,8 +88,6 @@ ax.legend(fontsize=8.5); ax.grid(alpha=0.25); plt.tight_layout(); plt.show()
 # with the phase plate in beam), so the signal is $I_\mathrm{img}-t_p^2$, not $I_\mathrm{img}-1$.
 
 # %% [cell 18: code]
-from non_destructive_image import simulate_fourier_image
-
 Ngrid, FOV = 1024, 100e-6
 dgrid = FOV/Ngrid
 gax = (np.arange(Ngrid)-Ngrid//2)*dgrid
@@ -105,11 +103,11 @@ def _tf_profile(Ra, Rb):
 def sim_image(axis, phi_peak_val, mode='PCI', OD=4.0):
     plane = [i for i in range(3) if i != axis]
     prof = _tf_profile(R[plane[0]], R[plane[1]])
-    object_field = np.exp(1j*phi_peak_val*prof)
-    if mode == 'PCI':   ref = t_p*np.exp(1j*theta)
-    elif mode == 'DGI': ref = 10**(-OD/2)
-    else:               ref = 1
-    return simulate_fourier_image(object_field, pupil, ref), prof
+    Esc = np.fft.ifft2(np.fft.fft2(np.exp(1j*phi_peak_val*prof)-1)*pupil)
+    if mode == 'PCI':   E = t_p*np.exp(1j*theta) + Esc
+    elif mode == 'DGI': E = 10**(-OD/2) + Esc
+    else:               E = 1 + Esc
+    return np.abs(E)**2, prof
 
 def blur_for_axis(axis, phi_test=0.1):
     Iimg, _ = sim_image(axis, phi_test, 'PCI')

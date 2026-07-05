@@ -23,25 +23,17 @@
 # fitting $(t_p,\theta)$ from a detuning scan, and beyond $\varphi=\pi$ the inversion is multivalued.
 
 # %% [cell 10: code]
-from non_destructive_image import (
-    dimensionless_detuning,
-    faraday_rotation_angle,
-    intensity_at_atoms as _intensity_at_atoms_helper,
-    reabsorption_fraction,
-    residual_optical_depth,
-    scalar_phase_shift,
-    scattered_photons_per_atom,
-)
-
 def delta_of(Delta_Hz):
-    return dimensionless_detuning(Delta_Hz, Gamma)
+    return 2*Delta_Hz*2*np.pi/Gamma
 
 def phi_peak(Delta_Hz, n_col_peak):
-    return scalar_phase_shift(Delta_Hz, n_col_peak, sigma0, Gamma)
+    d = delta_of(Delta_Hz)
+    return sigma0 * n_col_peak * d / (2*(1 + d**2))
 
 def od_resonant_equiv(Delta_Hz, n_col_peak):
     # residual on-resonance-scaled optical depth at this detuning: OD = sigma0 n / (1+delta^2)
-    return residual_optical_depth(Delta_Hz, n_col_peak, sigma0, Gamma)
+    d = delta_of(Delta_Hz)
+    return sigma0*n_col_peak/(1+d**2)
 
 print(f"At Delta=1.5 GHz: delta = {delta_of(1.5e9):.1f}")
 print(f"  phi_x (across cigar) = {phi_peak(1.5e9, n_col[0]):.3f} rad")
@@ -100,19 +92,6 @@ plt.tight_layout(); plt.show()
 
 # %% [cell 14: code]
 def intensity_at_atoms(P_mW):
-    return _intensity_at_atoms_helper(P_mW, D_probe, use_peak_intensity)
-
-def N_scatt(Delta_Hz, P_mW, tau_s=None):
-    if tau_s is None: tau_s = tau
-    return scattered_photons_per_atom(
-        Delta_Hz,
-        P_mW,
-        tau_s,
-        Isat,
-        Gamma,
-        D_probe,
-        use_peak_intensity,
-    )
 
 def Nmax_loss(Delta_Hz, P_mW, frac, tau_s=None, eta=None):
     # shots until a fraction `frac` of the condensate is lost:  N0(s)=N0 exp(-eta N_gamma s)
@@ -151,7 +130,9 @@ def reabs_frac(Delta_Hz):
     """Angle-averaged reabsorption probability of a spontaneously emitted (Rayleigh)
     photon: residual OD along each principal axis, averaged over emission solid angle.
     Grows as ~1/delta^2, so it bites hardest at low detuning / high OD."""
-    return reabsorption_fraction(Delta_Hz, n_col, sigma0, Gamma)
+    d = delta_of(Delta_Hz)
+    OD = sigma0*np.array([n_col[0], n_col[1], n_col[2]])/(1 + d**2)
+    return float(np.mean(1 - np.exp(-OD)))
 
 def Nmax_cleanloss(Delta_Hz, P_mW, frac, tau_s=None, eta=None):
     """Optimistic bound: every recoiled atom is promptly LOST (eta secondaries each)."""
@@ -209,7 +190,7 @@ def theta_F_peak(Delta_Hz, n_col_peak):
     """Peak Faraday-rotation angle (rad): identical dispersive lineshape to phi_peak (Sec. 5),
     scaled by kappa_F. We isolate the pure-rotation observable (phi_+ = +theta_F, phi_- = -theta_F),
     i.e. a fully spin-polarized column with the small common-mode scalar phase neglected."""
-    return faraday_rotation_angle(Delta_Hz, n_col_peak, sigma0, Gamma, kappa_F)
+    return kappa_F * phi_peak(Delta_Hz, n_col_peak)
 
 # ---- Table 2: rotation angle vs phase shift at the same detunings as Table 1 ----
 fig, ax = plt.subplots(figsize=(9.2, 3.0)); ax.axis('off')
