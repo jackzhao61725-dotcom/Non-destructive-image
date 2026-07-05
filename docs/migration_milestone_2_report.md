@@ -40,9 +40,9 @@ Migrate only the Light–Atom Interaction layer from notebook-local formulas to 
   - Confirmed migrated sections `02_atomic_model.py`, `03_light_atom_interaction.py`, and `06_faraday.py` are syntactically valid.
 - PASS — `python3 -m py_compile src/non_destructive_image/__init__.py src/non_destructive_image/light_atom.py notebook_sections/03_light_atom_interaction.py notebook_sections/06_faraday.py scripts/validate_notebook_sections.py tests/test_helpers.py tests/regression/test_helper_regression_status.py`
   - Confirmed touched Python files compile.
-- PASS — `PYTHONPATH=src python3 -m pytest tests/regression/test_notebook_output_baseline.py -q`
+- PASS — `PYTHONPATH=src:. python3 -m pytest tests/regression/test_notebook_output_baseline.py -q`
   - Confirmed the stored notebook-output baseline test still passes.
-- SKIPPED — `PYTHONPATH=src python3 -m pytest -q`
+- SKIPPED — `PYTHONPATH=src:. python3 -m pytest -q`
   - The full test command completed with NumPy-dependent tests skipped because `numpy` is not installed in this environment.
   - The new formula-equivalence checks are present, but full numerical execution remains blocked until the scientific Python stack is available.
 

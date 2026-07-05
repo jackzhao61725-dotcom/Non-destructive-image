@@ -22,9 +22,14 @@ def run(command: list[str], *, env: dict[str, str] | None = None) -> None:
 
 def main() -> int:
     env = os.environ.copy()
-    src_path = str(REPO_ROOT / "src")
+    # Include both the helper source tree and repository root. The root is
+    # needed so tests can import validation helpers from the top-level
+    # ``scripts/`` directory when pytest is launched as a console script.
+    pythonpath_entries = [str(REPO_ROOT / "src"), str(REPO_ROOT)]
     existing_pythonpath = env.get("PYTHONPATH")
-    env["PYTHONPATH"] = src_path if not existing_pythonpath else f"{src_path}{os.pathsep}{existing_pythonpath}"
+    if existing_pythonpath:
+        pythonpath_entries.append(existing_pythonpath)
+    env["PYTHONPATH"] = os.pathsep.join(pythonpath_entries)
 
     try:
         run([sys.executable, "-m", "pytest", "-q"], env=env)

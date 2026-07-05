@@ -33,7 +33,7 @@ Migrate only the initial Atomic Model calculation in the notebook section export
   - Confirmed the migrated section and touched/supporting Python files compile.
 - PASS — `python3 -m pytest tests/regression/test_notebook_output_baseline.py -q`
   - Confirmed the stored-output baseline regression test still passes.
-- SKIPPED — `PYTHONPATH=src python3 -m pytest -q`
+- SKIPPED — `PYTHONPATH=src:. python3 -m pytest -q`
   - The full test command completed with the NumPy-dependent helper tests skipped because `numpy` is not installed in this execution environment.
   - This prevents full numerical re-verification here, but does not indicate a test failure.
 

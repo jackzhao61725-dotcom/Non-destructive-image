@@ -26,7 +26,7 @@ Review the current repository architecture after Atomic Model and Light-Atom Int
 - PASS — Documentation-only review; no executable scientific code was changed.
 - PASS — `python3 scripts/validate_notebook_sections.py`
   - Confirmed the existing section-validation workflow still passes after documentation updates.
-- PASS — `PYTHONPATH=src python3 -m pytest tests/regression/test_notebook_output_baseline.py -q`
+- PASS — `PYTHONPATH=src:. python3 -m pytest tests/regression/test_notebook_output_baseline.py -q`
   - Confirmed the stored notebook-output baseline test still passes.
 - SKIPPED — Full numerical equivalence remains blocked by missing NumPy/SciPy in this environment and was not required for this documentation-only milestone.
 

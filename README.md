@@ -36,7 +36,7 @@ Install the notebook-refactor test dependencies listed in `requirements.txt` whe
 
 ```bash
 python3 scripts/validate_notebook_sections.py
-PYTHONPATH=src python3 -m pytest -q
+PYTHONPATH=src:. python3 -m pytest -q
 ```
 
 The export validation does not execute the physics simulation. It verifies that the section files are exactly reproducible from the notebook and that the exported Python files compile. The pytest command checks the extracted helpers against the exact notebook expressions they replace.

@@ -36,7 +36,7 @@ The project does not currently define a packaging file such as `pyproject.toml` 
 ## 3. Run the validation suite
 
 ```bash
-PYTHONPATH=src pytest -q
+PYTHONPATH=src:. pytest -q
 python scripts/validate_notebook_sections.py
 ```
 

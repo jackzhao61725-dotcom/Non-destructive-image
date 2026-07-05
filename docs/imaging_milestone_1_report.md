@@ -48,9 +48,9 @@ The migrated implementation is structurally accepted for review because `simulat
   - Confirmed migrated sections `02_atomic_model.py`, `03_light_atom_interaction.py`, `04_pci.py`, and `06_faraday.py` are syntactically valid.
 - PASS — `python3 -m py_compile src/non_destructive_image/__init__.py src/non_destructive_image/fourier.py src/non_destructive_image/imaging.py notebook_sections/04_pci.py scripts/validate_notebook_sections.py tests/test_helpers.py`
   - Confirmed touched helper, section, validation, and test files compile.
-- PASS — `PYTHONPATH=src python3 -m pytest tests/regression/test_notebook_output_baseline.py -q`
+- PASS — `PYTHONPATH=src:. python3 -m pytest tests/regression/test_notebook_output_baseline.py -q`
   - Confirmed the stored notebook-output baseline test still passes.
-- SKIPPED — `PYTHONPATH=src python3 -m pytest -q`
+- SKIPPED — `PYTHONPATH=src:. python3 -m pytest -q`
   - The full test command completed with NumPy-dependent tests skipped because `numpy` is not installed in this environment.
   - The new numerical equivalence test for `simulate_fourier_image(...)` is present and should run normally in Colab or another complete scientific Python environment.
   - The milestone should only be fully closed after those NumPy-backed tests pass in that environment.
