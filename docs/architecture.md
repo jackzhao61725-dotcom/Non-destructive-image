@@ -329,3 +329,13 @@ The public API is stable enough for PCI/DGI/Faraday imaging migration. The known
 - A future parameter-object layer may improve ergonomics, but it is not required for correctness.
 - `reabsorption_fraction(...)` sits near a module boundary, but moving it now would be churn rather than a scientific improvement.
 - Full numerical baselines are still missing in this environment, so architecture freeze should not be interpreted as full scientific validation.
+
+## 11. Future Extensions
+
+Future experimental calibration and beyond-Thomas-Fermi state support should be
+added after the notebook-equivalent migration is stable. The current Version 1
+helpers should remain focused on preserving notebook behaviour.
+
+See `docs/extension_roadmap.md` for the proposed roadmap for RAI-data-based
+calibration, droplets, supersolids, mixtures, and later calibrated
+optimisation.
