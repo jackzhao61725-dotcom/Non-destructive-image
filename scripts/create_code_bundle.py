@@ -14,6 +14,7 @@ INCLUDE_PATHS = [
     "requirements.txt",
     "pytest.ini",
     "1 calculations revised 2  multishot  6  extended.ipynb",
+    "deliverables/CODE_BUNDLE_README.md",
     "docs",
     "notebook_sections",
     "src",
@@ -59,6 +60,8 @@ def should_exclude(path: Path) -> bool:
     if path.suffix in EXCLUDED_SUFFIXES:
         return True
     if path.parts[:1] == ("deliverables",) and path.suffix == ".zip":
+        return True
+    if path.parts[:2] == ("regression", "baseline") and path.suffix == ".npz":
         return True
     return False
 

@@ -18,11 +18,17 @@ contains:
 - `src/`
 - `scripts/`
 - `tests/`
-- `regression/`
+- `regression/`, excluding generated `.npz` numerical baseline artifacts
 
 The archive excludes local development state such as `.git/`, `.venv/`,
 Python caches, pytest caches, editor metadata, temporary files, and previously
 generated zip files inside `deliverables/`.
+
+Large generated numerical baselines are intentionally kept out of the portable
+code bundle to keep the archive comfortably below GitHub's large-file warning
+thresholds. The source repository tracks the current baseline `.npz` files
+separately under `regression/baseline/`, and the bundle includes the scripts and
+documentation needed to regenerate them.
 
 ## Scientific Source Of Truth
 
@@ -74,6 +80,20 @@ python scripts/validate_notebook_sections.py
 
 This validation checks that the source-controlled section exports match the
 reference notebook export process and compile as Python.
+
+## Regenerate Numerical Baselines
+
+The source repository currently tracks large representative `.npz` baselines
+for PCI/DGI and Faraday imaging regression tests. They are omitted from the code
+bundle by default, but can be regenerated from the repository root with:
+
+```bash
+python scripts/generate_pci_dgi_imaging_baseline.py
+python scripts/generate_faraday_imaging_baseline.py
+```
+
+After regenerating these files, the full regression suite can be run with
+`pytest -q`.
 
 ## Regenerate The Bundle
 
