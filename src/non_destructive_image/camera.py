@@ -84,3 +84,40 @@ def simulate_camera_image(
             "camera_image": camera_image,
         }
     return camera_image
+
+
+def simulate_noisy_camera_image(
+    image: ArrayLike,
+    photons_per_pixel: float,
+    rng: np.random.Generator,
+    read_noise_electrons: float,
+    bin_size: int = 15,
+    *,
+    input_is_binned: bool = False,
+    normalize: bool = True,
+    return_intermediates: bool = False,
+) -> NDArray[np.floating] | dict[str, NDArray[np.floating]]:
+    """Run the notebook stochastic camera recipe with explicit RNG handling.
+
+    This helper is a thin orchestration layer around the existing camera
+    helpers. It optionally bins a high-resolution image, applies
+    ``add_camera_noise(...)`` using the caller-provided random generator, and
+    optionally normalises the noisy electron counts back to image units.
+    """
+
+    binned_image = np.asarray(image) if input_is_binned else bin_to_camera_pixels(image, bin_size)
+    noisy_counts = add_camera_noise(
+        binned_image,
+        photons_per_pixel,
+        rng,
+        read_noise_electrons,
+    )
+    noisy_image = normalize_camera_counts(noisy_counts, photons_per_pixel) if normalize else noisy_counts
+
+    if return_intermediates:
+        return {
+            "binned_image": binned_image,
+            "noisy_counts": noisy_counts,
+            "noisy_image": noisy_image,
+        }
+    return noisy_image
