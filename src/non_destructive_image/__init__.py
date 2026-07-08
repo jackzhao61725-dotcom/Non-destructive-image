@@ -24,10 +24,12 @@ from .light_atom import (
     scalar_phase_shift,
     scattered_photons_per_atom,
 )
+from .multishot import accumulate_snr, simulate_multishot_sequence
 from .profiles import thomas_fermi_profile_2d
 
 __all__ = [
     "ThomasFermiState",
+    "accumulate_snr",
     "add_camera_noise",
     "bin_to_camera_pixels",
     "build_thomas_fermi_state",
@@ -47,5 +49,6 @@ __all__ = [
     "simulate_dgi_image",
     "simulate_faraday_image",
     "simulate_pci_image",
+    "simulate_multishot_sequence",
     "thomas_fermi_profile_2d",
 ]
