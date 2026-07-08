@@ -52,3 +52,35 @@ def normalize_camera_counts(counts: ArrayLike, photons_per_pixel: float) -> NDAr
     """Convert noisy camera counts back to the notebook's normalised image units."""
 
     return np.asarray(counts) / photons_per_pixel
+
+
+def simulate_camera_image(
+    image: ArrayLike,
+    bin_size: int = 15,
+    photons_per_pixel: float | None = None,
+    *,
+    return_intermediates: bool = False,
+) -> NDArray[np.floating] | dict[str, NDArray[np.floating]]:
+    """Run the deterministic notebook camera pipeline without stochastic noise.
+
+    The notebook camera path first bins the high-resolution image to camera
+    pixels. When a photon scale is supplied, this helper also applies the
+    deterministic count conversion and normalisation used around the stochastic
+    camera model, but intentionally does not add Poisson or read noise.
+    """
+
+    binned_image = bin_to_camera_pixels(image, bin_size)
+    if photons_per_pixel is None:
+        if return_intermediates:
+            return {"binned_image": binned_image, "camera_image": binned_image}
+        return binned_image
+
+    deterministic_counts = binned_image * photons_per_pixel
+    camera_image = normalize_camera_counts(deterministic_counts, photons_per_pixel)
+    if return_intermediates:
+        return {
+            "binned_image": binned_image,
+            "deterministic_counts": deterministic_counts,
+            "camera_image": camera_image,
+        }
+    return camera_image
