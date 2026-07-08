@@ -8,7 +8,7 @@ be regression-checked before being wired back into the notebook exports.
 from .atomic_model import ThomasFermiState, build_thomas_fermi_state, recoil_quantities
 from .camera import add_camera_noise, bin_to_camera_pixels, normalize_camera_counts
 from .fourier import propagate_scattered_field
-from .imaging import simulate_dgi_image, simulate_fourier_image, simulate_pci_image
+from .imaging import simulate_dgi_image, simulate_faraday_image, simulate_fourier_image, simulate_pci_image
 from .light_atom import (
     dimensionless_detuning,
     faraday_rotation_angle,
@@ -37,6 +37,7 @@ __all__ = [
     "scattered_photons_per_atom",
     "simulate_fourier_image",
     "simulate_dgi_image",
+    "simulate_faraday_image",
     "simulate_pci_image",
     "thomas_fermi_profile_2d",
 ]
