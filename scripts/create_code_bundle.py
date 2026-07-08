@@ -82,6 +82,15 @@ def iter_bundle_files() -> list[Path]:
     return sorted(files, key=lambda path: path.relative_to(REPO_ROOT).as_posix())
 
 
+def read_reproducible_bytes(path: Path) -> bytes:
+    data = path.read_bytes()
+    try:
+        text = data.decode("utf-8")
+    except UnicodeDecodeError:
+        return data
+    return text.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")
+
+
 def write_bundle() -> Path:
     DELIVERABLES_DIR.mkdir(exist_ok=True)
     if BUNDLE_PATH.exists():
@@ -93,7 +102,7 @@ def write_bundle() -> Path:
             info = zipfile.ZipInfo(relative, ZIP_TIMESTAMP)
             info.compress_type = zipfile.ZIP_DEFLATED
             info.external_attr = 0o644 << 16
-            archive.writestr(info, path.read_bytes())
+            archive.writestr(info, read_reproducible_bytes(path))
 
     return BUNDLE_PATH
 
