@@ -29,3 +29,40 @@ def simulate_fourier_image(
     if return_intensity:
         return np.abs(image_field) ** 2
     return image_field
+
+
+def simulate_pci_image(
+    phase_map: ArrayLike,
+    pupil: ArrayLike,
+    phase_plate_transmittance: float = 0.95,
+    phase_plate_phase: float = np.pi / 2,
+    *,
+    return_intermediates: bool = False,
+) -> NDArray[np.floating] | dict[str, NDArray[np.floating] | NDArray[np.complexfloating] | complex]:
+    """Return the notebook-equivalent scalar PCI image intensity.
+
+    This is the PCI-specific orchestration above ``simulate_fourier_image``:
+    ``object_field = exp(1j * phase_map)`` and reference field
+    ``t_p * exp(1j * theta)``. It preserves the notebook phase-plate,
+    scattered-field, FFT/pupil, and intensity conventions.
+    """
+
+    object_field = np.exp(1j * np.asarray(phase_map))
+    pci_reference_field = phase_plate_transmittance * np.exp(1j * phase_plate_phase)
+    image_field = simulate_fourier_image(
+        object_field,
+        pupil,
+        pci_reference_field,
+        return_intensity=False,
+    )
+    pci_image_intensity = np.abs(image_field) ** 2
+
+    if return_intermediates:
+        return {
+            "object_field": object_field,
+            "scattered_field": object_field - 1,
+            "propagated_scattered_field": image_field - pci_reference_field,
+            "pci_reference_field": pci_reference_field,
+            "pci_image_intensity": pci_image_intensity,
+        }
+    return pci_image_intensity
