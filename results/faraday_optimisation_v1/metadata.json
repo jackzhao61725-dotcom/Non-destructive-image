@@ -1,0 +1,27 @@
+{
+  "calibration_status": "No experimental RAI / absorption calibration has yet been applied.",
+  "config_file_used": "configs\\dissertation_results_v1.json",
+  "git_commit_hash": "af2dc580ac6bb44a5f8dfb46b8c00c5c8f581a49",
+  "helper_functions_used": [
+    "evaluate_faraday_operating_point",
+    "sweep_faraday_detuning",
+    "sweep_faraday_intensity",
+    "sweep_faraday_exposure_time",
+    "summarise_faraday_sweep"
+  ],
+  "kappa_F": 1.0,
+  "kappa_F_note": "kappa_F is the Version 1 placeholder unless changed in the config.",
+  "label": "v1_representative_uncalibrated",
+  "outputs": {
+    "detuning_figure": "results\\faraday_optimisation_v1\\detuning_tradeoff.svg",
+    "detuning_table": "results\\faraday_optimisation_v1\\detuning_sweep_table.csv",
+    "exposure_figure": "results\\faraday_optimisation_v1\\exposure_time_tradeoff.svg",
+    "exposure_table": "results\\faraday_optimisation_v1\\exposure_time_sweep_table.csv",
+    "intensity_figure": "results\\faraday_optimisation_v1\\intensity_tradeoff.svg",
+    "intensity_table": "results\\faraday_optimisation_v1\\intensity_sweep_table.csv",
+    "metadata": "results\\faraday_optimisation_v1\\metadata.json",
+    "summary": "results\\faraday_optimisation_v1\\summary.json"
+  },
+  "regeneration_note": "Outputs are intended to be regenerated after closed-loop calibration updates parameters.",
+  "status": "Version 1 representative / uncalibrated results"
+}

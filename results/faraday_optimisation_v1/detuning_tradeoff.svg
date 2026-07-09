@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="820" height="520" viewBox="0 0 820 520">
+  <title>Faraday Detuning Trade-off</title>
+  <desc>Representative Version 1 uncalibrated dissertation placeholder generated from config label v1_representative_uncalibrated.</desc>
+  <rect width="100%" height="100%" fill="white" />
+  <text x="410" y="30" text-anchor="middle" font-family="Arial, sans-serif" font-size="18">Faraday Detuning Trade-off</text>
+  <text x="410" y="52" text-anchor="middle" font-family="Arial, sans-serif" font-size="12">Representative V1 uncalibrated result; regenerate after closed-loop calibration</text>
+  <line x1="82" y1="444" x2="788" y2="444" stroke="black" />
+  <line x1="82" y1="64" x2="82" y2="444" stroke="black" />
+  <text x="82" y="466" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">7.5e+08</text>
+  <text x="788" y="466" text-anchor="middle" font-family="Arial, sans-serif" font-size="11">3e+09</text>
+  <text x="435" y="498" text-anchor="middle" font-family="Arial, sans-serif" font-size="14">detuning_hz</text>
+  <text x="22" y="254" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" transform="rotate(-90 22 254)">Normalised value (0 to 1)</text>
+  <text x="68" y="444" text-anchor="end" font-family="Arial, sans-serif" font-size="11">0</text>
+  <text x="68" y="68" text-anchor="end" font-family="Arial, sans-serif" font-size="11">1</text>
+  <polyline points="82.00,444.00 160.44,401.78 238.89,359.56 317.33,317.33 395.78,275.11 474.22,232.89 631.11,148.44 788.00,64.00" fill="none" stroke="#1f77b4" stroke-width="2.5" />
+  <polyline points="82.00,64.00 160.44,241.69 238.89,323.72 317.33,368.23 395.78,395.05 474.22,412.44 631.11,432.89 788.00,444.00" fill="none" stroke="#d62728" stroke-width="2.5" />
+  <rect x="104" y="80" width="300" height="54" fill="white" stroke="#cccccc" />
+  <line x1="118" y1="98" x2="156" y2="98" stroke="#1f77b4" stroke-width="2.5" />
+  <text x="166" y="102" font-family="Arial, sans-serif" font-size="12">signal_per_scattered_photon</text>
+  <line x1="118" y1="120" x2="156" y2="120" stroke="#d62728" stroke-width="2.5" />
+  <text x="166" y="124" font-family="Arial, sans-serif" font-size="12">destructiveness_metric</text>
+</svg>
