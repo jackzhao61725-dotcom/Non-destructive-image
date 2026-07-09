@@ -6,6 +6,7 @@ be regression-checked before being wired back into the notebook exports.
 """
 
 from .atomic_model import ThomasFermiState, build_thomas_fermi_state, recoil_quantities
+from .analysis import evaluate_faraday_operating_point
 from .camera import (
     add_camera_noise,
     bin_to_camera_pixels,
@@ -33,6 +34,7 @@ __all__ = [
     "add_camera_noise",
     "bin_to_camera_pixels",
     "build_thomas_fermi_state",
+    "evaluate_faraday_operating_point",
     "normalize_camera_counts",
     "simulate_camera_image",
     "simulate_noisy_camera_image",
