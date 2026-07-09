@@ -8,6 +8,7 @@ be regression-checked before being wired back into the notebook exports.
 from .atomic_model import ThomasFermiState, build_thomas_fermi_state, recoil_quantities
 from .analysis import (
     evaluate_faraday_operating_point,
+    summarise_faraday_sweep,
     sweep_faraday_detuning,
     sweep_faraday_exposure_time,
     sweep_faraday_intensity,
@@ -57,6 +58,7 @@ __all__ = [
     "simulate_faraday_image",
     "simulate_pci_image",
     "simulate_multishot_sequence",
+    "summarise_faraday_sweep",
     "sweep_faraday_detuning",
     "sweep_faraday_exposure_time",
     "sweep_faraday_intensity",

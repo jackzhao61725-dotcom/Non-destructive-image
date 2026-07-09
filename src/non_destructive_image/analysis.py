@@ -270,3 +270,58 @@ def sweep_faraday_exposure_time(
         "best_objective_value": float(objective_values[best_index]),
         **result_arrays,
     }
+
+
+def summarise_faraday_sweep(
+    sweep_result: dict[str, object],
+    metric_key: str = "signal_per_scattered_photon",
+    *,
+    parameter_key: str | None = None,
+) -> dict[str, float | int | str]:
+    """Summarise one deterministic Faraday single-variable sweep."""
+
+    if metric_key not in sweep_result:
+        raise ValueError(f"metric_key is not available: {metric_key}")
+
+    if parameter_key is None:
+        for candidate_key in ("detuning_hz", "probe_power_mw", "pulse_duration_s"):
+            if candidate_key in sweep_result:
+                parameter_key = candidate_key
+                break
+    if parameter_key is None or parameter_key not in sweep_result:
+        raise ValueError("parameter_key is not available in sweep_result")
+
+    metric_values = np.asarray(sweep_result[metric_key], dtype=float)
+    parameter_values = np.asarray(sweep_result[parameter_key], dtype=float)
+    if metric_values.ndim != 1 or metric_values.size == 0:
+        raise ValueError("metric values must be a non-empty 1D array")
+    if parameter_values.shape != metric_values.shape:
+        raise ValueError("parameter values must have the same shape as metric values")
+    if np.all(np.isnan(metric_values)):
+        raise ValueError(f"metric_key contains only NaN values: {metric_key}")
+
+    best_index = int(np.nanargmax(metric_values))
+    summary: dict[str, float | int | str] = {
+        "metric_key": metric_key,
+        "parameter_key": parameter_key,
+        "best_index": best_index,
+        "best_parameter_value": float(parameter_values[best_index]),
+        "best_metric_value": float(metric_values[best_index]),
+        "num_points": int(metric_values.size),
+        "metric_min": float(np.nanmin(metric_values)),
+        "metric_max": float(np.nanmax(metric_values)),
+    }
+
+    for key in (
+        "faraday_signal_scale",
+        "scattered_photons_per_atom",
+        "destructiveness_metric",
+        "signal_to_destruction",
+    ):
+        if key in sweep_result:
+            values = np.asarray(sweep_result[key], dtype=float)
+            if values.shape == metric_values.shape and not np.all(np.isnan(values)):
+                summary[f"{key}_min"] = float(np.nanmin(values))
+                summary[f"{key}_max"] = float(np.nanmax(values))
+
+    return summary
