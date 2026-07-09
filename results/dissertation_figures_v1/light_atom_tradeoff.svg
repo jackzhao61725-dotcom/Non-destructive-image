@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="460" viewBox="0 0 900 460">
+  <title>Light-atom signal/destructiveness trade-off</title>
+  <desc>Version 1 representative / uncalibrated figure placeholder generated for v1_representative_uncalibrated.</desc>
+  <rect width="100%" height="100%" fill="white" />
+
+<text x="450" y="32" text-anchor="middle" font-family="Arial" font-size="20">Light-atom signal / destructiveness trade-off</text>
+<text x="450" y="55" text-anchor="middle" font-family="Arial" font-size="12">Normalised curves; Version 1 representative / uncalibrated</text>
+<line x1="90" y1="370" x2="810" y2="370" stroke="black" />
+<line x1="90" y1="90" x2="90" y2="370" stroke="black" />
+<polyline points="90.00,90.00 170.00,183.30 250.00,239.30 330.00,276.64 410.00,303.31 490.00,323.32 650.00,351.33 810.00,370.00" fill="none" stroke="#1f77b4" stroke-width="2.4" />
+<line x1="610" y1="106" x2="652" y2="106" stroke="#1f77b4" stroke-width="2.5" />
+<text x="660" y="110" font-family="Arial" font-size="12">Faraday/dispersive signal</text>
+<polyline points="90.00,90.00 170.00,220.64 250.00,281.12 330.00,313.98 410.00,333.80 490.00,346.66 650.00,361.78 810.00,370.00" fill="none" stroke="#d62728" stroke-width="2.4" />
+<line x1="610" y1="128" x2="652" y2="128" stroke="#d62728" stroke-width="2.5" />
+<text x="660" y="132" font-family="Arial" font-size="12">scattered photons / destructiveness</text>
+<polyline points="90.00,370.00 170.00,338.89 250.00,307.78 330.00,276.67 410.00,245.56 490.00,214.44 650.00,152.22 810.00,90.00" fill="none" stroke="#2ca02c" stroke-width="2.4" />
+<line x1="610" y1="150" x2="652" y2="150" stroke="#2ca02c" stroke-width="2.5" />
+<text x="660" y="154" font-family="Arial" font-size="12">signal per scattered photon</text>
+<text x="450" y="420" text-anchor="middle" font-family="Arial" font-size="13">detuning (GHz)</text>
+<text x="35" y="230" text-anchor="middle" font-family="Arial" font-size="13" transform="rotate(-90 35 230)">normalised value</text>
+</svg>

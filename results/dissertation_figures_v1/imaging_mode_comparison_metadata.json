@@ -1,0 +1,25 @@
+{
+  "image_min_max": {
+    "DGI intensity": [
+      9.999416871094921e-05,
+      0.005757845918609547
+    ],
+    "Faraday dark field": [
+      2.8953902775014115e-15,
+      0.005706629055285545
+    ],
+    "Faraday dual-port S": [
+      -0.00037698929613152153,
+      0.1506506689686609
+    ],
+    "PCI intensity": [
+      0.9021418956916741,
+      1.0517449578177342
+    ]
+  },
+  "kappa_F": 1.0,
+  "label": "v1_representative_uncalibrated",
+  "note": "Version 1 representative / uncalibrated imaging-mode comparison.",
+  "phase_peak_rad": 0.07551269834158536,
+  "theta_peak_rad": 0.07543583904054196
+}

@@ -1,0 +1,48 @@
+{
+  "calibration_status": "No experimental RAI / absorption calibration has been applied.",
+  "config_file_used": "configs\\dissertation_figures_v1.json",
+  "generated_figure_filenames": [
+    "results\\dissertation_figures_v1\\closed_loop_architecture.svg",
+    "results\\dissertation_figures_v1\\tf_density_model.svg",
+    "results\\dissertation_figures_v1\\light_atom_tradeoff.svg",
+    "results\\dissertation_figures_v1\\imaging_mode_comparison.svg",
+    "results\\dissertation_figures_v1\\camera_realism.svg",
+    "results\\dissertation_figures_v1\\multishot_evolution.svg"
+  ],
+  "git_commit_hash": "e28fb877c6e1223ce962aba3c42bcc0c5909b6be",
+  "helper_functions_used": [
+    "thomas_fermi_profile_2d",
+    "scalar_phase_shift",
+    "scattered_photons_per_atom",
+    "reabsorption_fraction",
+    "simulate_pci_image",
+    "simulate_dgi_image",
+    "simulate_faraday_image",
+    "simulate_camera_image",
+    "simulate_noisy_camera_image",
+    "simulate_multishot_sequence",
+    "accumulate_snr"
+  ],
+  "kappa_F": 1.0,
+  "kappa_F_note": "kappa_F remains the Version 1 placeholder and has not been experimentally fitted.",
+  "label": "v1_representative_uncalibrated",
+  "outputs": {
+    "camera_realism": "results\\dissertation_figures_v1\\camera_realism.svg",
+    "camera_realism_metadata": "results\\dissertation_figures_v1\\camera_realism_metadata.json",
+    "closed_loop_architecture": "results\\dissertation_figures_v1\\closed_loop_architecture.svg",
+    "imaging_mode_comparison": "results\\dissertation_figures_v1\\imaging_mode_comparison.svg",
+    "imaging_mode_comparison_metadata": "results\\dissertation_figures_v1\\imaging_mode_comparison_metadata.json",
+    "light_atom_tradeoff": "results\\dissertation_figures_v1\\light_atom_tradeoff.svg",
+    "light_atom_tradeoff_data": "results\\dissertation_figures_v1\\light_atom_tradeoff_data.csv",
+    "metadata": "results\\dissertation_figures_v1\\metadata.json",
+    "multishot_evolution": "results\\dissertation_figures_v1\\multishot_evolution.svg",
+    "multishot_evolution_data": "results\\dissertation_figures_v1\\multishot_evolution_data.csv",
+    "summary": "results\\dissertation_figures_v1\\summary.json",
+    "tf_density_model": "results\\dissertation_figures_v1\\tf_density_model.svg",
+    "tf_density_model_data": "results\\dissertation_figures_v1\\tf_density_model_data.csv"
+  },
+  "overclaiming_boundary": "These outputs are figure placeholders, not final experimental predictions.",
+  "rng_seed": 166,
+  "status": "Version 1 representative / uncalibrated figures",
+  "validation_status": "pytest and notebook section validation are expected to be run by the caller."
+}

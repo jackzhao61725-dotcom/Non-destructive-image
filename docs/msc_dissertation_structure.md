@@ -246,7 +246,7 @@ This section should describe:
 Current validation state:
 
 ```text
-pytest -q: 66 passed
+pytest -q: 73 passed
 notebook section validation: passed
 ```
 

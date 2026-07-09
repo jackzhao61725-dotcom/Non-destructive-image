@@ -1,0 +1,20 @@
+{
+  "figures": {
+    "camera_realism": "results\\dissertation_figures_v1\\camera_realism.svg",
+    "closed_loop_architecture": "results\\dissertation_figures_v1\\closed_loop_architecture.svg",
+    "imaging_mode_comparison": "results\\dissertation_figures_v1\\imaging_mode_comparison.svg",
+    "light_atom_tradeoff": "results\\dissertation_figures_v1\\light_atom_tradeoff.svg",
+    "multishot_evolution": "results\\dissertation_figures_v1\\multishot_evolution.svg",
+    "tf_density_model": "results\\dissertation_figures_v1\\tf_density_model.svg"
+  },
+  "label": "v1_representative_uncalibrated",
+  "main_text_candidates": [
+    "closed_loop_architecture.svg",
+    "tf_density_model.svg",
+    "light_atom_tradeoff.svg",
+    "imaging_mode_comparison.svg",
+    "camera_realism.svg",
+    "multishot_evolution.svg"
+  ],
+  "status": "Version 1 representative / uncalibrated figure gallery."
+}
