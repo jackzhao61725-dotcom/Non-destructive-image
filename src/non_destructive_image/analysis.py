@@ -79,3 +79,64 @@ def evaluate_faraday_operating_point(
         "information_per_scattered_photon": float(signal_per_scattered_photon),
         "signal_to_destruction": float(signal_to_destruction),
     }
+
+
+def sweep_faraday_detuning(
+    detuning_hz_values: ArrayLike,
+    column_density_peak: float,
+    resonant_cross_section: float,
+    gamma_rad_per_s: float,
+    probe_power_mw: float,
+    pulse_duration_s: float,
+    saturation_intensity: float,
+    probe_diameter_m: float,
+    *,
+    kappa_f: float = 1.0,
+    column_densities_for_reabsorption: ArrayLike | None = None,
+    use_peak_intensity: bool = True,
+    photons_per_camera_pixel: float | None = None,
+    objective_key: str = "signal_per_scattered_photon",
+) -> dict[str, np.ndarray | float | int | str]:
+    """Evaluate a deterministic one-dimensional Faraday detuning sweep."""
+
+    detunings = np.asarray(detuning_hz_values, dtype=float)
+    if detunings.ndim != 1 or detunings.size == 0:
+        raise ValueError("detuning_hz_values must be a non-empty 1D array")
+
+    operating_points = [
+        evaluate_faraday_operating_point(
+            float(detuning_hz),
+            column_density_peak,
+            resonant_cross_section,
+            gamma_rad_per_s,
+            probe_power_mw,
+            pulse_duration_s,
+            saturation_intensity,
+            probe_diameter_m,
+            kappa_f=kappa_f,
+            column_densities_for_reabsorption=column_densities_for_reabsorption,
+            use_peak_intensity=use_peak_intensity,
+            photons_per_camera_pixel=photons_per_camera_pixel,
+        )
+        for detuning_hz in detunings
+    ]
+    if objective_key not in operating_points[0]:
+        raise ValueError(f"objective_key is not available: {objective_key}")
+
+    result_arrays = {
+        key: np.asarray([point[key] for point in operating_points], dtype=float)
+        for key in operating_points[0]
+    }
+    objective_values = result_arrays[objective_key]
+    if np.all(np.isnan(objective_values)):
+        raise ValueError(f"objective_key contains only NaN values: {objective_key}")
+
+    best_index = int(np.nanargmax(objective_values))
+    return {
+        "detuning_hz": detunings,
+        "objective_key": objective_key,
+        "best_index": best_index,
+        "best_detuning_hz": float(detunings[best_index]),
+        "best_objective_value": float(objective_values[best_index]),
+        **result_arrays,
+    }
