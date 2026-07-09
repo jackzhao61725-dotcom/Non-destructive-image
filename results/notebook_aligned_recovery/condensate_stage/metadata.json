@@ -1,0 +1,25 @@
+{
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "generated_outputs": {
+    "central_lineouts": "results\\notebook_aligned_recovery\\condensate_stage\\central_lineouts.csv",
+    "comparison_report": "results\\notebook_aligned_recovery\\condensate_stage\\comparison_report.json",
+    "condensate_summary": "results\\notebook_aligned_recovery\\condensate_stage\\condensate_summary.json",
+    "density_cuts": "results\\notebook_aligned_recovery\\condensate_stage\\density_cuts.csv",
+    "figure": "results\\notebook_aligned_recovery\\condensate_stage\\condensate_density_stage.svg",
+    "metadata": "results\\notebook_aligned_recovery\\condensate_stage\\metadata.json"
+  },
+  "git_commit_hash": "2523e7ce0f9693ffb00fb7f13482456a21387cd0",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "scope_boundary": "Only parameters -> Thomas-Fermi condensate -> profile/column-density arrays are recovered. No phase, imaging, camera, or multishot recovery is performed.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "atomic_optical_constants": 6,
+    "constants": 2,
+    "fourier_grid_profile": 18,
+    "parameters": 4,
+    "stage_18_1_condensate_figure": 57,
+    "thomas_fermi_condensate": 8
+  },
+  "status": "Canonical notebook-aligned condensate-stage recovery output."
+}

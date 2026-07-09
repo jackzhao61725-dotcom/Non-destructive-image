@@ -1,0 +1,85 @@
+{
+  "atom_number": 25000.0,
+  "atom_number_check": 24999.99999999999,
+  "chemical_potential_j": 6.568176308944456e-31,
+  "chemical_potential_temperature_nk": 47.573107349836604,
+  "column_density_cm2": [
+    53759624525.784676,
+    1125112141861.065,
+    67603304661.179855
+  ],
+  "column_density_m2": [
+    537596245257846.75,
+    1.1251121418610648e+16,
+    676033046611798.5
+  ],
+  "column_density_map_stats_cm2": {
+    "centre_value": 53759624525.784676,
+    "max": 53759624525.784676,
+    "mean": 249992071.31668603,
+    "min": 0.0,
+    "peak_index": [
+      512,
+      512
+    ],
+    "shape": [
+      1024,
+      1024
+    ],
+    "sum": 262135686172965.38
+  },
+  "coordinate_range_um": [
+    -50.0,
+    49.90234375
+  ],
+  "density_cut_stats_cm3": {
+    "x_across": {
+      "max": 337916484555074.56,
+      "mean": 7190698310180.759
+    },
+    "y_along": {
+      "max": 340016533454770.25,
+      "mean": 150743858854224.47
+    },
+    "z_across": {
+      "max": 338690275820697.4,
+      "mean": 9075238741789.158
+    }
+  },
+  "grid_shape": [
+    1024,
+    1024
+  ],
+  "label": "notebook_v1_defaults_uncalibrated",
+  "mass_kg": 2.7564948562e-25,
+  "peak_density_cm3": 340021339002554.2,
+  "peak_density_m3": 3.400213390025542e+20,
+  "radii_m": [
+    1.1857996475343457e-06,
+    2.4817092623397375e-05,
+    1.4911557799466233e-06
+  ],
+  "radii_um": [
+    1.1857996475343457,
+    24.817092623397375,
+    1.4911557799466233
+  ],
+  "scattering_length_bohr": 72.0,
+  "scattering_length_m": 3.8100759192e-09,
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "atomic_optical_constants": 6,
+    "constants": 2,
+    "fourier_grid_profile": 18,
+    "parameters": 4,
+    "stage_18_1_condensate_figure": 57,
+    "thomas_fermi_condensate": 8
+  },
+  "species": "166Er",
+  "status": "Notebook Version 1 defaults for computational recovery only. No experimental absorption/RAI calibration has been applied.",
+  "trap_frequencies_hz": [
+    293.0,
+    14.0,
+    233.0
+  ]
+}
