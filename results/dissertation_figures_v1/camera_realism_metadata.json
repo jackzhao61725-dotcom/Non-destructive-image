@@ -1,8 +1,0 @@
-{
-  "bin_size": 6,
-  "label": "v1_representative_uncalibrated",
-  "note": "One fixed-seed noisy frame for representative measurement realism, not noise averaging.",
-  "photons_per_pixel": 500.0,
-  "read_noise_electrons": 3.0,
-  "rng_seed": 166
-}
