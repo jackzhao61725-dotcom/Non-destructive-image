@@ -1,42 +1,97 @@
-# Non-destructive image notebook refactor
+# Non-destructive Imaging Simulator for Ultracold 166Er Condensates
 
-This repository currently treats `1 calculations revised 2  multishot  6  extended.ipynb` as the scientific reference implementation for the ultracold atom imaging calculations.
+This repository contains a notebook-equivalent simulator and
+calibration-aware optimisation framework for continuous non-destructive imaging
+of ultracold `166Er` condensates.
 
-The refactor is proceeding conservatively:
+The original notebook remains the scientific reference implementation:
 
-1. audit the notebook,
-2. export notebook cells into source-controlled section files,
-3. add validation checks so future refactors can be behaviour-preserving,
-4. only then begin renaming variables and extracting shared helpers.
+```text
+1 calculations revised 2  multishot  6  extended.ipynb
+```
 
-## Where to look
+The helper package in `src/non_destructive_image/` preserves
+notebook-equivalent behaviour while making the simulator easier to test,
+document, and extend.
 
-- `1 calculations revised 2  multishot  6  extended.ipynb` — reference notebook; authoritative for physics and figures.
-- `docs/notebook_audit.md` — human-readable audit and refactoring plan.
-- `docs/notebook_audit.json` — machine-readable notebook inventory.
-- `notebook_sections/` — mechanical Python exports grouped into the planned logical sections.
-- `scripts/export_notebook_sections.py` — regenerates the section exports from the notebook.
-- `scripts/validate_notebook_sections.py` — checks that the exports are in sync and Python-syntax valid.
+## Current Version 1 Status
 
-## Extracted helpers
+Version 1 is closed for the migrated simulator core:
 
-The first behaviour-preserving helper extractions live in `src/non_destructive_image/`:
+- Atomic Model helpers are implemented and tested.
+- Light-Atom Interaction helpers are implemented and tested.
+- Imaging helpers are implemented and tested, including PCI, DGI, and Faraday.
+- Camera helpers are implemented and tested, including deterministic and
+  stochastic camera paths.
+- Deterministic multi-shot sequence helpers are implemented and tested.
+- Deterministic Faraday optimisation helpers are implemented and tested.
+- Absorption / RAI calibration-readiness helpers are implemented and tested.
+- Representative dissertation outputs have been generated under
+  `results/faraday_optimisation_v1/`.
 
-- `atomic_model.py` — Thomas-Fermi condensate-state and recoil helper formulas.
-- `profiles.py` — Thomas-Fermi column-profile expression.
-- `fourier.py` — FFT/pupil propagation pattern.
-- `camera.py` — camera binning, noise, and normalisation helpers.
-- `light_atom.py` — detuning, scalar phase, residual OD, intensity, and scattering helpers.
+## Architecture Overview
 
-These helpers are not yet wired back into the notebook. They are covered by small equivalence tests in `tests/test_helpers.py` so later notebook edits can replace duplicated code safely.
+```text
+Atomic Model
+  -> Light-Atom Interaction
+  -> Imaging
+  -> Camera
+  -> Multi-shot
+  -> Analysis / Calibration
+```
+
+The optimisation and calibration layers sit above the notebook-equivalent
+simulator core. They consume validated helper outputs rather than changing the
+underlying physics.
+
+## Key Repository Locations
+
+- `src/non_destructive_image/` - simulator helper package.
+- `tests/` - regression and helper tests.
+- `notebook_sections/` - exported notebook sections for audit and validation.
+- `scripts/` - validation, baseline, bundle, and result-generation scripts.
+- `configs/` - configurable result-generation inputs.
+- `results/` - representative dissertation output tables and figures.
+- `regression/` - regression baselines used by tests.
+- `docs/` - architecture, migration, optimisation, calibration, and
+  dissertation-facing documentation.
 
 ## Validation
 
-Install the notebook-refactor test dependencies listed in `requirements.txt` when network/package access is available. Then run the lightweight checks with:
+On Windows PowerShell:
 
-```bash
-python3 scripts/validate_notebook_sections.py
-PYTHONPATH=src:. python3 -m pytest -q
+```powershell
+$env:PYTHONPATH="src;."
+$env:PYTHONUTF8="1"
+pytest -q
+python scripts\validate_notebook_sections.py
 ```
 
-The export validation does not execute the physics simulation. It verifies that the section files are exactly reproducible from the notebook and that the exported Python files compile. The pytest command checks the extracted helpers against the exact notebook expressions they replace.
+## Regenerate Representative Results
+
+```powershell
+$env:PYTHONPATH="src;."
+$env:PYTHONUTF8="1"
+python scripts\generate_dissertation_results.py --config configs\dissertation_results_v1.json
+```
+
+The generated outputs are written to:
+
+```text
+results/faraday_optimisation_v1/
+```
+
+## Current Limitations
+
+- The generated outputs are Version 1 representative / uncalibrated results.
+- `kappa_F = 1.0` remains a placeholder convention.
+- No experimental RAI / absorption calibration has been applied yet.
+- No `kappa_F` fitting has been implemented yet.
+- No microscopic Faraday model has been introduced.
+- No full multi-parameter optimisation has been implemented yet.
+
+## Branches
+
+- `dissertation-v1-snapshot` is the stable dissertation snapshot branch.
+- `clean-v1-working` is the cleaned working branch intended for continuing MSc
+  project work.
