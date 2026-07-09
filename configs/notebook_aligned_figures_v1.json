@@ -1,0 +1,52 @@
+{
+  "label": "notebook_aligned_v1_uncalibrated",
+  "output_dir": "results/notebook_aligned_figures_v1/condensate_density_stage18_1",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cell": 57,
+  "source_notebook_section": "18.1 STAGE 1 -- constructing the condensate",
+  "constants": {
+    "hbar": 1.054571817e-34,
+    "boltzmann_constant": 1.380649e-23,
+    "atomic_mass_unit": 1.66053907e-27,
+    "bohr_radius_m": 5.29177211e-11
+  },
+  "condensate": {
+    "atom_number": 25000.0,
+    "erbium_mass_number": 166.0,
+    "scattering_length_bohr": 72.0,
+    "trap_frequencies_hz": [
+      293.0,
+      14.0,
+      233.0
+    ]
+  },
+  "grid": {
+    "ngrid": 1024,
+    "field_of_view_m": 0.0001,
+    "density_cut_points": 400,
+    "density_cut_span_rmax": 1.5
+  },
+  "display": {
+    "imaging_axis": 0,
+    "image_extent_um": [
+      -50.0,
+      50.0,
+      -50.0,
+      50.0
+    ],
+    "column_density_xlim_um": [
+      -45.0,
+      45.0
+    ],
+    "column_density_ylim_um": [
+      -12.0,
+      12.0
+    ],
+    "figure_size_inches": [
+      11.8,
+      4.6
+    ],
+    "column_density_cmap": "viridis"
+  },
+  "status_note": "Notebook-aligned Version 1 recovery. No experimental absorption/RAI calibration has been applied."
+}
