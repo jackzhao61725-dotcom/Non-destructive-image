@@ -67,6 +67,19 @@
     ],
     "map_cmap": "inferno"
   },
+  "pci_recovery": {
+    "phase_plate_transmittance": 0.95,
+    "phase_plate_phase_rad": 1.5707963267948966,
+    "notebook_reference_cells": [
+      16,
+      18
+    ],
+    "figure_size_inches": [
+      12.4,
+      3.6
+    ],
+    "map_cmap": "viridis"
+  },
   "unit_conventions": {
     "internal": "SI",
     "density_display": "cm^-3",

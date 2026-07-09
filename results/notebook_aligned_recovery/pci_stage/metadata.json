@@ -1,0 +1,20 @@
+{
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "generated_outputs": {
+    "central_pci_lineouts": "results\\notebook_aligned_recovery\\pci_stage\\central_pci_lineouts.csv",
+    "comparison_report": "results\\notebook_aligned_recovery\\pci_stage\\comparison_report.json",
+    "figure": "results\\notebook_aligned_recovery\\pci_stage\\pci_image_stage.svg",
+    "metadata": "results\\notebook_aligned_recovery\\pci_stage\\metadata.json",
+    "pci_summary": "results\\notebook_aligned_recovery\\pci_stage\\pci_summary.json"
+  },
+  "git_commit_hash": "f184655b5689b46af0bec3fb157d9c1127b71cc3",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "scope_boundary": "Only PCI recovery is generated. DGI, Faraday, camera, and multishot recovery are not performed.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "fourier_optics_sim_image": 18,
+    "pci_transfer_curve": 16
+  },
+  "status": "Canonical notebook-aligned PCI-stage recovery output."
+}

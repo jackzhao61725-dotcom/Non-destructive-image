@@ -5,7 +5,7 @@
 The canonical notebook-aligned recovery path now covers:
 
 ```text
-parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map
+parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map -> PCI image
 ```
 
 This remains a recovery of the historical Version 1 notebook computation. It
@@ -28,12 +28,6 @@ Outputs:
 results/notebook_aligned_recovery/condensate_stage/
 ```
 
-The stage locks down the notebook defaults in:
-
-```text
-configs/notebook_v1_defaults.json
-```
-
 Compared quantities include:
 
 - Thomas-Fermi radii;
@@ -52,9 +46,6 @@ Current deterministic comparison results:
 - projected column-density map max absolute difference: `0.0`;
 - grid shape: `1024 x 1024`;
 - peak location: centre pixel `[512, 512]`.
-
-The optional SVG output is tied directly to this recovered quantity and is not
-a broad figure-generation workflow.
 
 ## Scalar Phase Stage
 
@@ -86,17 +77,11 @@ phi_peak = sigma0 * n_col_peak * delta / (2 * (1 + delta**2))
 phase_map = phi_peak * projected_profile
 ```
 
-Recovered parameters:
-
-- detuning: `1.5e9 Hz`;
-- resonant cross section: `7.678673341230136e-14 m^2`;
-- natural linewidth: `185353966.5617978 rad s^-1`;
-- peak column density: `5.3759624525784675e14 m^-2`;
-- dimensionless detuning: `101.69491525423727`;
-- peak scalar phase: `0.20294165287929014 rad`.
-
 Current deterministic comparison results:
 
+- detuning: `1.5e9 Hz`;
+- dimensionless detuning: `101.69491525423727`;
+- peak scalar phase: `0.20294165287929014 rad`;
 - dimensionless detuning absolute difference: `0.0`;
 - phase-peak absolute difference: `0.0`;
 - phase-map max absolute difference: `0.0`;
@@ -104,9 +89,63 @@ Current deterministic comparison results:
 - phase-map shape: `1024 x 1024`;
 - peak location: centre pixel `[512, 512]`.
 
-The optional SVG output, `scalar_phase_stage.svg`, follows the recovered
-notebook scalar phase-map quantity only. It does not generate PCI, DGI,
-Faraday, camera, or multi-shot figures.
+## PCI Stage
+
+The PCI recovery is closed for the tested deterministic quantities.
+
+Script:
+
+```text
+scripts/recover_notebook_pci_stage.py
+```
+
+Outputs:
+
+```text
+results/notebook_aligned_recovery/pci_stage/
+```
+
+Notebook PCI references:
+
+- cell 16: phase-to-intensity transfer curve and PCI normalisation notes;
+- cell 18: Fourier-optics `sim_image(...)` implementation.
+
+Recovered notebook convention:
+
+```text
+object_field = np.exp(1j * phase_map)
+scattered_field = object_field - 1
+propagated_scattered_field = np.fft.ifft2(np.fft.fft2(scattered_field) * pupil)
+reference_field = t_p * np.exp(1j * theta)
+pci_image_intensity = np.abs(reference_field + propagated_scattered_field) ** 2
+```
+
+Recovered parameters:
+
+- imaging axis: `x`, transverse plane `y,z`;
+- numerical aperture: `0.08`;
+- phase-plate amplitude transmittance: `0.95`;
+- phase-plate phase: `pi/2`;
+- plate-background intensity: `0.9025`;
+- pupil nonzero pixels: `1245`;
+- intensity convention: incident-`I0` normalised.
+
+Current deterministic comparison results:
+
+- object-field max absolute difference: `0.0`;
+- object-field max relative difference: `0.0`;
+- PCI reference-field absolute difference: `0.0`;
+- propagated-scattered-field max absolute difference: `1.1102230246251565e-16`;
+- propagated-scattered-field max relative difference: `4.117787554919934e-09`;
+- PCI image max absolute difference: `0.0`;
+- PCI image max relative difference: `0.0`;
+- PCI image shape: `1024 x 1024`;
+- PCI image peak location: centre pixel `[512, 512]`;
+- PCI image centre value: `1.1585677695076864`.
+
+The optional SVG output, `pci_image_stage.svg`, follows the recovered notebook
+PCI intensity quantity only. It does not generate DGI, Faraday, camera, or
+multi-shot figures.
 
 ## Regression Tests
 
@@ -115,6 +154,7 @@ Focused regression tests:
 ```text
 tests/regression/test_notebook_condensate_recovery.py
 tests/regression/test_notebook_phase_recovery.py
+tests/regression/test_notebook_pci_recovery.py
 ```
 
 These tests check stable numerical outputs and helper/notebook-expression
@@ -124,7 +164,6 @@ agreement. They do not test SVG pixel appearance.
 
 The recovery still has not locked down end-to-end notebook-aligned recipes for:
 
-- PCI image formation;
 - DGI image formation;
 - Faraday image formation;
 - camera binning/noise workflows;
@@ -137,15 +176,12 @@ target.
 
 ## Recommended Next Step
 
-The next candidate recovery should be the first phase-dependent imaging path,
-most likely one of:
+The next candidate recovery should be the DGI imaging path:
 
 ```text
-phase_map -> PCI image
 phase_map -> DGI image
-theta_F map -> Faraday image
 ```
 
-The next recovery should again begin with canonical notebook defaults,
-intermediate numerical comparisons, and only one optional notebook-aligned
-figure after the numerical quantity has been matched.
+That recovery should reuse the same condensate, phase-map, grid, FFT, and pupil
+defaults, then compare only the DGI-specific reference-field and intensity
+convention. It should not generate Faraday, camera, or multi-shot figures.

@@ -1,0 +1,33 @@
+{
+  "detuning_hz": 1500000000.0,
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "numerical_aperture": 0.08,
+  "pci_image_stats": {
+    "centre_value": 1.1585677695076864,
+    "max": 1.1585677695076864,
+    "mean": 0.904372478370771,
+    "min": 0.8603460757846358,
+    "peak_index": [
+      512,
+      512
+    ],
+    "shape": [
+      1024,
+      1024
+    ],
+    "sum": 948303.2758801095
+  },
+  "phase_peak_rad": 0.20294165287929014,
+  "phase_plate_phase_rad": 1.5707963267948966,
+  "phase_plate_transmittance": 0.95,
+  "plate_background_intensity": 0.9025,
+  "pupil_nonzero_pixels": 1245,
+  "scope_boundary": "Only phase_map -> PCI image is recovered. No DGI, Faraday, camera, or multishot figures are generated.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "fourier_optics_sim_image": 18,
+    "pci_transfer_curve": 16
+  },
+  "status": "Canonical notebook-aligned PCI-stage recovery output."
+}

@@ -1,0 +1,92 @@
+{
+  "notebook_formula": {
+    "object_field": "np.exp(1j * phase_map)",
+    "pci_image_intensity": "np.abs(reference_field + propagated_scattered_field) ** 2",
+    "propagation": "np.fft.ifft2(np.fft.fft2(scattered_field) * pupil)",
+    "reference_field": "t_p * np.exp(1j * theta)",
+    "scattered_field": "object_field - 1"
+  },
+  "object_field": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "imag_mean": 0.0009407750861179815,
+      "magnitude_max": 1.0000000000000002,
+      "magnitude_mean": 1.0,
+      "magnitude_min": 0.9999999999999998,
+      "phase_max": 0.2029416528792901,
+      "phase_min": 0.0,
+      "real_mean": 0.9999402655875498,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "pci_image_intensity": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 1.1585677695076864,
+      "max": 1.1585677695076864,
+      "mean": 0.904372478370771,
+      "min": 0.8603460757846358,
+      "peak_index": [
+        512,
+        512
+      ],
+      "shape": [
+        1024,
+        1024
+      ],
+      "sum": 948303.2758801095
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "phase_plate": {
+    "phase_plate_phase_rad": 1.5707963267948966,
+    "phase_plate_transmittance": 0.95,
+    "plate_background_intensity": 0.9025,
+    "reference_field_absolute_difference": 0.0,
+    "reference_field_helper": {
+      "imag": 0.95,
+      "real": 5.817072295949927e-17
+    },
+    "reference_field_notebook": {
+      "imag": 0.95,
+      "real": 5.817072295949927e-17
+    }
+  },
+  "propagated_scattered_field": {
+    "max_absolute_difference": 1.1102230246251565e-16,
+    "max_relative_difference": 4.117787554919934e-09,
+    "stats": {
+      "imag_mean": 0.0009407750861179815,
+      "magnitude_max": 0.12673601530221407,
+      "magnitude_mean": 0.0020306268903174485,
+      "magnitude_min": 1.0319298315112296e-08,
+      "phase_max": 3.1363402096098865,
+      "phase_min": -3.1365576258937087,
+      "real_mean": -5.97344124502416e-05,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "pupil": {
+    "dgrid_m": 9.765625e-08,
+    "nonzero_pixels": 1245,
+    "numerical_aperture": 0.08,
+    "shape": [
+      1024,
+      1024
+    ]
+  },
+  "scope_boundary": "Only scalar phase map -> PCI image is recovered. DGI, Faraday, camera, and multishot stages are not generated.",
+  "source_notebook_cells": {
+    "fourier_optics_sim_image": 18,
+    "pci_transfer_curve": 16
+  },
+  "status": "canonical notebook PCI stage matches simulate_pci_image for tested deterministic quantities"
+}
