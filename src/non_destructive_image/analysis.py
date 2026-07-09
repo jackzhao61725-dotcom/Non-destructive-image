@@ -205,3 +205,68 @@ def sweep_faraday_intensity(
         "best_objective_value": float(objective_values[best_index]),
         **result_arrays,
     }
+
+
+def sweep_faraday_exposure_time(
+    pulse_duration_s_values: ArrayLike,
+    detuning_hz: float,
+    column_density_peak: float,
+    resonant_cross_section: float,
+    gamma_rad_per_s: float,
+    probe_power_mw: float,
+    saturation_intensity: float,
+    probe_diameter_m: float,
+    *,
+    kappa_f: float = 1.0,
+    column_densities_for_reabsorption: ArrayLike | None = None,
+    use_peak_intensity: bool = True,
+    photons_per_camera_pixel: float | None = None,
+    objective_key: str = "signal_per_scattered_photon",
+) -> dict[str, np.ndarray | float | int | str]:
+    """Evaluate a deterministic one-dimensional Faraday exposure-time sweep."""
+
+    pulse_durations = np.asarray(pulse_duration_s_values, dtype=float)
+    if pulse_durations.ndim != 1 or pulse_durations.size == 0:
+        raise ValueError("pulse_duration_s_values must be a non-empty 1D array")
+    if not np.all(np.isfinite(pulse_durations)):
+        raise ValueError("pulse_duration_s_values must contain only finite values")
+    if np.any(pulse_durations <= 0):
+        raise ValueError("pulse_duration_s_values must contain only positive values")
+
+    operating_points = [
+        evaluate_faraday_operating_point(
+            detuning_hz,
+            column_density_peak,
+            resonant_cross_section,
+            gamma_rad_per_s,
+            probe_power_mw,
+            float(pulse_duration_s),
+            saturation_intensity,
+            probe_diameter_m,
+            kappa_f=kappa_f,
+            column_densities_for_reabsorption=column_densities_for_reabsorption,
+            use_peak_intensity=use_peak_intensity,
+            photons_per_camera_pixel=photons_per_camera_pixel,
+        )
+        for pulse_duration_s in pulse_durations
+    ]
+    if objective_key not in operating_points[0]:
+        raise ValueError(f"objective_key is not available: {objective_key}")
+
+    result_arrays = {
+        key: np.asarray([point[key] for point in operating_points], dtype=float)
+        for key in operating_points[0]
+    }
+    objective_values = result_arrays[objective_key]
+    if np.all(np.isnan(objective_values)):
+        raise ValueError(f"objective_key contains only NaN values: {objective_key}")
+
+    best_index = int(np.nanargmax(objective_values))
+    return {
+        "pulse_duration_s": pulse_durations,
+        "objective_key": objective_key,
+        "best_index": best_index,
+        "best_pulse_duration_s": float(pulse_durations[best_index]),
+        "best_objective_value": float(objective_values[best_index]),
+        **result_arrays,
+    }
