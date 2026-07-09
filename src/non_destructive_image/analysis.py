@@ -140,3 +140,68 @@ def sweep_faraday_detuning(
         "best_objective_value": float(objective_values[best_index]),
         **result_arrays,
     }
+
+
+def sweep_faraday_intensity(
+    probe_power_mw_values: ArrayLike,
+    detuning_hz: float,
+    column_density_peak: float,
+    resonant_cross_section: float,
+    gamma_rad_per_s: float,
+    pulse_duration_s: float,
+    saturation_intensity: float,
+    probe_diameter_m: float,
+    *,
+    kappa_f: float = 1.0,
+    column_densities_for_reabsorption: ArrayLike | None = None,
+    use_peak_intensity: bool = True,
+    photons_per_camera_pixel: float | None = None,
+    objective_key: str = "signal_per_scattered_photon",
+) -> dict[str, np.ndarray | float | int | str]:
+    """Evaluate a deterministic one-dimensional Faraday probe-power sweep."""
+
+    probe_powers = np.asarray(probe_power_mw_values, dtype=float)
+    if probe_powers.ndim != 1 or probe_powers.size == 0:
+        raise ValueError("probe_power_mw_values must be a non-empty 1D array")
+    if not np.all(np.isfinite(probe_powers)):
+        raise ValueError("probe_power_mw_values must contain only finite values")
+    if np.any(probe_powers <= 0):
+        raise ValueError("probe_power_mw_values must contain only positive values")
+
+    operating_points = [
+        evaluate_faraday_operating_point(
+            detuning_hz,
+            column_density_peak,
+            resonant_cross_section,
+            gamma_rad_per_s,
+            float(probe_power_mw),
+            pulse_duration_s,
+            saturation_intensity,
+            probe_diameter_m,
+            kappa_f=kappa_f,
+            column_densities_for_reabsorption=column_densities_for_reabsorption,
+            use_peak_intensity=use_peak_intensity,
+            photons_per_camera_pixel=photons_per_camera_pixel,
+        )
+        for probe_power_mw in probe_powers
+    ]
+    if objective_key not in operating_points[0]:
+        raise ValueError(f"objective_key is not available: {objective_key}")
+
+    result_arrays = {
+        key: np.asarray([point[key] for point in operating_points], dtype=float)
+        for key in operating_points[0]
+    }
+    objective_values = result_arrays[objective_key]
+    if np.all(np.isnan(objective_values)):
+        raise ValueError(f"objective_key contains only NaN values: {objective_key}")
+
+    best_index = int(np.nanargmax(objective_values))
+    return {
+        "probe_power_mw": probe_powers,
+        "objective_key": objective_key,
+        "best_index": best_index,
+        "best_probe_power_mw": float(probe_powers[best_index]),
+        "best_objective_value": float(objective_values[best_index]),
+        **result_arrays,
+    }
