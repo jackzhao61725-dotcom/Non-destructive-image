@@ -1,0 +1,104 @@
+{
+  "figures": [
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "closed_loop_architecture.svg",
+      "helpers_or_logic_used": "script schematic",
+      "title": "Closed-loop calibration architecture",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Planned calibration-aware simulation workflow."
+    },
+    {
+      "depends_on_placeholder_parameters": false,
+      "deterministic": true,
+      "filename": "tf_density_model.svg",
+      "helpers_or_logic_used": "thomas_fermi_profile_2d",
+      "title": "Thomas-Fermi density model",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Representative column-density object used by the gallery."
+    },
+    {
+      "depends_on_placeholder_parameters": false,
+      "deterministic": true,
+      "filename": "tf_profile_lineouts.svg",
+      "helpers_or_logic_used": "thomas_fermi_profile_2d",
+      "title": "Thomas-Fermi profile lineouts",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Centre-line views of the representative cloud object."
+    },
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "light_atom_tradeoff.svg",
+      "helpers_or_logic_used": "scalar_phase_shift, scattered_photons_per_atom, reabsorption_fraction",
+      "title": "Light-atom trade-off",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Signal, scattering, and signal-per-scattered-photon trends versus detuning."
+    },
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "phase_and_faraday_maps.svg",
+      "helpers_or_logic_used": "scalar_phase_shift with kappa_F placeholder",
+      "title": "Phase and Faraday maps",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Scalar phase and theta_F maps for the representative cloud."
+    },
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "imaging_mode_comparison.svg",
+      "helpers_or_logic_used": "simulate_pci_image, simulate_dgi_image, simulate_faraday_image",
+      "title": "Imaging mode comparison",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "PCI, DGI, Faraday dark-field, and Faraday dual-port representative images."
+    },
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "imaging_mode_lineouts.svg",
+      "helpers_or_logic_used": "simulate_pci_image, simulate_dgi_image, simulate_faraday_image",
+      "title": "Imaging mode lineouts",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Normalised centre-line signals from the representative imaging modes."
+    },
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "camera_realism.svg",
+      "helpers_or_logic_used": "simulate_camera_image, simulate_noisy_camera_image",
+      "title": "Camera realism",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Noiseless binned camera image and one fixed-seed noisy camera image."
+    },
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "multishot_evolution.svg",
+      "helpers_or_logic_used": "simulate_multishot_sequence, accumulate_snr",
+      "title": "Multi-shot evolution",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Deterministic sequence loss and accumulated SNR bookkeeping."
+    },
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "optimisation_sweep_summary.svg",
+      "helpers_or_logic_used": "sweep_faraday_detuning, sweep_faraday_intensity, sweep_faraday_exposure_time, summarise_faraday_sweep",
+      "title": "Optimisation sweep summary",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "One-dimensional detuning, intensity, and exposure-time objective trends."
+    },
+    {
+      "depends_on_placeholder_parameters": true,
+      "deterministic": true,
+      "filename": "absorption_calibration_observables.svg",
+      "helpers_or_logic_used": "compute_optical_density, estimate_cloud_moments",
+      "title": "Absorption calibration observables",
+      "v1_representative_uncalibrated": true,
+      "what_it_shows": "Synthetic OD image and extracted calibration-readiness observables."
+    }
+  ],
+  "status": "Version 1 representative / uncalibrated figure index."
+}

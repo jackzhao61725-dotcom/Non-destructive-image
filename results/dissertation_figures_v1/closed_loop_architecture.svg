@@ -11,8 +11,8 @@
 <text x="107" y="160" text-anchor="middle" font-family="Arial" font-size="12">physical model</text>
 <rect x="210" y="120" width="130" height="78" rx="7" fill="#f7fbff" stroke="#2d5c88" stroke-width="1.5" />
 <text x="275" y="144" text-anchor="middle" font-family="Arial" font-size="12">Design decision</text>
-<text x="275" y="160" text-anchor="middle" font-family="Arial" font-size="12">Δ, power, exposure,</text>
-<text x="275" y="176" text-anchor="middle" font-family="Arial" font-size="12">frame number</text>
+<text x="275" y="160" text-anchor="middle" font-family="Arial" font-size="12">detuning, power,</text>
+<text x="275" y="176" text-anchor="middle" font-family="Arial" font-size="12">exposure, frames</text>
 <rect x="400" y="120" width="130" height="78" rx="7" fill="#f7fbff" stroke="#2d5c88" stroke-width="1.5" />
 <text x="465" y="144" text-anchor="middle" font-family="Arial" font-size="12">Faraday imaging</text>
 <text x="465" y="160" text-anchor="middle" font-family="Arial" font-size="12">experiment</text>

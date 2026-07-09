@@ -1,0 +1,16 @@
+{
+  "calibration_status": "No experimental absorption/RAI data or fitted calibration has been applied.",
+  "dark_counts": 100.0,
+  "label": "v1_representative_uncalibrated",
+  "observables": {
+    "centre_x": 8.310418440523151e-23,
+    "centre_y": 0.0,
+    "integrated_od": 1110.9740371257005,
+    "peak_od": 1.198778600642307,
+    "width_x": 7.559329620810384e-06,
+    "width_y": 7.559329620810383e-06
+  },
+  "peak_optical_density": 1.2,
+  "probe_counts": 20000.0,
+  "source": "Synthetic absorption/RAI calibration-readiness example generated from the representative profile."
+}
