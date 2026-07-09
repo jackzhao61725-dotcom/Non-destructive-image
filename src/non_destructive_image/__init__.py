@@ -20,6 +20,12 @@ from .camera import (
     simulate_camera_image,
     simulate_noisy_camera_image,
 )
+from .calibration import (
+    compute_optical_density,
+    estimate_cloud_moments,
+    extract_absorption_observables,
+    integrate_optical_density,
+)
 from .fourier import propagate_scattered_field
 from .imaging import simulate_dgi_image, simulate_faraday_image, simulate_fourier_image, simulate_pci_image
 from .light_atom import (
@@ -40,7 +46,11 @@ __all__ = [
     "add_camera_noise",
     "bin_to_camera_pixels",
     "build_thomas_fermi_state",
+    "compute_optical_density",
+    "estimate_cloud_moments",
     "evaluate_faraday_operating_point",
+    "extract_absorption_observables",
+    "integrate_optical_density",
     "normalize_camera_counts",
     "simulate_camera_image",
     "simulate_noisy_camera_image",
