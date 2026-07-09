@@ -22,7 +22,8 @@
     "species": "166Er",
     "mass_number": 166.0,
     "transition_wavelength_m": 4.01e-7,
-    "natural_linewidth_rad_s": 185353966.5617978
+    "natural_linewidth_rad_s": 185353966.5617978,
+    "resonant_cross_section_m2": 7.678673341230136e-14
   },
   "condensate": {
     "atom_number": 25000.0,
@@ -52,6 +53,19 @@
     "field_of_view_m": 0.0001,
     "density_cut_points": 400,
     "density_cut_span_rmax": 1.5
+  },
+  "phase_recovery": {
+    "detuning_hz": 1500000000.0,
+    "notebook_reference_cells": [
+      10,
+      59,
+      67
+    ],
+    "figure_size_inches": [
+      12.4,
+      3.6
+    ],
+    "map_cmap": "inferno"
   },
   "unit_conventions": {
     "internal": "SI",

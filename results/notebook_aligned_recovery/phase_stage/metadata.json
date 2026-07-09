@@ -1,0 +1,21 @@
+{
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "generated_outputs": {
+    "central_phase_lineouts": "results\\notebook_aligned_recovery\\phase_stage\\central_phase_lineouts.csv",
+    "comparison_report": "results\\notebook_aligned_recovery\\phase_stage\\comparison_report.json",
+    "figure": "results\\notebook_aligned_recovery\\phase_stage\\scalar_phase_stage.svg",
+    "metadata": "results\\notebook_aligned_recovery\\phase_stage\\metadata.json",
+    "phase_summary": "results\\notebook_aligned_recovery\\phase_stage\\phase_summary.json"
+  },
+  "git_commit_hash": "4ec829fa8bb9f7c7c233d27cfa0169ad3bc5711b",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "scope_boundary": "Only scalar phase recovery is generated. No PCI, DGI, Faraday, camera, or multishot recovery is performed.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "phase_formula": 10,
+    "stage_18_2_phase_map": 59,
+    "step_19_1_phase_map": 67
+  },
+  "status": "Canonical notebook-aligned scalar phase-stage recovery output."
+}

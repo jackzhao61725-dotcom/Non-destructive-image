@@ -1,99 +1,50 @@
 # Notebook-Aligned Recovery Status
 
-## Current Recovery Stage
+## Current Recovery Path
 
-The first canonical notebook-aligned recovery recipe is now:
-
-```text
-parameters -> Thomas-Fermi condensate -> projected profile -> column-density map
-```
-
-This stage corresponds to the original notebook's condensate construction and
-Stage 18.1 density figure. It is intentionally limited to the physical object
-used by later phase, imaging, camera, and multi-shot calculations.
-
-## Why Recovery Starts Here
-
-The previous broad figure-gallery attempt diverged because plotting began
-before the notebook computational pipeline had been locked down. The cloud
-object is upstream of every later quantity:
-
-- scalar phase maps;
-- Faraday rotation maps;
-- PCI and DGI images;
-- camera-level frames;
-- multi-shot loss and SNR sequences.
-
-Any notebook-aligned recovery must first prove that the condensate state,
-coordinate grid, projected profile, and column-density map match the notebook.
-
-## Canonical Defaults
-
-Notebook Version 1 defaults are collected in:
+The canonical notebook-aligned recovery path now covers:
 
 ```text
-configs/notebook_v1_defaults.json
+parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map
 ```
 
-The config records:
+This remains a recovery of the historical Version 1 notebook computation. It
+does not validate the model against experiment and does not introduce
+calibrated physics.
 
-- atom species and mass number;
-- atom number;
-- scattering length;
-- trap frequencies;
-- Thomas-Fermi grid size and field of view;
-- imaging axis and transverse plane convention;
-- unit conversions for `um`, `cm^-3`, and `cm^-2`;
-- display metadata for the Stage 18.1 condensate figure;
-- a clear note that these are historical notebook defaults, not calibrated
-  experimental constants.
+## Condensate Stage
 
-## Generated Outputs
+The condensate recovery is closed for the tested deterministic quantities.
 
-The recovery script is:
+Script:
 
 ```text
 scripts/recover_notebook_condensate_stage.py
 ```
 
-Outputs are written to:
+Outputs:
 
 ```text
 results/notebook_aligned_recovery/condensate_stage/
 ```
 
-Generated files:
+The stage locks down the notebook defaults in:
 
-- `comparison_report.json`;
-- `condensate_summary.json`;
-- `central_lineouts.csv`;
-- `density_cuts.csv`;
-- `metadata.json`;
-- `condensate_density_stage.svg`.
+```text
+configs/notebook_v1_defaults.json
+```
 
-The SVG is optional supporting output tied directly to the recovered numerical
-quantities. It is not a broad figure-generation workflow and does not generate
-phase, PCI, DGI, Faraday, camera, or multi-shot figures.
+Compared quantities include:
 
-## What Was Compared
-
-The script compares direct notebook expressions against current helpers:
-
-- `build_thomas_fermi_state(...)`;
-- `thomas_fermi_profile_2d(...)`.
-
-Compared quantities:
-
-- chemical potential;
-- chemical-potential temperature;
-- peak density;
-- atom-number consistency check;
 - Thomas-Fermi radii;
+- chemical potential;
+- peak density;
 - principal-axis column densities;
-- 2D projected Thomas-Fermi profile;
-- x-axis projected column-density map.
+- projected Thomas-Fermi profile;
+- x-axis projected column-density map;
+- central lineouts.
 
-Current result:
+Current deterministic comparison results:
 
 - radii max absolute difference: `0.0`;
 - column-density vector max absolute difference: `0.0`;
@@ -102,48 +53,99 @@ Current result:
 - grid shape: `1024 x 1024`;
 - peak location: centre pixel `[512, 512]`.
 
-## Regression Test
+The optional SVG output is tied directly to this recovered quantity and is not
+a broad figure-generation workflow.
 
-The focused regression test is:
+## Scalar Phase Stage
+
+The scalar phase recovery is closed for the tested deterministic quantities.
+
+Script:
+
+```text
+scripts/recover_notebook_phase_stage.py
+```
+
+Outputs:
+
+```text
+results/notebook_aligned_recovery/phase_stage/
+```
+
+Notebook phase references:
+
+- cell 10: `delta_of(...)` and `phi_peak(...)`;
+- cell 59: Stage 18.2 phase-map construction;
+- cell 67: Step 19.1 scalar phase-map display.
+
+Recovered notebook convention:
+
+```text
+delta = 2 * Delta_Hz * 2*pi / Gamma
+phi_peak = sigma0 * n_col_peak * delta / (2 * (1 + delta**2))
+phase_map = phi_peak * projected_profile
+```
+
+Recovered parameters:
+
+- detuning: `1.5e9 Hz`;
+- resonant cross section: `7.678673341230136e-14 m^2`;
+- natural linewidth: `185353966.5617978 rad s^-1`;
+- peak column density: `5.3759624525784675e14 m^-2`;
+- dimensionless detuning: `101.69491525423727`;
+- peak scalar phase: `0.20294165287929014 rad`.
+
+Current deterministic comparison results:
+
+- dimensionless detuning absolute difference: `0.0`;
+- phase-peak absolute difference: `0.0`;
+- phase-map max absolute difference: `0.0`;
+- phase-map max relative difference: `0.0`;
+- phase-map shape: `1024 x 1024`;
+- peak location: centre pixel `[512, 512]`.
+
+The optional SVG output, `scalar_phase_stage.svg`, follows the recovered
+notebook scalar phase-map quantity only. It does not generate PCI, DGI,
+Faraday, camera, or multi-shot figures.
+
+## Regression Tests
+
+Focused regression tests:
 
 ```text
 tests/regression/test_notebook_condensate_recovery.py
+tests/regression/test_notebook_phase_recovery.py
 ```
 
-It checks stable numerical outputs only. It does not test plotting style or SVG
-pixels.
+These tests check stable numerical outputs and helper/notebook-expression
+agreement. They do not test SVG pixel appearance.
 
 ## What Remains Uncertain
 
-This recovery does not validate the notebook physics against experiment. It
-only locks down the notebook Version 1 computational prototype for the
-condensate stage.
+The recovery still has not locked down end-to-end notebook-aligned recipes for:
 
-The following stages are not recovered yet:
-
-- scalar phase map;
-- Faraday rotation map;
-- PCI image;
-- DGI image;
-- Faraday image;
+- PCI image formation;
+- DGI image formation;
+- Faraday image formation;
 - camera binning/noise workflows;
 - multi-shot frame rendering;
 - optimisation and SNR operating maps.
 
+Display styling is documented only where it is needed to avoid plotting the
+wrong physical quantity. The numerical arrays remain the primary recovery
+target.
+
 ## Recommended Next Step
 
-The next candidate recovery should be the notebook Step 19.1 scalar phase map:
+The next candidate recovery should be the first phase-dependent imaging path,
+most likely one of:
 
 ```text
-condensate/profile -> phi_peak -> phase_map
+phase_map -> PCI image
+phase_map -> DGI image
+theta_F map -> Faraday image
 ```
 
-That recovery should compare:
-
-- `phi_peak(1.5e9, n_col[0])`;
-- `phase_map = phi_peak * profile`;
-- central lineouts along the notebook `y` and `z` axes;
-- display units and axis limits.
-
-No phase or imaging recovery should begin until the condensate-stage outputs
-remain stable under tests.
+The next recovery should again begin with canonical notebook defaults,
+intermediate numerical comparisons, and only one optional notebook-aligned
+figure after the numerical quantity has been matched.
