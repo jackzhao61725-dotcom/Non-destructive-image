@@ -1,0 +1,65 @@
+{
+  "label": "v1_representative_uncalibrated",
+  "output_dir": "results/faraday_optimisation_v1",
+  "metric_key": "signal_per_scattered_photon",
+  "physical_parameters": {
+    "kappa_F": 1.0,
+    "column_density_peak": 200000000000000.0,
+    "resonant_cross_section": 7.68e-14,
+    "gamma_rad_per_s": 185353966.5617978,
+    "saturation_intensity": 560.0,
+    "probe_diameter_m": 0.024,
+    "column_densities_for_reabsorption": [
+      200000000000000.0,
+      100000000000000.0,
+      150000000000000.0
+    ],
+    "use_peak_intensity": true,
+    "photons_per_camera_pixel": 500.0,
+    "atom_number": 100000.0,
+    "density_scale_label": "representative_peak_column_density",
+    "cloud_size_parameters": {
+      "radius_x_m": 0.00002,
+      "radius_y_m": 0.00002,
+      "radius_z_m": 0.00008
+    },
+    "camera_parameters": {
+      "photon_count_scale": 500.0,
+      "normalisation": "representative_placeholder"
+    }
+  },
+  "fixed_operating_point": {
+    "detuning_hz": 1500000000.0,
+    "probe_power_mw": 2.0,
+    "pulse_duration_s": 0.00004
+  },
+  "sweeps": {
+    "detuning_values_hz": [
+      750000000.0,
+      1000000000.0,
+      1250000000.0,
+      1500000000.0,
+      1750000000.0,
+      2000000000.0,
+      2500000000.0,
+      3000000000.0
+    ],
+    "probe_power_mw_values": [
+      0.5,
+      1.0,
+      1.5,
+      2.0,
+      3.0,
+      4.0,
+      6.0
+    ],
+    "pulse_duration_s_values": [
+      0.00001,
+      0.00002,
+      0.00004,
+      0.00006,
+      0.00008,
+      0.0001
+    ]
+  }
+}
