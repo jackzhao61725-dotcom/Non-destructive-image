@@ -161,3 +161,7 @@ Near-term optimisation work should not:
 
 The optimisation layer should sit above the Version 1 migrated core and consume
 its helpers as stable building blocks.
+
+For the longer-term closed-loop role of optimisation, experiment, absorption /
+RAI calibration feedback, and future `kappa_F` calibration, see
+`docs/closed_loop_calibration_architecture.md`.

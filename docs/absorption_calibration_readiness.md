@@ -142,3 +142,7 @@ The current calibration-readiness layer:
 
 It provides only deterministic building blocks for future experimental
 calibration.
+
+For how these absorption / RAI observables fit into the wider model ->
+experiment -> calibration feedback -> updated optimisation loop, see
+`docs/closed_loop_calibration_architecture.md`.

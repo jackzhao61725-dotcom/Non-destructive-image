@@ -369,3 +369,6 @@ current TF notebook-equivalent simulator
 
 This keeps the scientific baseline intact while leaving a clear route toward
 experimental calibration and realistic lab targets.
+
+For the intended model -> experiment -> absorption / RAI feedback -> `kappa_F`
+calibration loop, see `docs/closed_loop_calibration_architecture.md`.
