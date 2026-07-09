@@ -18,6 +18,11 @@ The repository now contains a closed Version 1 migrated simulator core:
 - Stochastic Camera Noise
 - Deterministic Multi-shot Core
 
+The repository also contains a deterministic single-variable Faraday
+optimisation layer above the migrated core. This layer supports operating-point
+evaluation, one-dimensional detuning / probe-power / exposure-time sweeps, and
+small summary dictionaries for report use.
+
 The exported notebook sections remain in `notebook_sections/` for auditability,
 validation, and future migration work. They are not replaced as the scientific
 source of truth.
@@ -53,6 +58,7 @@ Version 1 migrated core
 | Camera deterministic pipeline | `src/non_destructive_image/camera.py` | Version 1 core migrated and tested | Binning and deterministic normalisation are helperized. |
 | Stochastic camera noise | `src/non_destructive_image/camera.py` | Version 1 core migrated and tested | Noise helper uses explicit `np.random.Generator`; no hidden global seed is introduced. |
 | Deterministic multi-shot core | `src/non_destructive_image/multishot.py` | Version 1 core migrated and tested | Heating / clean-loss bookkeeping and RMS accumulated SNR are helperized. |
+| Faraday optimisation | `src/non_destructive_image/analysis.py` | Deterministic single-variable layer implemented and tested | Operating-point objective, detuning sweep, probe-power sweep, exposure-time sweep, and sweep summary helper are available for information-versus-destruction analysis. |
 
 ## Notebook Section Status
 
@@ -67,8 +73,8 @@ Version 1 migrated core
 | 06 Faraday | Core Faraday helper exists; dual-port frame sequence and narrative figures remain notebook-local. |
 | 07 Camera | Deterministic and stochastic camera helpers exist; demonstrations remain notebook-local. |
 | 08 Shot Noise | Analytical SNR and shot-budget analysis remain notebook-local. |
-| 09 Multi-shot Simulation | Deterministic sequence core exists; noisy frame rendering, detuning sweeps, and filmstrips remain notebook-local. |
-| 10 Analysis | Broader analysis narrative, figures, and report-style walkthrough remain notebook-local. |
+| 09 Multi-shot Simulation | Deterministic sequence core exists; noisy frame rendering and filmstrips remain notebook-local. |
+| 10 Analysis | Deterministic single-variable Faraday optimisation helpers exist; broader narrative analysis, figures, plotting, multi-parameter sweeps, and report-style walkthrough remain notebook-local. |
 
 ## Regression Baselines
 
@@ -97,7 +103,7 @@ python scripts\validate_notebook_sections.py
 Current results:
 
 ```text
-pytest -q: 37 passed
+pytest -q: 66 passed
 notebook section validation: passed
 ```
 
@@ -108,9 +114,12 @@ migrated core:
 
 - noisy frame rendering and filmstrips;
 - Faraday dual-port frame sequence;
-- detuning sweep and operating maps;
+- two-dimensional / three-dimensional optimisation sweeps;
+- stochastic noise averaging for optimisation;
+- operating maps;
 - plotting and figure generation;
-- optimisation logic;
+- automated optimisation logic;
+- experimental RAI calibration;
 - broader analysis narrative in `notebook_sections/10_analysis.py`.
 
 ## Version 1 Closure Assessment

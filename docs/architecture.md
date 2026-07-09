@@ -39,12 +39,17 @@ Camera / Stochastic Camera Noise
 Deterministic Multi-shot Core
   |
   v
-Notebook-local Analysis / Plotting / Optimisation
+Deterministic Faraday Optimisation
+  |
+  v
+Notebook-local Analysis / Plotting / Multi-parameter Optimisation
 ```
 
-The reusable Version 1 core is helperized through the Multi-shot layer. The
-analysis, plotting, noisy frame-sequence presentation, and optimisation
-workflows remain notebook-local.
+The reusable Version 1 core is helperized through the Multi-shot layer. A small
+deterministic Faraday optimisation layer now sits above that core for
+single-variable analysis. Plotting, noisy frame-sequence presentation,
+multi-parameter optimisation, and broader narrative analysis remain
+notebook-local.
 
 ## Helper Package Responsibilities
 
@@ -57,6 +62,7 @@ workflows remain notebook-local.
 | `imaging.py` | `simulate_fourier_image`, `simulate_pci_image`, `simulate_dgi_image`, `simulate_faraday_image` | Shared Fourier imaging core and PCI/DGI/Faraday orchestration helpers. |
 | `camera.py` | `bin_to_camera_pixels`, `add_camera_noise`, `normalize_camera_counts`, `simulate_camera_image`, `simulate_noisy_camera_image` | Deterministic camera binning/normalisation and stochastic camera-noise orchestration with explicit RNG handling. |
 | `multishot.py` | `simulate_multishot_sequence`, `accumulate_snr` | Deterministic multi-shot sequence bookkeeping, heating / clean-loss updates, and RMS accumulated-SNR convention. |
+| `analysis.py` | `evaluate_faraday_operating_point`, `sweep_faraday_detuning`, `sweep_faraday_intensity`, `sweep_faraday_exposure_time`, `summarise_faraday_sweep` | Deterministic Faraday operating-point analysis, one-dimensional sweeps, and lightweight result summaries. |
 
 ## Current Data Flow
 
@@ -77,6 +83,9 @@ Deterministic or stochastic camera image
   |
   v
 Deterministic multi-shot sequence bookkeeping
+  |
+  v
+Single-variable Faraday optimisation summaries
 ```
 
 The migrated helper stack avoids notebook globals. Inputs are explicit, and
@@ -96,11 +105,13 @@ The Version 1 migrated core is closed for MSc project/report use:
 - Deterministic camera pipeline is implemented and tested.
 - Stochastic camera noise helper is implemented and tested with explicit RNG.
 - Deterministic multi-shot sequence core is implemented and tested.
+- Deterministic single-variable Faraday optimisation layer is implemented and
+  tested.
 
 Current validation status:
 
 ```text
-pytest -q: 37 passed
+pytest -q: 66 passed
 notebook section validation: passed
 ```
 
@@ -110,9 +121,12 @@ The following workflows are intentionally outside the closed Version 1 core:
 
 - noisy frame rendering and filmstrips;
 - Faraday dual-port frame sequence;
-- detuning sweep and operating maps;
+- two-dimensional / three-dimensional optimisation sweeps;
+- stochastic noise averaging for optimisation;
+- operating maps;
 - plotting and figure generation;
-- optimisation logic;
+- automated optimisation logic;
+- experimental RAI calibration;
 - broader narrative analysis in `notebook_sections/10_analysis.py`.
 
 These can be migrated later, but they should not be mixed into the current
@@ -128,9 +142,12 @@ Version 1 core closure.
 4. Keep calibration and optimisation layers above the migrated core.
 5. Add new state models, RAI calibration, and beyond-Thomas-Fermi extensions
    additively rather than replacing the Thomas-Fermi Version 1 path.
+6. Keep deterministic optimisation summaries separate from plotting and
+   stochastic averaging until those layers are explicitly migrated.
 
 ## Related Documents
 
 - `docs/migration_status.md`
 - `docs/version_1_migrated_core_summary.md`
+- `docs/faraday_optimisation_layer_summary.md`
 - `docs/extension_roadmap.md`
