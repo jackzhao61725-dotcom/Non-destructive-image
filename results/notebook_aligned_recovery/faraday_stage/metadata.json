@@ -1,0 +1,27 @@
+{
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "generated_outputs": {
+    "central_faraday_lineouts": "results\\notebook_aligned_recovery\\faraday_stage\\central_faraday_lineouts.csv",
+    "comparison_report": "results\\notebook_aligned_recovery\\faraday_stage\\comparison_report.json",
+    "dark_field_figure": "results\\notebook_aligned_recovery\\faraday_stage\\faraday_dark_field_stage.svg",
+    "dual_port_signal_figure": "results\\notebook_aligned_recovery\\faraday_stage\\faraday_dual_port_signal_stage.svg",
+    "faraday_summary": "results\\notebook_aligned_recovery\\faraday_stage\\faraday_summary.json",
+    "metadata": "results\\notebook_aligned_recovery\\faraday_stage\\metadata.json"
+  },
+  "git_commit_hash": "dcf758f8788a060c051e82e0994b2850885a22be",
+  "kappa_F": 1.0,
+  "kappa_F_status": "Version 1 phenomenological placeholder; not experimentally calibrated.",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "microscopic_faraday_model": false,
+  "no_experimental_calibration_applied": true,
+  "scope_boundary": "Only ideal Faraday recovery is generated. Camera, noisy-frame, and multishot recovery are not performed.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "kappa_F_placeholder": 39,
+    "sim_faraday_fields_and_faraday_maps": 51,
+    "step_10_dark_field_rotation": 85,
+    "step_12_dual_port_signal": 89,
+    "theta_F_peak": 43
+  },
+  "status": "Canonical notebook-aligned Faraday-stage recovery output."
+}

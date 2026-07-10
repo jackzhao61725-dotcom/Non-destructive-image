@@ -1,0 +1,294 @@
+{
+  "baseline_comparison": {
+    "arrays": {
+      "dark_field_intensity": {
+        "max_absolute_difference": 4.080070053834317e-06,
+        "max_relative_difference": 0.019641537710249766
+      },
+      "dual_port_signal": {
+        "max_absolute_difference": 3.173452832533341e-05,
+        "max_relative_difference": 0.009869416322935455
+      },
+      "dual_port_u_intensity": {
+        "max_absolute_difference": 1.6229025319891566e-05,
+        "max_relative_difference": 4.3538467735623144e-05
+      },
+      "dual_port_v_intensity": {
+        "max_absolute_difference": 1.5072683094086159e-05,
+        "max_relative_difference": 2.4202376598770557e-05
+      },
+      "output_ex_field": {
+        "max_absolute_difference": 2.6453837620454834e-06,
+        "max_relative_difference": 2.672839922588541e-06
+      },
+      "output_ey_field": {
+        "max_absolute_difference": 1.6150922757529607e-05,
+        "max_relative_difference": 0.009869472094840298
+      },
+      "sigma_minus_field": {
+        "max_absolute_difference": 1.6366134582340605e-05,
+        "max_relative_difference": 1.640297337303256e-05
+      },
+      "sigma_minus_object_field": {
+        "max_absolute_difference": 2.619509643255304e-05,
+        "max_relative_difference": 2.6195096432553043e-05
+      },
+      "sigma_plus_field": {
+        "max_absolute_difference": 1.6366134582367998e-05,
+        "max_relative_difference": 1.6402973373060013e-05
+      },
+      "sigma_plus_object_field": {
+        "max_absolute_difference": 2.619509643255304e-05,
+        "max_relative_difference": 2.6195096432553043e-05
+      },
+      "theta_f_map_rad": {
+        "max_absolute_difference": 2.6195096433312415e-05,
+        "max_relative_difference": 0.0001290769837620973
+      }
+    },
+    "available": true,
+    "metadata": {
+      "baseline_name": "faraday_imaging_baseline_v1",
+      "kappa_F": 1.0,
+      "microscopic_faraday_model": false,
+      "notebook_reference": "Section 17.2 / cell 51 sim_faraday_fields and faraday_maps implementation"
+    },
+    "path": "regression\\baseline\\imaging\\faraday_imaging_baseline_v1.npz"
+  },
+  "dark_field_intensity": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 0.015956443479481053,
+      "max": 0.015956443479481053,
+      "mean": 8.457346602539056e-05,
+      "min": 7.278511693570265e-20,
+      "peak_index": [
+        512,
+        512
+      ],
+      "shape": [
+        1024,
+        1024
+      ],
+      "sum": 88.68170671103994
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "dual_port_signal": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 0.25116900542198173,
+      "max": 0.25116900542198173,
+      "mean": 0.001879360319011973,
+      "min": -0.04479708725007998,
+      "peak_index": [
+        512,
+        512
+      ],
+      "shape": [
+        1024,
+        1024
+      ],
+      "sum": 1970.6521258682985
+    },
+    "units": "normalised difference"
+  },
+  "dual_port_u_intensity": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 0.37273518286263196,
+      "max": 0.5247082811968177,
+      "mean": 0.49904794259488955,
+      "min": 0.37273518286263196,
+      "peak_index": [
+        473,
+        512
+      ],
+      "shape": [
+        1024,
+        1024
+      ],
+      "sum": 523289.6954543789
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "dual_port_v_intensity": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 0.6227769835980417,
+      "max": 0.6227769835980417,
+      "mean": 0.5009175942873569,
+      "min": 0.4797131277063349,
+      "peak_index": [
+        512,
+        512
+      ],
+      "shape": [
+        1024,
+        1024
+      ],
+      "sum": 525250.1673474596
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "faraday_model": {
+    "kappa_F": 1.0,
+    "kappa_F_status": "Version 1 phenomenological placeholder; no experimental calibration applied",
+    "microscopic_faraday_model": false,
+    "theta_f_peak_rad": 0.20294165287929014
+  },
+  "notebook_formula": {
+    "dark_field_intensity": "np.abs(output_ey_field) ** 2",
+    "dual_port_signal": "(I_v - I_u) / (I_v + I_u)",
+    "output_ex_field": "(sigma_plus_field + sigma_minus_field) / 2",
+    "output_ey_field": "1j * (sigma_plus_field - sigma_minus_field) / 2",
+    "propagation": "1 + np.fft.ifft2(np.fft.fft2(object_field - 1) * pupil)",
+    "sigma_minus_object_field": "np.exp(-1j * theta_f_map)",
+    "sigma_plus_object_field": "np.exp(+1j * theta_f_map)",
+    "theta_f_map": "kappa_F * scalar_phase_map"
+  },
+  "output_ex_field": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "imag_mean": -7.690636645653598e-22,
+      "magnitude_max": 1.0019626991844879,
+      "magnitude_mean": 0.9999402655875498,
+      "magnitude_min": 0.9897250744429953,
+      "phase_max": 2.804107515082626e-17,
+      "phase_min": -1.7344288631217448e-17,
+      "real_mean": 0.9999402655875498,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "output_ey_field": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "imag_mean": 2.064642808932357e-21,
+      "magnitude_max": 0.12631881680684415,
+      "magnitude_mean": 0.002025847699635328,
+      "magnitude_min": 2.697871697017904e-10,
+      "phase_max": 3.141592653589793,
+      "phase_min": -3.1415926535897927,
+      "real_mean": -0.0009407750861179815,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "pupil": {
+    "dgrid_m": 9.765625e-08,
+    "nonzero_pixels": 1245,
+    "numerical_aperture": 0.08,
+    "shape": [
+      1024,
+      1024
+    ]
+  },
+  "scope_boundary": "Only scalar phase map -> ideal Faraday outputs are recovered. Camera, noise, and multishot stages are not generated.",
+  "sigma_minus_field": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "imag_mean": -0.0009407750861179815,
+      "magnitude_max": 1.0022126845995236,
+      "magnitude_mean": 0.9999827218198484,
+      "magnitude_min": 0.9968022908001513,
+      "phase_max": 0.022406041886251442,
+      "phase_min": -0.12694389364402217,
+      "real_mean": 0.9999402655875498,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "sigma_minus_object_field": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "imag_mean": -0.0009407750861179815,
+      "magnitude_max": 1.0000000000000002,
+      "magnitude_mean": 1.0,
+      "magnitude_min": 0.9999999999999998,
+      "phase_max": -0.0,
+      "phase_min": -0.2029416528792901,
+      "real_mean": 0.9999402655875498,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "sigma_plus_field": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "imag_mean": 0.0009407750861179815,
+      "magnitude_max": 1.0022126845995236,
+      "magnitude_mean": 0.9999827218198484,
+      "magnitude_min": 0.9968022908001513,
+      "phase_max": 0.1269438936440222,
+      "phase_min": -0.02240604188625144,
+      "real_mean": 0.9999402655875498,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "sigma_plus_object_field": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "imag_mean": 0.0009407750861179815,
+      "magnitude_max": 1.0000000000000002,
+      "magnitude_mean": 1.0,
+      "magnitude_min": 0.9999999999999998,
+      "phase_max": 0.2029416528792901,
+      "phase_min": 0.0,
+      "real_mean": 0.9999402655875498,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "source_notebook_cells": {
+    "kappa_F_placeholder": 39,
+    "sim_faraday_fields_and_faraday_maps": 51,
+    "step_10_dark_field_rotation": 85,
+    "step_12_dual_port_signal": 89,
+    "theta_F_peak": 43
+  },
+  "status": "canonical notebook Faraday stage matches simulate_faraday_image for tested deterministic quantities",
+  "theta_f_map": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 0.20294165287929014,
+      "max": 0.20294165287929014,
+      "mean": 0.0009437157459199186,
+      "min": 0.0,
+      "peak_index": [
+        512,
+        512
+      ],
+      "shape": [
+        1024,
+        1024
+      ],
+      "sum": 989.5576819937246
+    },
+    "units": "radians"
+  }
+}

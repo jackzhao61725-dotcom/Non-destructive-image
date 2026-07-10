@@ -1,0 +1,96 @@
+{
+  "dark_field_intensity_stats": {
+    "centre_value": 0.015956443479481053,
+    "max": 0.015956443479481053,
+    "mean": 8.457346602539056e-05,
+    "min": 7.278511693570265e-20,
+    "peak_index": [
+      512,
+      512
+    ],
+    "shape": [
+      1024,
+      1024
+    ],
+    "sum": 88.68170671103994
+  },
+  "detuning_hz": 1500000000.0,
+  "dual_port_signal_stats": {
+    "centre_value": 0.25116900542198173,
+    "max": 0.25116900542198173,
+    "mean": 0.001879360319011973,
+    "min": -0.04479708725007998,
+    "peak_index": [
+      512,
+      512
+    ],
+    "shape": [
+      1024,
+      1024
+    ],
+    "sum": 1970.6521258682985
+  },
+  "dual_port_u_intensity_stats": {
+    "centre_value": 0.37273518286263196,
+    "max": 0.5247082811968177,
+    "mean": 0.49904794259488955,
+    "min": 0.37273518286263196,
+    "peak_index": [
+      473,
+      512
+    ],
+    "shape": [
+      1024,
+      1024
+    ],
+    "sum": 523289.6954543789
+  },
+  "dual_port_v_intensity_stats": {
+    "centre_value": 0.6227769835980417,
+    "max": 0.6227769835980417,
+    "mean": 0.5009175942873569,
+    "min": 0.4797131277063349,
+    "peak_index": [
+      512,
+      512
+    ],
+    "shape": [
+      1024,
+      1024
+    ],
+    "sum": 525250.1673474596
+  },
+  "kappa_F": 1.0,
+  "label": "notebook_v1_defaults_uncalibrated",
+  "microscopic_faraday_model": false,
+  "no_experimental_calibration_applied": true,
+  "numerical_aperture": 0.08,
+  "pupil_nonzero_pixels": 1245,
+  "scalar_phase_peak_rad": 0.20294165287929014,
+  "scope_boundary": "Only ideal Faraday image outputs are recovered. No camera, noisy-frame, or multishot figures are generated.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "kappa_F_placeholder": 39,
+    "sim_faraday_fields_and_faraday_maps": 51,
+    "step_10_dark_field_rotation": 85,
+    "step_12_dual_port_signal": 89,
+    "theta_F_peak": 43
+  },
+  "status": "Canonical notebook-aligned Faraday-stage recovery output.",
+  "theta_f_map_stats": {
+    "centre_value": 0.20294165287929014,
+    "max": 0.20294165287929014,
+    "mean": 0.0009437157459199186,
+    "min": 0.0,
+    "peak_index": [
+      512,
+      512
+    ],
+    "shape": [
+      1024,
+      1024
+    ],
+    "sum": 989.5576819937246
+  },
+  "theta_f_peak_rad": 0.20294165287929014
+}
