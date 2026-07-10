@@ -16,6 +16,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from non_destructive_image import build_thomas_fermi_state, thomas_fermi_profile_2d
+from scripts.plot_label_utils import DENSITY_CM3, column_density_label, coordinate_label, radius_legend_label
 
 
 def load_config(path: Path) -> dict[str, Any]:
@@ -372,10 +373,10 @@ def write_condensate_figure(path: Path, config: dict[str, Any], stage: dict[str,
             density_cm3[index],
             colour,
             lw=2,
-            label=f"{label}, R={radii[index] * units['coordinate_conversion_m_to_um']:.2f} um",
+            label=radius_legend_label(label, radii[index] * units["coordinate_conversion_m_to_um"]),
         )
-    ax_a.set_xlabel("position (um)")
-    ax_a.set_ylabel("n(r)  (cm^-3)")
+    ax_a.set_xlabel(coordinate_label())
+    ax_a.set_ylabel(rf"$n(\mathbf{{r}})$ ({DENSITY_CM3})")
     ax_a.set_title("(a) 3D density cuts through the trap centre")
     ax_a.legend(fontsize=8.5)
     ax_a.grid(alpha=0.25)
@@ -388,13 +389,14 @@ def write_condensate_figure(path: Path, config: dict[str, Any], stage: dict[str,
     )
     ax_b.set_xlim(*display["column_density_xlim_um"])
     ax_b.set_ylim(*display["column_density_ylim_um"])
-    ax_b.set_xlabel(f"{axis_labels[plane[0]]} (um)")
-    ax_b.set_ylabel(f"{axis_labels[plane[1]]} (um)")
+    ax_b.set_xlabel(coordinate_label(axis_labels[plane[0]]))
+    ax_b.set_ylabel(coordinate_label(axis_labels[plane[1]]))
     ax_b.set_title(
         f"(b) Column density along {axis_labels[imaging_axis]}\n"
         "(what every imaging mode actually integrates over)"
     )
-    plt.colorbar(im, ax=ax_b, fraction=0.032, label="n_col (cm^-2)")
+    integrated_axis = axis_labels[stage["imaging_axis"]]
+    plt.colorbar(im, ax=ax_b, fraction=0.032, label=column_density_label(integrated_axis))
     fig.suptitle("Stage 1: from trap parameters to a Thomas-Fermi condensate", y=1.04, fontsize=11.5)
     plt.tight_layout()
     fig.savefig(path, format="svg", bbox_inches="tight", facecolor="white")

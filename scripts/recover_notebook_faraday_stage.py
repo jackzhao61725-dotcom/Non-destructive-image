@@ -26,6 +26,7 @@ from scripts.recover_notebook_pci_stage import (
     write_rows,
 )
 from scripts.recover_notebook_phase_stage import build_phase_stage
+from scripts.plot_label_utils import DARK_FIELD_INTENSITY, DUAL_PORT_SIGNAL, coordinate_label, cut_label
 
 
 BASELINE_PATH = Path("regression/baseline/imaging/faraday_imaging_baseline_v1.npz")
@@ -313,16 +314,16 @@ def _write_map_and_line_figure(
     )
     ax_map.set_xlim(*display["column_density_xlim_um"])
     ax_map.set_ylim(*display["column_density_ylim_um"])
-    ax_map.set_xlabel("y (um)")
-    ax_map.set_ylabel("z (um)")
+    ax_map.set_xlabel(coordinate_label("y"))
+    ax_map.set_ylabel(coordinate_label("z"))
     ax_map.set_title(map_title)
     plt.colorbar(im, ax=ax_map, fraction=0.03, label=colorbar_label)
 
-    ax_line.plot(coordinate_um, y_line, "C1", lw=2, label="cut along y")
-    ax_line.plot(coordinate_um, z_line, "C0", lw=2, label="cut along z")
+    ax_line.plot(coordinate_um, y_line, "C1", lw=2, label=cut_label("y"))
+    ax_line.plot(coordinate_um, z_line, "C0", lw=2, label=cut_label("z"))
     ax_line.axhline(0, color="gray", ls=":", lw=1)
     ax_line.set_xlim(-45, 45)
-    ax_line.set_xlabel("position (um)")
+    ax_line.set_xlabel(coordinate_label())
     ax_line.set_ylabel(ylabel)
     ax_line.set_title(line_title)
     ax_line.legend(fontsize=8.5)
@@ -347,8 +348,8 @@ def write_faraday_figures(output_dir: Path, config: dict[str, Any], stage: dict[
         y_line=stage["notebook_dark_field_intensity"][mid, :],
         z_line=stage["notebook_dark_field_intensity"][:, mid],
         cmap=faraday_config["dark_field_cmap"],
-        colorbar_label="$I_\\mathrm{dark}/I_0$",
-        ylabel="$I_\\mathrm{dark}/I_0$",
+        colorbar_label=DARK_FIELD_INTENSITY,
+        ylabel=DARK_FIELD_INTENSITY,
         map_title="dark-field Faraday intensity",
         line_title="centre cuts",
         suptitle="Notebook-aligned Faraday recovery: dark-field ideal output",
@@ -363,7 +364,7 @@ def write_faraday_figures(output_dir: Path, config: dict[str, Any], stage: dict[
         y_line=stage["notebook_dual_port_signal"][mid, :],
         z_line=stage["notebook_dual_port_signal"][:, mid],
         cmap=faraday_config["dual_port_cmap"],
-        colorbar_label="$S=(I_v-I_u)/(I_v+I_u)$",
+        colorbar_label=DUAL_PORT_SIGNAL,
         ylabel="$S$",
         map_title="dual-port Faraday signal",
         line_title="centre cuts",

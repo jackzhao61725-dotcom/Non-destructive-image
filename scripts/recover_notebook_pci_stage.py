@@ -18,6 +18,7 @@ import numpy as np
 from non_destructive_image import simulate_pci_image
 from scripts.recover_notebook_condensate_stage import load_config
 from scripts.recover_notebook_phase_stage import build_phase_stage
+from scripts.plot_label_utils import NORMALISED_INTENSITY, coordinate_label, cut_label
 
 
 def git_commit() -> str:
@@ -315,13 +316,13 @@ def write_pci_figure(path: Path, config: dict[str, Any], stage: dict[str, Any]) 
     )
     ax_map.set_xlim(*display["column_density_xlim_um"])
     ax_map.set_ylim(*display["column_density_ylim_um"])
-    ax_map.set_xlabel("y (um)")
-    ax_map.set_ylabel("z (um)")
+    ax_map.set_xlabel(coordinate_label("y"))
+    ax_map.set_ylabel(coordinate_label("z"))
     ax_map.set_title("PCI image intensity, incident-$I_0$ convention")
-    plt.colorbar(im, ax=ax_map, fraction=0.03, label="$I/I_0$")
+    plt.colorbar(im, ax=ax_map, fraction=0.03, label=NORMALISED_INTENSITY)
 
-    ax_line.plot(coordinate_um, intensity[mid, :], "C1", lw=2, label="cut along y")
-    ax_line.plot(coordinate_um, intensity[:, mid], "C0", lw=2, label="cut along z")
+    ax_line.plot(coordinate_um, intensity[mid, :], "C1", lw=2, label=cut_label("y"))
+    ax_line.plot(coordinate_um, intensity[:, mid], "C0", lw=2, label=cut_label("z"))
     ax_line.axhline(stage["plate_background_intensity"], color="gray", ls=":", lw=1)
     ax_line.annotate(
         f"$t_p^2$ = {stage['plate_background_intensity']:.3f}",
@@ -330,8 +331,8 @@ def write_pci_figure(path: Path, config: dict[str, Any], stage: dict[str, Any]) 
         color="gray",
     )
     ax_line.set_xlim(-45, 45)
-    ax_line.set_xlabel("position (um)")
-    ax_line.set_ylabel("$I/I_0$")
+    ax_line.set_xlabel(coordinate_label())
+    ax_line.set_ylabel(NORMALISED_INTENSITY)
     ax_line.set_title("centre cuts")
     ax_line.legend(fontsize=8.5)
     ax_line.grid(alpha=0.25)

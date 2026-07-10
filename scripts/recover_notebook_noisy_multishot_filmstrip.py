@@ -16,6 +16,7 @@ from non_destructive_image import simulate_noisy_camera_image
 from scripts.recover_notebook_condensate_stage import load_config
 from scripts.recover_notebook_multishot_stage import build_multishot_stage, photons_per_camera_pixel
 from scripts.recover_notebook_pci_stage import build_pupil, git_commit, real_array_stats, write_json, write_rows
+from scripts.plot_label_utils import DETUNING_GHZ, NORMALISED_INTENSITY, coordinate_label
 
 
 def _fresh_profile(config: dict[str, Any], stage: dict[str, Any]) -> dict[str, Any]:
@@ -304,20 +305,21 @@ def write_filmstrip_figure(path: Path, config: dict[str, Any], stage: dict[str, 
         )
         axis.set_xlim(*display["column_density_xlim_um"])
         axis.set_ylim(*display["column_density_ylim_um"])
-        axis.set_xlabel("y (um)")
+        axis.set_xlabel(coordinate_label("y"))
         axis.set_title(
             f"shot {frame['frame_index']}\n"
-            f"$N_0$ = {frame['N0'] / 1e3:.1f}k   T = {frame['temperature_k'] * 1e9:.0f} nK\n"
-            f"$\\varphi$ = {frame['phi_rad']:.2f}",
+            rf"$N_0$ = {frame['N0'] / 1e3:.1f}k   $T$ = {frame['temperature_k'] * 1e9:.0f} nK"
+            "\n"
+            rf"$\phi$ = {frame['phi_rad']:.2f}",
             fontsize=9.5,
         )
-    axes[0].set_ylabel("z (um)")
-    plt.colorbar(im, ax=axes[-1], fraction=0.04, label="$I/I_0$")
+    axes[0].set_ylabel(coordinate_label("z"))
+    plt.colorbar(im, ax=axes[-1], fraction=0.04, label=NORMALISED_INTENSITY)
     params = config["multishot_recovery"]
     fig.suptitle(
         "Step 14 - the same condensate across the run "
-        f"(PCI, $\\Delta$ = {params['detuning_ghz']} GHz, {params['probe_power_mw']} mW, "
-        f"{params['pulse_duration_us']:.0f} us; stops at {params['loss_fraction_limit']:.0%} loss)",
+        rf"(PCI, {DETUNING_GHZ} = {params['detuning_ghz']}, {params['probe_power_mw']} mW, "
+        rf"{params['pulse_duration_us']:.0f} $\mu$s; stops at {params['loss_fraction_limit']:.0%} loss)",
         fontsize=12,
     )
     plt.tight_layout()

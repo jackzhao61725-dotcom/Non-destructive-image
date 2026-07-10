@@ -236,3 +236,31 @@ Before using these quantities in the dissertation:
 2. In captions, state that Stage 18.1 is an `x`-integrated column-density map shown in the `y,z` plane.
 3. Avoid using `cm^-3` or `cm^-2` table values unless the table explicitly asks for cgs units.
 4. Rename `frame number s` to `frame index` in any future dissertation-ready plotting script.
+
+## Plot Label Unit Conventions
+
+Notebook-aligned recovery figures should use Matplotlib mathtext-compatible
+labels rather than plain-text superscripts or copied word-processor equation
+artifacts.
+
+Use:
+
+- `$\mu\mathrm{m}$` for micrometres in plotted axes.
+- `$\mathrm{m}^{-3}$` and `$\mathrm{m}^{-2}$` for SI density and column-density units.
+- `$\mathrm{cm}^{-3}$` and `$\mathrm{cm}^{-2}$` only for notebook-style display quantities that are explicitly converted from SI.
+- `$\tilde{n}_i$` for peak column density integrated along axis `i`.
+- `$\bar{\omega}/2\pi$` for displayed trap frequency in Hz.
+- `$\mu/k_B$` for chemical-potential temperature equivalent.
+- `$\phi$ (rad)` for scalar phase.
+- `$\theta_F$ (rad)` for Faraday rotation.
+- `frame index` or `shot index` for multishot frame counters.
+
+Avoid:
+
+- `m^-2`, `m^-3`, `m^(-2)`, or `m^(-3)` in figure labels.
+- mixed `um`, Unicode `μm`, and copied text artifacts in the same figure family.
+- using `s` in axis labels where it means a frame index rather than seconds.
+- unlabeled density conversions between SI and notebook-style cgs display units.
+
+The notebook-aligned recovery scripts now share common labels through
+`scripts/plot_label_utils.py` so regenerated SVGs use consistent unit rendering.

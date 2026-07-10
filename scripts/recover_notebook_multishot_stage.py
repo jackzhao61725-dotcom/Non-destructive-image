@@ -17,6 +17,7 @@ from scipy.special import zeta
 from non_destructive_image import accumulate_snr, simulate_multishot_sequence
 from scripts.recover_notebook_condensate_stage import load_config
 from scripts.recover_notebook_pci_stage import build_pupil, git_commit, write_json, write_rows
+from scripts.plot_label_utils import ATOM_NUMBER, DETUNING_GHZ, FRAME_INDEX, PHASE_RAD, SNR, TEMPERATURE_NK
 
 
 def _basic_constants(config: dict[str, Any]) -> dict[str, Any]:
@@ -498,45 +499,45 @@ def write_multishot_figure(path: Path, config: dict[str, Any], stage: dict[str, 
     ax_a.plot(heating["shot"], 100 * (1 - heating["frac"]), "o-", color="#c4161c", lw=2.2, ms=4, label="heating")
     ax_a.plot(loss["shot"], 100 * (1 - loss["frac"]), "s--", color="#1f5fa8", lw=2.0, ms=3, label="clean loss")
     ax_a.axhline(100 * (1 - params["loss_fraction_limit"]), color="k", ls=":", lw=1.1)
-    ax_a.set_xlabel("frame number s")
-    ax_a.set_ylabel("condensate surviving (% of initial N0)")
+    ax_a.set_xlabel(FRAME_INDEX)
+    ax_a.set_ylabel(rf"condensate surviving (% of initial {ATOM_NUMBER})")
     ax_a.set_title("(a) condensate depletion")
     ax_a.grid(alpha=0.25)
     ax_a.legend(fontsize=8.5)
     ax_t = ax_a.twinx()
     ax_t.plot(heating["shot"], heating["T"] * 1e9, ":", color="#c4161c", lw=1.4, alpha=0.7)
     ax_t.axhline(params["critical_temperature_k"] * 1e9, color="gray", ls="--", lw=0.9)
-    ax_t.set_ylabel("T (nK), heating only", color="#c4161c")
+    ax_t.set_ylabel(rf"{TEMPERATURE_NK}, heating only", color="#c4161c")
     ax_t.tick_params(axis="y", colors="#c4161c")
 
     ax_b.plot(heating["shot"], heating["phi"], "o-", color="#c4161c", lw=2.2, ms=4, label="heating")
     ax_b.plot(loss["shot"], loss["phi"], "s--", color="#1f5fa8", lw=2.0, ms=3, label="clean loss")
     ax_b.axhline(0.5, color="#e08020", ls=":", lw=1.2)
-    ax_b.set_xlabel("frame number s")
-    ax_b.set_ylabel("peak phase phi (rad)")
+    ax_b.set_xlabel(FRAME_INDEX)
+    ax_b.set_ylabel(rf"peak {PHASE_RAD}")
     ax_b.set_title("(b) dispersive signal fades")
     ax_b.grid(alpha=0.25)
     ax_b.legend(fontsize=8.5)
 
     ax_c.plot(heating["shot"], heating["snr"], "o-", color="#c4161c", lw=2.2, ms=4, label="heating")
     ax_c.plot(loss["shot"], loss["snr"], "s--", color="#1f5fa8", lw=2.0, ms=3, label="clean loss")
-    ax_c.set_xlabel("frame number s")
-    ax_c.set_ylabel("per-shot PCI SNR / pixel")
+    ax_c.set_xlabel(FRAME_INDEX)
+    ax_c.set_ylabel(f"per-shot PCI {SNR} / pixel")
     ax_c.set_title("(c) per-frame SNR")
     ax_c.grid(alpha=0.25)
     ax_c.legend(fontsize=8.5)
 
     ax_d.plot(heating["shot"], heating["accumulated_snr"], "o-", color="#c4161c", lw=2.2, ms=4, label="heating")
     ax_d.plot(loss["shot"], loss["accumulated_snr"], "s--", color="#1f5fa8", lw=2.0, ms=3, label="clean loss")
-    ax_d.set_xlabel("frame number s")
-    ax_d.set_ylabel("accumulated SNR")
+    ax_d.set_xlabel(FRAME_INDEX)
+    ax_d.set_ylabel(f"accumulated {SNR}")
     ax_d.set_title("(d) RMS accumulated SNR")
     ax_d.grid(alpha=0.25)
     ax_d.legend(fontsize=8.5)
 
     fig.suptitle(
-        f"Notebook-aligned multishot recovery: Delta={params['detuning_ghz']} GHz, "
-        f"P={params['probe_power_mw']} mW, tau={params['pulse_duration_us']:.0f} us, "
+        rf"Notebook-aligned multishot recovery: {DETUNING_GHZ}={params['detuning_ghz']}, "
+        rf"P={params['probe_power_mw']} mW, $\tau$={params['pulse_duration_us']:.0f} $\mu$s, "
         f"axis {'xyz'[params['imaging_axis']]}",
         fontsize=12,
     )

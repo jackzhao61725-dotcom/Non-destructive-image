@@ -17,6 +17,7 @@ import numpy as np
 
 from non_destructive_image import dimensionless_detuning, scalar_phase_shift
 from scripts.recover_notebook_condensate_stage import build_condensate_stage, load_config
+from scripts.plot_label_utils import PHASE_RAD, coordinate_label, cut_label
 
 
 def git_commit() -> str:
@@ -233,23 +234,23 @@ def write_phase_figure(path: Path, config: dict[str, Any], stage: dict[str, Any]
     )
     ax_map.set_xlim(*display["column_density_xlim_um"])
     ax_map.set_ylim(*display["column_density_ylim_um"])
-    ax_map.set_xlabel("y (um)")
-    ax_map.set_ylabel("z (um)")
-    ax_map.set_title("the phase map  $\\varphi(\\mathbf{r})$  the atoms imprint")
-    plt.colorbar(im, ax=ax_map, fraction=0.03, label="$\\varphi$ (rad)")
+    ax_map.set_xlabel(coordinate_label("y"))
+    ax_map.set_ylabel(coordinate_label("z"))
+    ax_map.set_title(r"the phase map $\phi(\mathbf{r})$ the atoms imprint")
+    plt.colorbar(im, ax=ax_map, fraction=0.03, label=PHASE_RAD)
 
-    ax_line.plot(coordinate_um, phase_map[mid, :], "C1", lw=2, label="cut along y")
-    ax_line.plot(coordinate_um, phase_map[:, mid], "C0", lw=2, label="cut along z")
+    ax_line.plot(coordinate_um, phase_map[mid, :], "C1", lw=2, label=cut_label("y"))
+    ax_line.plot(coordinate_um, phase_map[:, mid], "C0", lw=2, label=cut_label("z"))
     ax_line.axhline(stage["notebook_phase_peak_rad"], color="gray", ls=":", lw=1)
     ax_line.annotate(
-        f"$\\varphi_\\mathrm{{peak}}$ = {stage['notebook_phase_peak_rad']:.3f} rad",
+        rf"$\phi_\mathrm{{peak}}$ = {stage['notebook_phase_peak_rad']:.3f} rad",
         (12, stage["notebook_phase_peak_rad"] * 0.93),
         fontsize=9,
         color="gray",
     )
     ax_line.set_xlim(-45, 45)
-    ax_line.set_xlabel("position (um)")
-    ax_line.set_ylabel("$\\varphi$ (rad)")
+    ax_line.set_xlabel(coordinate_label())
+    ax_line.set_ylabel(PHASE_RAD)
     ax_line.set_title("centre cuts")
     ax_line.legend(fontsize=8.5)
     ax_line.grid(alpha=0.25)

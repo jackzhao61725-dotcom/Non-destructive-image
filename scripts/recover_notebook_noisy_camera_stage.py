@@ -16,6 +16,7 @@ from non_destructive_image import simulate_noisy_camera_image
 from scripts.recover_notebook_camera_stage import build_camera_stage
 from scripts.recover_notebook_condensate_stage import load_config
 from scripts.recover_notebook_pci_stage import field_comparison, git_commit, real_array_stats, write_json, write_rows
+from scripts.plot_label_utils import NORMALISED_INTENSITY, coordinate_label
 
 
 def build_noisy_camera_stage(config: dict[str, Any]) -> dict[str, Any]:
@@ -229,16 +230,16 @@ def write_noisy_camera_figure(path: Path, config: dict[str, Any], stage: dict[st
     )
     ax_map.set_xlim(*display["column_density_xlim_um"])
     ax_map.set_ylim(*display["column_density_ylim_um"])
-    ax_map.set_xlabel("y (um)")
-    ax_map.set_ylabel("z (um)")
+    ax_map.set_xlabel(coordinate_label("y"))
+    ax_map.set_ylabel(coordinate_label("z"))
     ax_map.set_title(f"seeded noisy camera frame, seed={stage['rng_seed']}")
-    plt.colorbar(im, ax=ax_map, fraction=0.03, label="$I/I_0$")
+    plt.colorbar(im, ax=ax_map, fraction=0.03, label=NORMALISED_INTENSITY)
 
     ax_line.plot(binned_axis_y_um, deterministic[mid_row, :], "C0", lw=2, label="deterministic")
     ax_line.plot(binned_axis_y_um, noisy[mid_row, :], "C3.", ms=4, alpha=0.75, label="single shot + noise")
     ax_line.set_xlim(-45, 45)
-    ax_line.set_xlabel("position (um)")
-    ax_line.set_ylabel("$I/I_0$")
+    ax_line.set_xlabel(coordinate_label())
+    ax_line.set_ylabel(NORMALISED_INTENSITY)
     ax_line.set_title("centre cut after stochastic camera model")
     ax_line.legend(fontsize=8.5)
     ax_line.grid(alpha=0.25)
