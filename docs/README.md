@@ -24,6 +24,7 @@ work, and dissertation outputs.
 - `faraday_optimisation_interpretation.md`
 - `faraday_optimisation_layer_summary.md`
 - `results_readme.md`
+- `figure_index.md`
 
 ## Calibration And Closed-Loop Framework
 
@@ -34,6 +35,8 @@ work, and dissertation outputs.
 ## Dissertation-Facing Material
 
 - `msc_dissertation_structure.md`
+- `reproducibility.md`
+- `zenodo_release_checklist.md`
 
 The stable dissertation snapshot branch also contains:
 
