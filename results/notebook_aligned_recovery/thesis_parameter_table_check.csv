@@ -1,0 +1,11 @@
+quantity,symbol,recovered_internal_value,internal_unit,converted_dissertation_value,dissertation_unit,table_reference_value,absolute_difference,relative_difference,status,notes
+Geometric-mean trap frequency,omega_bar / 2pi,618.7387405007687,rad s^-1,98.50324226832537,Hz,98.5,0.0032422683253656714,3.291642969914387e-05,ROUNDING_ONLY,"Trap frequencies are stored as Hz and converted to angular frequencies with 2*pi before computing omega_bar."
+Harmonic-oscillator length,a_ho,7.86220367322207e-07,m,0.786220367322207,um,0.79,0.003779632677793021,0.004784345161763318,ROUNDING_ONLY,"Matches 0.79 um after rounding to two significant figures."
+Chemical potential,mu / k_B,4.7573107349836604e-08,K,47.573107349836604,nK,47.6,0.026892650163397036,0.000564971642088173,ROUNDING_ONLY,"Recovered from mu/k_B and converted K to nK with 1e9."
+Peak density,n_0,3.400213390025543e+20,m^-3,3.400213390025543e+20,m^-3,3.4e+20,2.133900255428608e+16,6.276177221848847e-05,ROUNDING_ONLY,"Reference table rounds to 3.4e20 m^-3."
+Thomas-Fermi radius x,R_x,1.1857996475343457e-06,m,1.1857996475343457,um,1.2,0.014200352465654209,0.011833627054711842,ROUNDING_ONLY,"Reference table rounds to one decimal place."
+Thomas-Fermi radius y,R_y,2.4817092623397375e-05,m,24.817092623397375,um,24.8,0.017092623397374496,0.0006892186853780038,ROUNDING_ONLY,"Reference table rounds to one decimal place."
+Thomas-Fermi radius z,R_z,1.4911557799466235e-06,m,1.4911557799466235,um,1.5,0.008844220053376484,0.005896146702250989,ROUNDING_ONLY,"Reference table rounds to one decimal place."
+X peak column density,n_tilde_x,537596245257846.8,m^-2,537596245257846.8,m^-2,540000000000000.0,2403754742153.1875,0.004451397670654051,ROUNDING_ONLY,"n_tilde_x is the peak column density after integrating along x; this is the Stage 18.1 imaging-axis column density."
+Y peak column density,n_tilde_y,1.125112141861065e+16,m^-2,1.125112141861065e+16,m^-2,1.1e+16,251121418610650.0,0.022829219873695454,ROUNDING_ONLY,"Difference is consistent with the table value being rounded to two significant figures."
+Z peak column density,n_tilde_z,676033046611798.8,m^-2,676033046611798.8,m^-2,680000000000000.0,3966953388201.25,0.005833754982648897,ROUNDING_ONLY,"n_tilde_z is the peak column density after integrating along z."
