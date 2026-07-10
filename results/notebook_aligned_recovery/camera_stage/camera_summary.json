@@ -1,0 +1,84 @@
+{
+  "binned_image_stats": {
+    "centre_value": 1.1339167724448815,
+    "max": 1.1339167724448815,
+    "mean": 0.9043924044803204,
+    "min": 0.8662054798811654,
+    "peak_index": [
+      34,
+      34
+    ],
+    "shape": [
+      68,
+      68
+    ],
+    "sum": 4181.910478317001
+  },
+  "camera_parameters": {
+    "bin_size": 15,
+    "default_exposure_s": 0.0001,
+    "intensity_at_atoms_w_m2": 8.841941282883075,
+    "magnification": 2.0,
+    "object_pixel_m": 1.465e-06,
+    "photon_energy_j": 4.953730314044377e-19,
+    "photons_per_pixel": 1532.3236613066642,
+    "probe_power_mw": 2.0,
+    "quantum_efficiency": 0.4,
+    "read_noise_applied": false,
+    "read_noise_electrons": 7.0
+  },
+  "deterministic_counts_stats": {
+    "centre_value": 1737.5275003697766,
+    "max": 1737.5275003697766,
+    "mean": 1385.821880491222,
+    "min": 1327.3071523754033,
+    "peak_index": [
+      34,
+      34
+    ],
+    "shape": [
+      68,
+      68
+    ],
+    "sum": 6408040.375391411
+  },
+  "input_ideal_image_stats": {
+    "centre_value": 1.1585677695076864,
+    "max": 1.1585677695076864,
+    "mean": 0.904372478370771,
+    "min": 0.8603460757846358,
+    "peak_index": [
+      512,
+      512
+    ],
+    "shape": [
+      1024,
+      1024
+    ],
+    "sum": 948303.2758801095
+  },
+  "input_stage": "pci_stage",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "normalised_camera_image_stats": {
+    "centre_value": 1.1339167724448815,
+    "max": 1.1339167724448815,
+    "mean": 0.9043924044803204,
+    "min": 0.8662054798811654,
+    "peak_index": [
+      34,
+      34
+    ],
+    "shape": [
+      68,
+      68
+    ],
+    "sum": 4181.910478317001
+  },
+  "scope_boundary": "Only ideal image -> deterministic camera image is recovered. No stochastic noisy frame or multishot sequence is generated.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "camera_helpers": 20
+  },
+  "status": "Canonical notebook-aligned deterministic camera-stage recovery output."
+}

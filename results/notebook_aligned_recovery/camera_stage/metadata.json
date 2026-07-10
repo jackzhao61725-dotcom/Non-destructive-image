@@ -1,0 +1,24 @@
+{
+  "bin_size": 15,
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "generated_outputs": {
+    "camera_summary": "results\\notebook_aligned_recovery\\camera_stage\\camera_summary.json",
+    "central_camera_lineouts": "results\\notebook_aligned_recovery\\camera_stage\\central_camera_lineouts.csv",
+    "comparison_report": "results\\notebook_aligned_recovery\\camera_stage\\comparison_report.json",
+    "figure": "results\\notebook_aligned_recovery\\camera_stage\\camera_deterministic_stage.svg",
+    "metadata": "results\\notebook_aligned_recovery\\camera_stage\\metadata.json"
+  },
+  "git_commit_hash": "17f5f73e98cb5d6df334010124be688e72b54d6e",
+  "input_stage": "pci_stage",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "photons_per_pixel": 1532.3236613066642,
+  "probe_power_mw": 2.0,
+  "read_noise_applied": false,
+  "scope_boundary": "Only deterministic camera recovery is generated. Stochastic noisy frames and multishot recovery are not performed.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "camera_helpers": 20
+  },
+  "status": "Canonical notebook-aligned deterministic camera-stage recovery output."
+}

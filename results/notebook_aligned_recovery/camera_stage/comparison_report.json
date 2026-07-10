@@ -1,0 +1,120 @@
+{
+  "binned_image": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 1.1339167724448815,
+      "max": 1.1339167724448815,
+      "mean": 0.9043924044803204,
+      "min": 0.8662054798811654,
+      "peak_index": [
+        34,
+        34
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 4181.910478317001
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "camera_parameters": {
+    "bin_size": 15,
+    "camera_shape": [
+      68,
+      68
+    ],
+    "default_exposure_s": 0.0001,
+    "intensity_at_atoms_w_m2": 8.841941282883075,
+    "magnification": 2.0,
+    "object_pixel_m": 1.465e-06,
+    "photon_energy_j": 4.953730314044377e-19,
+    "photons_per_pixel": 1532.3236613066642,
+    "probe_power_mw": 2.0,
+    "quantum_efficiency": 0.4,
+    "read_noise_electrons": 7.0,
+    "read_noise_status": "recorded from notebook but not applied in deterministic recovery",
+    "trimmed_shape": [
+      1020,
+      1020
+    ]
+  },
+  "deterministic_counts": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 1737.5275003697766,
+      "max": 1737.5275003697766,
+      "mean": 1385.821880491222,
+      "min": 1327.3071523754033,
+      "peak_index": [
+        34,
+        34
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 6408040.375391411
+    },
+    "units": "detected photoelectrons before stochastic noise"
+  },
+  "input_ideal_image": {
+    "source": "recovered PCI image intensity",
+    "stats": {
+      "centre_value": 1.1585677695076864,
+      "max": 1.1585677695076864,
+      "mean": 0.904372478370771,
+      "min": 0.8603460757846358,
+      "peak_index": [
+        512,
+        512
+      ],
+      "shape": [
+        1024,
+        1024
+      ],
+      "sum": 948303.2758801095
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "normalisation_identity": {
+    "description": "With no stochastic noise, counts / N_phot_pix returns the binned ideal image.",
+    "max_absolute_difference": 1.1102230246251565e-16,
+    "max_relative_difference": 1.2809009237148527e-16
+  },
+  "normalised_camera_image": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 1.1339167724448815,
+      "max": 1.1339167724448815,
+      "mean": 0.9043924044803204,
+      "min": 0.8662054798811654,
+      "peak_index": [
+        34,
+        34
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 4181.910478317001
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "notebook_formula": {
+    "binning": "Iratio[:nb, :nb].reshape(nb//15, 15, nb//15, 15).mean(axis=(1, 3))",
+    "camera_image": "deterministic_counts / N_phot_pix",
+    "deterministic_counts": "binned * N_phot_pix",
+    "magnification": "Mag = f2 / f1",
+    "object_pixel": "pix_obj = pix_cam / Mag",
+    "photons_per_pixel": "intensity_at_atoms(P_mW) * pix_obj**2 * tau_s * QE / E_phot"
+  },
+  "scope_boundary": "Only the deterministic camera pipeline is recovered. Poisson photon noise, Gaussian read noise, noisy frames, and multishot sequences are not generated.",
+  "source_notebook_cells": {
+    "camera_helpers": 20
+  },
+  "status": "canonical notebook deterministic camera stage matches simulate_camera_image for tested quantities"
+}
