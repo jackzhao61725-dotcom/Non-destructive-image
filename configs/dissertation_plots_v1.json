@@ -37,12 +37,11 @@
     "filename": "detuning_tradeoff.svg",
     "title": "Detuning dependence of dispersive signal and scattering",
     "figsize_inches": [
-      7.2,
-      5.8
+      6.8,
+      4.4
     ],
     "x_axis_scale": "log",
-    "panel_a_y_axis_scale": "log",
-    "panel_b_y_axis_scale": "linear",
+    "y_axis_scale": "log",
     "style": "dissertation_clean"
   },
   "caveats": {

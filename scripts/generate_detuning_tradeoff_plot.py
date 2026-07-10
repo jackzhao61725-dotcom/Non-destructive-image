@@ -280,48 +280,39 @@ def write_data_csv(path: Path, data: dict[str, np.ndarray]) -> None:
 
 def write_figure(path: Path, plot_config: dict[str, Any], data: dict[str, np.ndarray]) -> None:
     figure_config = plot_config["figure"]
-    fig, axes = plt.subplots(
-        2,
+    fig, axis = plt.subplots(
+        1,
         1,
         figsize=tuple(figure_config["figsize_inches"]),
-        sharex=True,
         constrained_layout=True,
     )
 
-    ax_signal, ax_ratio = axes
     x = data["detuning_ghz"]
-    ax_signal.loglog(x, data["normalised_abs_scalar_phase"], lw=2.2, label=r"$|\phi|$")
-    ax_signal.loglog(
+    axis.loglog(x, data["normalised_abs_scalar_phase"], lw=2.2, label=r"$|\phi|$")
+    axis.loglog(
         x,
         data["normalised_scattered_photons_per_atom"],
         lw=2.2,
         label=r"$N_\gamma$",
     )
-    ax_signal.set_ylabel("normalised value")
-    ax_signal.set_title("(a) Signal and scattering")
-    ax_signal.grid(alpha=0.25, which="both")
-    ax_signal.legend(fontsize=8.5)
-
-    ax_ratio.semilogx(
+    axis.loglog(
         x,
         data["normalised_signal_per_scattered_photon"],
         lw=2.2,
         color="C2",
         label=r"$|\phi|/N_\gamma$",
     )
-    ax_ratio.set_xlabel(r"$|\Delta|/2\pi$ (GHz)")
-    ax_ratio.set_ylabel("normalised value")
-    ax_ratio.set_title("(b) Signal per scattered photon")
-    ax_ratio.grid(alpha=0.25, which="both")
-    ax_ratio.legend(fontsize=8.5)
+    axis.set_xlabel(r"$|\Delta|/2\pi$ (GHz)")
+    axis.set_ylabel("Normalised value")
+    axis.grid(alpha=0.25, which="both")
+    axis.legend(fontsize=8.5)
 
     reference_ghz = 1.5
-    for axis in axes:
-        if x.min() <= reference_ghz <= x.max():
-            axis.axvline(reference_ghz, color="0.35", lw=1.0, ls=":", alpha=0.8)
-    ax_signal.text(
+    if x.min() <= reference_ghz <= x.max():
+        axis.axvline(reference_ghz, color="0.35", lw=1.0, ls=":", alpha=0.75)
+    axis.text(
         reference_ghz * 1.03,
-        0.78,
+        0.72,
         "1.5 GHz",
         fontsize=8,
         color="0.3",
@@ -359,7 +350,8 @@ def build_summary(data: dict[str, np.ndarray], params: dict[str, Any], plot_conf
         "best_signal_per_scattered_photon": float(data["signal_per_scattered_photon"][best_index]),
         "normalisation": plot_config["normalisation"],
         "plotted_quantities": plot_config["plotted_quantities"],
-        "data_note": "CSV retains additional absolute quantities such as residual OD and signal_to_destruction for provenance; the SVG intentionally plots only the simplified curve set.",
+        "figure_layout": "single-panel log-log plot with one shared detuning axis and one shared normalised-value axis",
+        "data_note": "CSV retains additional absolute quantities such as residual OD and signal_to_destruction for provenance; the SVG intentionally plots only |phi|, N_gamma, and |phi|/N_gamma.",
         "interpretation_note": (
             "In the far-detuned limit the phase-like signal scales approximately as 1/Delta, "
             "while scattering and residual OD scale approximately as 1/Delta^2."
