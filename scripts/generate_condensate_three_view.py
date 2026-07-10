@@ -18,7 +18,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from non_destructive_image import thomas_fermi_profile_2d
-from scripts.plot_label_utils import column_density_label, coordinate_label
+from scripts.plot_label_utils import (
+    column_density_distribution_label,
+    coordinate_label,
+    peak_column_density_symbol,
+)
 from scripts.recover_notebook_condensate_stage import (
     array_stats,
     build_condensate_stage,
@@ -101,6 +105,16 @@ def three_view_summary(config: dict[str, Any], stage: dict[str, Any]) -> dict[st
                     f"integrate along {view['integrated_axis_label']} -> "
                     f"display {view['display_plane_labels'][0]}-{view['display_plane_labels'][1]} plane"
                 ),
+                "distribution_label": (
+                    f"n_col({view['display_plane_labels'][0]},{view['display_plane_labels'][1]})"
+                ),
+                "peak_scalar_symbol": f"n_tilde_{view['integrated_axis_label']}",
+                "peak_scalar_mathtext": peak_column_density_symbol(view["integrated_axis_label"]),
+                "notation_note": (
+                    "The plotted 2D distribution is n_col over the displayed plane. "
+                    "The peak scalar value corresponds to the thesis-table tilde-n symbol "
+                    f"for integration along {view['integrated_axis_label']}."
+                ),
                 "absolute_column_density": True,
                 "normalised": False,
                 "peak_column_density_m2": view["peak_column_density_m2"],
@@ -165,7 +179,7 @@ def write_three_view_figure(path: Path, config: dict[str, Any], stage: dict[str,
             ax=axis,
             fraction=0.046,
             pad=0.035,
-            label=column_density_label(view["integrated_axis_label"], display_unit="m^-2"),
+            label=column_density_distribution_label(plane_a, plane_b, display_unit="m^-2"),
         )
 
     fig.suptitle(
@@ -205,6 +219,10 @@ def generate(config: dict[str, Any], config_path: Path) -> dict[str, str]:
                 {
                     "integrated_axis": view["integrated_axis_label"],
                     "display_plane": view["display_plane_labels"],
+                    "distribution_label": (
+                        f"n_col({view['display_plane_labels'][0]},{view['display_plane_labels'][1]})"
+                    ),
+                    "peak_scalar_symbol": f"n_tilde_{view['integrated_axis_label']}",
                     "absolute_column_density": True,
                     "normalised": False,
                 }

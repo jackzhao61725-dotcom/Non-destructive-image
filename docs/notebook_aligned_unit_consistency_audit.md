@@ -163,7 +163,15 @@ axis_labels = ["x", "y", "z"]
 
 For Stage 18.1, the plotted image is the column-density map after integrating along `x`, so the displayed transverse plane is `y,z`.
 
-The symbols `n_tilde_x`, `n_tilde_y`, and `n_tilde_z` should be interpreted as peak column densities integrated along `x`, `y`, and `z` respectively. They are not lineouts along those axes.
+The symbols `n_tilde_x`, `n_tilde_y`, and `n_tilde_z` should be interpreted as peak column-density scalars integrated along `x`, `y`, and `z` respectively. They are not lineouts along those axes and should not be used as labels for full 2D column-density distributions.
+
+For full column-density maps, use distribution notation:
+
+```text
+x-integrated map in the y,z plane -> n_col(y,z)
+y-integrated map in the x,z plane -> n_col(x,z)
+z-integrated map in the x,y plane -> n_col(x,y)
+```
 
 This is the main axis-convention risk for dissertation text and captions.
 
@@ -220,7 +228,7 @@ These are not unit inconsistencies.
 | Risk | Classification | Recommendation |
 | --- | --- | --- |
 | Notebook display density units are `cm^-3` / `cm^-2`, while thesis table uses `m^-3` / `m^-2` | `UNIT_LABEL_RISK` | In dissertation tables, explicitly label density as `m^-3` and column density as `m^-2`. |
-| Column-density subscript may be confused with plotted lineout axis | `AXIS_CONVENTION_RISK` | State that `n_tilde_x` means integrated along `x`; Stage 18.1 then plots the `y,z` plane. |
+| Column-density subscript may be confused with plotted lineout axis or 2D map label | `AXIS_CONVENTION_RISK` | Use `n_col(y,z)` for an x-integrated distribution; reserve `n_tilde_x` for its peak scalar value. |
 | Multishot label `frame number s` could be read as seconds | `UNIT_LABEL_RISK` | In dissertation figures, use `frame index` or `shot index` instead. |
 | Bose critical-temperature prefactor `0.94` and solver bounds remain script constants | `NEEDS_CONFIG_TRACEABILITY` | Same recommendation as the parameter audit: optionally move formula/procedure constants into config later. |
 
@@ -248,7 +256,8 @@ Use:
 - `$\mu\mathrm{m}$` for micrometres in plotted axes.
 - `$\mathrm{m}^{-3}$` and `$\mathrm{m}^{-2}$` for SI density and column-density units.
 - `$\mathrm{cm}^{-3}$` and `$\mathrm{cm}^{-2}$` only for notebook-style display quantities that are explicitly converted from SI.
-- `$\tilde{n}_i$` for peak column density integrated along axis `i`.
+- `$n_{\mathrm{col}}(a,b)$` for a full 2D column-density distribution in the displayed `a,b` plane.
+- `$\tilde{n}_i$` only for the peak column-density scalar integrated along axis `i`.
 - `$\bar{\omega}/2\pi$` for displayed trap frequency in Hz.
 - `$\mu/k_B$` for chemical-potential temperature equivalent.
 - `$\phi$ (rad)` for scalar phase.

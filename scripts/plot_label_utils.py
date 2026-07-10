@@ -50,8 +50,22 @@ def radius_legend_label(axis_label: str, radius_um: float) -> str:
     return rf"{axis_label}, $R={radius_um:.2f}\,\mu\mathrm{{m}}$"
 
 
-def column_density_label(integrated_axis: str, display_unit: str = "cm^-2") -> str:
-    """Return a column-density label for an integration direction."""
+def peak_column_density_symbol(integrated_axis: str) -> str:
+    """Return the peak column-density scalar symbol for one integration axis."""
+
+    return rf"$\tilde{{n}}_{integrated_axis}$"
+
+
+def column_density_distribution_label(
+    plane_axis_a: str,
+    plane_axis_b: str,
+    display_unit: str = "cm^-2",
+) -> str:
+    """Return a full 2D column-density distribution label.
+
+    Use this for maps. Reserve ``peak_column_density_symbol(...)`` for scalar
+    peak values such as those in the thesis parameter table.
+    """
 
     unit = COLUMN_DENSITY_CM2 if display_unit == "cm^-2" else COLUMN_DENSITY_M2
-    return rf"$\tilde{{n}}_{integrated_axis}$ ({unit})"
+    return rf"$n_{{\mathrm{{col}}}}({plane_axis_a},{plane_axis_b})$ ({unit})"

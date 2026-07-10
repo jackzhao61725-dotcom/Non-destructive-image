@@ -16,7 +16,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from non_destructive_image import build_thomas_fermi_state, thomas_fermi_profile_2d
-from scripts.plot_label_utils import DENSITY_CM3, column_density_label, coordinate_label, radius_legend_label
+from scripts.plot_label_utils import (
+    DENSITY_CM3,
+    column_density_distribution_label,
+    coordinate_label,
+    radius_legend_label,
+)
 
 
 def load_config(path: Path) -> dict[str, Any]:
@@ -395,8 +400,12 @@ def write_condensate_figure(path: Path, config: dict[str, Any], stage: dict[str,
         f"(b) Column density along {axis_labels[imaging_axis]}\n"
         "(what every imaging mode actually integrates over)"
     )
-    integrated_axis = axis_labels[stage["imaging_axis"]]
-    plt.colorbar(im, ax=ax_b, fraction=0.032, label=column_density_label(integrated_axis))
+    plt.colorbar(
+        im,
+        ax=ax_b,
+        fraction=0.032,
+        label=column_density_distribution_label(axis_labels[plane[0]], axis_labels[plane[1]]),
+    )
     fig.suptitle("Stage 1: from trap parameters to a Thomas-Fermi condensate", y=1.04, fontsize=11.5)
     plt.tight_layout()
     fig.savefig(path, format="svg", bbox_inches="tight", facecolor="white")

@@ -6,8 +6,10 @@
         "y",
         "z"
       ],
+      "distribution_label": "n_col(y,z)",
       "integrated_axis": "x",
-      "normalised": false
+      "normalised": false,
+      "peak_scalar_symbol": "n_tilde_x"
     },
     {
       "absolute_column_density": true,
@@ -15,8 +17,10 @@
         "x",
         "z"
       ],
+      "distribution_label": "n_col(x,z)",
       "integrated_axis": "y",
-      "normalised": false
+      "normalised": false,
+      "peak_scalar_symbol": "n_tilde_y"
     },
     {
       "absolute_column_density": true,
@@ -24,8 +28,10 @@
         "x",
         "y"
       ],
+      "distribution_label": "n_col(x,y)",
       "integrated_axis": "z",
-      "normalised": false
+      "normalised": false,
+      "peak_scalar_symbol": "n_tilde_z"
     }
   ],
   "config_file_used": "configs\\notebook_v1_defaults.json",
@@ -35,7 +41,7 @@
     "metadata": "results\\notebook_aligned_recovery\\condensate_three_view\\metadata.json",
     "summary": "results\\notebook_aligned_recovery\\condensate_three_view\\condensate_three_view_summary.json"
   },
-  "git_commit_hash": "fd01fb42c12d7f06737b3135f05bea2375e3f799",
+  "git_commit_hash": "c1dcded3783fdd7ef3b9261d3b257855bf56e19d",
   "label": "notebook_v1_defaults_uncalibrated",
   "no_experimental_calibration_applied": true,
   "not_exact_notebook_figure": true,

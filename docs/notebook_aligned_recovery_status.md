@@ -48,7 +48,11 @@ Status:
 - not a final calibrated prediction;
 - uses the same canonical condensate parameters, grid, field of view, and unit
   conventions as `scripts/recover_notebook_condensate_stage.py`;
-- plots absolute Thomas-Fermi column density in `m^-2`, not normalised density.
+- plots absolute Thomas-Fermi column-density distributions in `m^-2`, not
+  normalised density;
+- labels 2D maps as `n_col(y,z)`, `n_col(x,z)`, or `n_col(x,y)`;
+- reserves `n_tilde_x`, `n_tilde_y`, and `n_tilde_z` for peak scalar values
+  matching the thesis parameter table.
 
 Axis conventions:
 
