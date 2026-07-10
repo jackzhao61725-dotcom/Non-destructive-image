@@ -169,11 +169,7 @@ def write_three_view_figure(path: Path, config: dict[str, Any], stage: dict[str,
         axis.set_ylabel(coordinate_label(plane_b))
         axis.set_xlim(*display["image_extent_um"][:2])
         axis.set_ylim(*display["image_extent_um"][2:])
-        axis.set_title(
-            rf"integrate along ${view['integrated_axis_label']}$"
-            "\n"
-            rf"display ${plane_a}$-${plane_b}$ plane"
-        )
+        axis.set_title(rf"${view['integrated_axis_label']}$-integrated column density")
         plt.colorbar(
             im,
             ax=axis,
@@ -183,7 +179,7 @@ def write_three_view_figure(path: Path, config: dict[str, Any], stage: dict[str,
         )
 
     fig.suptitle(
-        "Notebook-aligned condensate-model extension: three absolute column-density projections",
+        "Three orthogonal column-density projections",
         fontsize=12,
     )
     fig.savefig(path, format="svg", bbox_inches="tight", facecolor="white")

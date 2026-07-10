@@ -370,7 +370,7 @@ def write_condensate_figure(path: Path, config: dict[str, Any], stage: dict[str,
         }
     )
     fig, (ax_a, ax_b) = plt.subplots(1, 2, figsize=tuple(display["figure_size_inches"]))
-    labels = ["x (across)", "y (along)", "z (across)"]
+    labels = axis_labels
     colours = ["C0", "C1", "C2"]
     for index, (label, colour) in enumerate(zip(labels, colours)):
         ax_a.plot(
@@ -382,7 +382,7 @@ def write_condensate_figure(path: Path, config: dict[str, Any], stage: dict[str,
         )
     ax_a.set_xlabel(coordinate_label())
     ax_a.set_ylabel(rf"$n(\mathbf{{r}})$ ({DENSITY_CM3})")
-    ax_a.set_title("(a) 3D density cuts through the trap centre")
+    ax_a.set_title("(a) 3D density cuts")
     ax_a.legend(fontsize=8.5)
     ax_a.grid(alpha=0.25)
 
@@ -396,17 +396,14 @@ def write_condensate_figure(path: Path, config: dict[str, Any], stage: dict[str,
     ax_b.set_ylim(*display["column_density_ylim_um"])
     ax_b.set_xlabel(coordinate_label(axis_labels[plane[0]]))
     ax_b.set_ylabel(coordinate_label(axis_labels[plane[1]]))
-    ax_b.set_title(
-        f"(b) Column density along {axis_labels[imaging_axis]}\n"
-        "(what every imaging mode actually integrates over)"
-    )
+    ax_b.set_title(f"(b) {axis_labels[imaging_axis]}-integrated column density")
     plt.colorbar(
         im,
         ax=ax_b,
         fraction=0.032,
         label=column_density_distribution_label(axis_labels[plane[0]], axis_labels[plane[1]]),
     )
-    fig.suptitle("Stage 1: from trap parameters to a Thomas-Fermi condensate", y=1.04, fontsize=11.5)
+    fig.suptitle("Thomas-Fermi condensate", y=1.04, fontsize=11.5)
     plt.tight_layout()
     fig.savefig(path, format="svg", bbox_inches="tight", facecolor="white")
     plt.close(fig)

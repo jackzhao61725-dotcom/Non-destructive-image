@@ -515,7 +515,7 @@ def write_multishot_figure(path: Path, config: dict[str, Any], stage: dict[str, 
     ax_b.axhline(0.5, color="#e08020", ls=":", lw=1.2)
     ax_b.set_xlabel(FRAME_INDEX)
     ax_b.set_ylabel(rf"peak {PHASE_RAD}")
-    ax_b.set_title("(b) dispersive signal fades")
+    ax_b.set_title("(b) peak phase")
     ax_b.grid(alpha=0.25)
     ax_b.legend(fontsize=8.5)
 
@@ -536,7 +536,7 @@ def write_multishot_figure(path: Path, config: dict[str, Any], stage: dict[str, 
     ax_d.legend(fontsize=8.5)
 
     fig.suptitle(
-        rf"Notebook-aligned multishot recovery: {DETUNING_GHZ}={params['detuning_ghz']}, "
+        rf"Multishot sequence evolution: {DETUNING_GHZ}={params['detuning_ghz']}, "
         rf"P={params['probe_power_mw']} mW, $\tau$={params['pulse_duration_us']:.0f} $\mu$s, "
         f"axis {'xyz'[params['imaging_axis']]}",
         fontsize=12,

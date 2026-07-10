@@ -41,13 +41,13 @@ def coordinate_label(axis: str | None = None) -> str:
 def cut_label(axis: str) -> str:
     """Return a legend label for a central lineout."""
 
-    return rf"cut along ${axis}$"
+    return rf"${axis}$ cut"
 
 
 def radius_legend_label(axis_label: str, radius_um: float) -> str:
     """Return a density-cut legend label with a radius in micrometres."""
 
-    return rf"{axis_label}, $R={radius_um:.2f}\,\mu\mathrm{{m}}$"
+    return rf"$R_{axis_label}={radius_um:.2f}\,\mu\mathrm{{m}}$"
 
 
 def peak_column_density_symbol(integrated_axis: str) -> str:
