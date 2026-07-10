@@ -1,0 +1,45 @@
+{
+  "axis_conventions": [
+    {
+      "absolute_column_density": true,
+      "display_plane": [
+        "y",
+        "z"
+      ],
+      "integrated_axis": "x",
+      "normalised": false
+    },
+    {
+      "absolute_column_density": true,
+      "display_plane": [
+        "x",
+        "z"
+      ],
+      "integrated_axis": "y",
+      "normalised": false
+    },
+    {
+      "absolute_column_density": true,
+      "display_plane": [
+        "x",
+        "y"
+      ],
+      "integrated_axis": "z",
+      "normalised": false
+    }
+  ],
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "generated_outputs": {
+    "central_lineouts": "results\\notebook_aligned_recovery\\condensate_three_view\\central_lineouts.csv",
+    "figure": "results\\notebook_aligned_recovery\\condensate_three_view\\condensate_three_view.svg",
+    "metadata": "results\\notebook_aligned_recovery\\condensate_three_view\\metadata.json",
+    "summary": "results\\notebook_aligned_recovery\\condensate_three_view\\condensate_three_view_summary.json"
+  },
+  "git_commit_hash": "fd01fb42c12d7f06737b3135f05bea2375e3f799",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "not_exact_notebook_figure": true,
+  "not_final_calibrated_prediction": true,
+  "source_stage": "scripts/recover_notebook_condensate_stage.py",
+  "status": "Notebook-aligned condensate-model extension."
+}

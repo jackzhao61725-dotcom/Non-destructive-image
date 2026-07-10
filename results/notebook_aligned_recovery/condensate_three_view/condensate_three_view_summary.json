@@ -1,0 +1,107 @@
+{
+  "coordinate_range_um": [
+    -50.0,
+    49.90234375
+  ],
+  "display_extent_um": [
+    -50.0,
+    50.0,
+    -50.0,
+    50.0
+  ],
+  "field_of_view_m": 0.0001,
+  "grid_shape": [
+    1024,
+    1024
+  ],
+  "internal_unit": "m^-2",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "normalised": false,
+  "not_exact_notebook_figure": true,
+  "not_final_calibrated_prediction": true,
+  "quantity": "absolute Thomas-Fermi column density",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_stage": "scripts/recover_notebook_condensate_stage.py",
+  "status": "Notebook-aligned condensate-model three-view projection extension.",
+  "views": [
+    {
+      "absolute_column_density": true,
+      "axis_convention": "integrate along x -> display y-z plane",
+      "display_plane": [
+        "y",
+        "z"
+      ],
+      "integrated_axis": "x",
+      "map_stats_m2": {
+        "centre_value": 537596245257846.75,
+        "max": 537596245257846.75,
+        "mean": 2499920713166.86,
+        "min": 0.0,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ],
+        "sum": 2.621356861729653e+18
+      },
+      "normalised": false,
+      "peak_column_density_m2": 537596245257846.75
+    },
+    {
+      "absolute_column_density": true,
+      "axis_convention": "integrate along y -> display x-z plane",
+      "display_plane": [
+        "x",
+        "z"
+      ],
+      "integrated_axis": "y",
+      "map_stats_m2": {
+        "centre_value": 1.1251121418610648e+16,
+        "max": 1.1251121418610648e+16,
+        "mean": 2499807278154.325,
+        "min": 0.0,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ],
+        "sum": 2.6212379164979497e+18
+      },
+      "normalised": false,
+      "peak_column_density_m2": 1.1251121418610648e+16
+    },
+    {
+      "absolute_column_density": true,
+      "axis_convention": "integrate along z -> display x-y plane",
+      "display_plane": [
+        "x",
+        "y"
+      ],
+      "integrated_axis": "z",
+      "map_stats_m2": {
+        "centre_value": 676033046611798.5,
+        "max": 676033046611798.5,
+        "mean": 2499843558077.233,
+        "min": 0.0,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ],
+        "sum": 2.6212759587543926e+18
+      },
+      "normalised": false,
+      "peak_column_density_m2": 676033046611798.5
+    }
+  ]
+}

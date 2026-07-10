@@ -31,6 +31,42 @@ Status:
 - helper/notebook-expression differences for radii, column density, profile,
   and projected column-density map: `0.0`.
 
+### Condensate Three-View Projection Extension
+
+Script:
+
+```text
+scripts/generate_condensate_three_view.py
+```
+
+Status:
+
+- notebook-aligned condensate-model extension;
+- not an exact notebook figure recovery unless the historical notebook is later
+  shown to contain the same three-view layout;
+- not experimental calibration;
+- not a final calibrated prediction;
+- uses the same canonical condensate parameters, grid, field of view, and unit
+  conventions as `scripts/recover_notebook_condensate_stage.py`;
+- plots absolute Thomas-Fermi column density in `m^-2`, not normalised density.
+
+Axis conventions:
+
+```text
+integrate along x -> display y-z plane
+integrate along y -> display x-z plane
+integrate along z -> display x-y plane
+```
+
+Generated outputs:
+
+```text
+results/notebook_aligned_recovery/condensate_three_view/condensate_three_view.svg
+results/notebook_aligned_recovery/condensate_three_view/condensate_three_view_summary.json
+results/notebook_aligned_recovery/condensate_three_view/central_lineouts.csv
+results/notebook_aligned_recovery/condensate_three_view/metadata.json
+```
+
 ### Scalar Phase
 
 Script:
