@@ -6,7 +6,7 @@ The canonical notebook-aligned recovery path now covers:
 
 ```text
 parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map -> PCI image -> DGI image -> ideal Faraday outputs
--> deterministic camera image -> stochastic camera frame
+-> deterministic camera image -> stochastic camera frame -> deterministic multishot sequence
 ```
 
 This is a recovery of the historical Version 1 notebook computation. It does
@@ -250,6 +250,55 @@ Status:
 - all tested seeded stochastic helper/notebook-expression max absolute
   differences against `simulate_noisy_camera_image(...)`: `0.0`.
 
+### Deterministic Multishot
+
+Script:
+
+```text
+scripts/recover_notebook_multishot_stage.py
+```
+
+Recovered notebook references:
+
+- cell 40: `run_sequence(...)` and `accumulate(...)`;
+- cell 42: deterministic sequence-evolution display.
+
+Recovered deterministic convention:
+
+```text
+Ng = N_scatt(Delta_Hz, P_mW, tau_s)
+dE = Ng * (1 + reabs) * E_rec
+A_E = 3 * (zeta4 / zeta3) * kB / Tc**3
+T_next = (T**4 + dE / A_E)**0.25
+N0_heating = N_tot_sc * (1 - (T / Tc)**3)
+N0_clean_loss = N0_0 * exp(-eta_coll * Ng * s)
+phi_s = phi_peak(Delta_Hz, ncol_axis(N0_s))
+accumulated_snr = sqrt(nancumsum(where(isfinite(snr), snr**2, 0)))
+```
+
+Status:
+
+- closed for tested deterministic sequence quantities;
+- operating point: `Delta = 1.5 GHz`, `P = 3.5 mW`, `tau = 40 us`;
+- imaging axis: `0` / `x`;
+- stop condition: `30%` condensate loss;
+- max-shot safety cap: `400`;
+- `eta_coll = 1.3`;
+- reabsorption fraction at this operating point: `0.029708652968257532`;
+- scattered photons per atom per shot: `0.009274742967987243`;
+- self-consistent total atom number: `116166.77870472142`;
+- critical temperature: `216.8262079928517 nK`;
+- heating sequence length: `15` frames, last shot `14`;
+- clean-loss sequence length: `31` frames, last shot `30`;
+- heating final condensate number: `17369.583984817014`;
+- heating final loss fraction: `0.30521664060731946`;
+- heating final accumulated SNR: `27.281738255565195`;
+- clean-loss final condensate number: `17412.021337141854`;
+- clean-loss final loss fraction: `0.3035191465143259`;
+- clean-loss final accumulated SNR: `39.020132203959946`;
+- all tested deterministic multishot helper/notebook-expression max absolute
+  differences against `simulate_multishot_sequence(...)`: `0.0`.
+
 ## Generated Recovery Outputs
 
 Current recovery outputs are grouped under:
@@ -266,7 +315,8 @@ Stage directories:
 - `dgi_stage/`;
 - `faraday_stage/`;
 - `camera_stage/`;
-- `noisy_camera_stage/`.
+- `noisy_camera_stage/`;
+- `multishot_stage/`.
 
 The Faraday stage generates only:
 
@@ -294,6 +344,14 @@ The noisy camera stage generates only:
 
 It does not generate multi-shot frame sequences.
 
+The multishot stage generates only:
+
+- `multishot_sequence_stage.svg`;
+- JSON comparison/summary/metadata files;
+- deterministic sequence CSV.
+
+It does not generate noisy multishot filmstrips or operating maps.
+
 ## Regression Tests
 
 Focused regression tests:
@@ -306,6 +364,7 @@ tests/regression/test_notebook_dgi_recovery.py
 tests/regression/test_notebook_faraday_recovery.py
 tests/regression/test_notebook_camera_recovery.py
 tests/regression/test_notebook_noisy_camera_recovery.py
+tests/regression/test_notebook_multishot_recovery.py
 ```
 
 These tests check stable numerical outputs and helper/notebook-expression
@@ -315,7 +374,7 @@ agreement. They do not test SVG pixel appearance.
 
 The recovery still has not locked down end-to-end notebook-aligned recipes for:
 
-- multi-shot frame rendering;
+- noisy multi-shot frame rendering / filmstrips;
 - optimisation and SNR operating maps.
 
 Display styling is documented only where it is needed to avoid plotting the
@@ -324,11 +383,13 @@ target.
 
 ## Recommended Next Step
 
-The next candidate recovery should be the multi-shot / continuous-imaging stage:
+The next candidate recovery should be either the noisy multi-shot filmstrip or
+the operating-map stage:
 
 ```text
-recovered imaging and camera stages -> frame sequence
+deterministic sequence -> noisy rendered frame strip
+deterministic sequence / single-shot models -> operating maps
 ```
 
-That recovery should keep the deterministic and stochastic camera recipes fixed
-and only then compare notebook frame-sequence bookkeeping.
+That recovery should keep the deterministic multishot sequence fixed and avoid
+mixing frame rendering with optimisation-map recovery in a single step.

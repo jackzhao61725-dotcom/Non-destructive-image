@@ -1,0 +1,40 @@
+{
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "generated_outputs": {
+    "comparison_report": "results\\notebook_aligned_recovery\\multishot_stage\\comparison_report.json",
+    "figure": "results\\notebook_aligned_recovery\\multishot_stage\\multishot_sequence_stage.svg",
+    "metadata": "results\\notebook_aligned_recovery\\multishot_stage\\metadata.json",
+    "multishot_sequence": "results\\notebook_aligned_recovery\\multishot_stage\\multishot_sequence.csv",
+    "multishot_summary": "results\\notebook_aligned_recovery\\multishot_stage\\multishot_summary.json"
+  },
+  "git_commit_hash": "5f62fb2675c842aa31c3d0daa2003866d89dc5c1",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "parameters": {
+    "critical_temperature_k": 2.168262079928517e-07,
+    "deposited_energy_per_atom_per_shot_j": 4.729904543375094e-32,
+    "detuning_ghz": 1.5,
+    "detuning_hz": 1500000000.0,
+    "energy_coefficient_j_per_k4": 0.0036584840670000826,
+    "eta_coll": 1.3,
+    "imaging_axis": 0,
+    "initial_condensate_atoms": 25000.0,
+    "initial_temperature_k": 2e-07,
+    "initial_total_atoms": 116166.77870472142,
+    "loss_fraction_limit": 0.3,
+    "max_shots": 400,
+    "photons_scattered_per_atom_per_shot": 0.009274742967987243,
+    "probe_power_mw": 3.5,
+    "pulse_duration_s": 3.9999999999999996e-05,
+    "pulse_duration_us": 40.0,
+    "reabsorption_fraction": 0.029708652968257532,
+    "saturation_parameter": 0.0258768589565485
+  },
+  "scope_boundary": "Only deterministic multishot sequence recovery is generated. No noisy filmstrip or operating-map recovery is performed.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "run_sequence": 40,
+    "sequence_evolution_plot": 42
+  },
+  "status": "Canonical notebook-aligned deterministic multishot-stage recovery output."
+}
