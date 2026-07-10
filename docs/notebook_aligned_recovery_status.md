@@ -6,7 +6,7 @@ The canonical notebook-aligned recovery path now covers:
 
 ```text
 parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map -> PCI image -> DGI image -> ideal Faraday outputs
--> deterministic camera image -> stochastic camera frame -> deterministic multishot sequence
+-> deterministic camera image -> stochastic camera frame -> deterministic multishot sequence -> noisy PCI multishot filmstrip
 ```
 
 This is a recovery of the historical Version 1 notebook computation. It does
@@ -299,6 +299,58 @@ Status:
 - all tested deterministic multishot helper/notebook-expression max absolute
   differences against `simulate_multishot_sequence(...)`: `0.0`.
 
+### Noisy PCI Multishot Filmstrip
+
+Script:
+
+```text
+scripts/recover_notebook_noisy_multishot_filmstrip.py
+```
+
+Recovered notebook references:
+
+- cell 44: related start/middle/end camera-frame variant;
+- cell 93: Step 14 noisy PCI filmstrip.
+
+Recovered cell 93 convention:
+
+```text
+st_show = [0, 5, 10, 14]
+st_Nd_run = N_phot_pix(SEQ_P_mW, SEQ_tau)
+phi_s = seq_h['phi'][s]
+I_s, _ = sim_image(SEQ_axis, phi_s, 'PCI')
+b = I_s[:_nb2, :_nb2].reshape(_nb2//15, 15, _nb2//15, 15).mean(axis=(1, 3))
+frame = (rng.poisson(clip(b, 0, None) * st_Nd_run)
+         + rng.normal(0, read_e, b.shape)) / st_Nd_run
+```
+
+Status:
+
+- closed for the tested explicit-seed noisy PCI filmstrip recipe;
+- primary recovered notebook cell: `93`;
+- related notebook cell 44 frame selection: `[0, 7, 14]`;
+- recovered Step 14 selected frames: `[0, 5, 10, 14]`;
+- profile convention: cell 93 reuses the fresh-cloud PCI profile and applies
+  each frame's phase value;
+- photons per camera pixel at the run operating point: `1072.6265629146646`;
+- read noise: `7.0 e-`;
+- noisy frame shape: `68 x 68`;
+- frame 0 noisy mean: `0.9048341400329197`;
+- frame 5 noisy mean: `0.9045503168872816`;
+- frame 10 noisy mean: `0.9044529944801176`;
+- frame 14 noisy mean: `0.9043769748075294`;
+- seeded helper replay max absolute differences for binned images, noisy
+  counts, and noisy frames: `0.0`.
+
+RNG status:
+
+- notebook RNG policy: global `np.random.default_rng(7)`;
+- recovery RNG policy: explicit `np.random.default_rng(seed)`;
+- exact full-notebook global RNG reproduction is not claimed, because cell 93
+  appears after earlier stochastic camera and detuning-strip draws;
+- the recovered filmstrip is exactly reproducible under the explicit-seed
+  replay used by the recovery script.
+
 ## Generated Recovery Outputs
 
 Current recovery outputs are grouped under:
@@ -316,7 +368,8 @@ Stage directories:
 - `faraday_stage/`;
 - `camera_stage/`;
 - `noisy_camera_stage/`;
-- `multishot_stage/`.
+- `multishot_stage/`;
+- `noisy_multishot_filmstrip/`.
 
 The Faraday stage generates only:
 
@@ -352,6 +405,15 @@ The multishot stage generates only:
 
 It does not generate noisy multishot filmstrips or operating maps.
 
+The noisy multishot filmstrip stage generates only:
+
+- `noisy_multishot_pci_filmstrip.svg`;
+- JSON comparison/summary/metadata files;
+- selected-frame and frame-statistics CSV files.
+
+It does not generate Faraday camera panels, dual-port flicker, operating maps,
+or shot-noise maps.
+
 ## Regression Tests
 
 Focused regression tests:
@@ -365,6 +427,7 @@ tests/regression/test_notebook_faraday_recovery.py
 tests/regression/test_notebook_camera_recovery.py
 tests/regression/test_notebook_noisy_camera_recovery.py
 tests/regression/test_notebook_multishot_recovery.py
+tests/regression/test_notebook_noisy_multishot_filmstrip.py
 ```
 
 These tests check stable numerical outputs and helper/notebook-expression
@@ -374,7 +437,8 @@ agreement. They do not test SVG pixel appearance.
 
 The recovery still has not locked down end-to-end notebook-aligned recipes for:
 
-- noisy multi-shot frame rendering / filmstrips;
+- Faraday camera-level reference panels;
+- Faraday dual-port noisy frame and flicker robustness;
 - optimisation and SNR operating maps.
 
 Display styling is documented only where it is needed to avoid plotting the
@@ -383,13 +447,12 @@ target.
 
 ## Recommended Next Step
 
-The next candidate recovery should be either the noisy multi-shot filmstrip or
-the operating-map stage:
+The next candidate recovery should be the Faraday camera-level reference panel:
 
 ```text
-deterministic sequence -> noisy rendered frame strip
-deterministic sequence / single-shot models -> operating maps
+ideal Faraday dark-field and dual-port outputs -> camera-level Faraday reference panel
 ```
 
-That recovery should keep the deterministic multishot sequence fixed and avoid
-mixing frame rendering with optimisation-map recovery in a single step.
+That recovery should keep the ideal Faraday outputs and camera/noise recipes
+fixed. Dual-port flicker and operating maps should remain separate later
+recovery targets.

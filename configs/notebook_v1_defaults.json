@@ -158,6 +158,25 @@
       8.4
     ]
   },
+  "noisy_multishot_filmstrip_recovery": {
+    "primary_notebook_cell": 93,
+    "related_notebook_cell": 44,
+    "selected_frames": [
+      0,
+      5,
+      10,
+      14
+    ],
+    "rng_seed": 7,
+    "profile_convention": "cell 93 reuses the fresh-cloud PCI profile and applies each frame's phase value",
+    "figure_size_inches": [
+      15.2,
+      3.6
+    ],
+    "map_cmap": "inferno",
+    "map_vmin": 0.9,
+    "map_vmax": 1.18
+  },
   "unit_conventions": {
     "internal": "SI",
     "density_display": "cm^-3",

@@ -1,0 +1,34 @@
+{
+  "cell44_related_frame_indices": [
+    0,
+    7,
+    14
+  ],
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "exact_full_notebook_rng_reproduction": false,
+  "generated_outputs": {
+    "comparison_report": "results\\notebook_aligned_recovery\\noisy_multishot_filmstrip\\comparison_report.json",
+    "figure": "results\\notebook_aligned_recovery\\noisy_multishot_filmstrip\\noisy_multishot_pci_filmstrip.svg",
+    "filmstrip_summary": "results\\notebook_aligned_recovery\\noisy_multishot_filmstrip\\filmstrip_summary.json",
+    "frame_statistics": "results\\notebook_aligned_recovery\\noisy_multishot_filmstrip\\frame_statistics.csv",
+    "metadata": "results\\notebook_aligned_recovery\\noisy_multishot_filmstrip\\metadata.json",
+    "selected_frames": "results\\notebook_aligned_recovery\\noisy_multishot_filmstrip\\selected_frames.csv"
+  },
+  "git_commit_hash": "9c6aeaee81113773128e02f8b84e98a312265a54",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "rng_seed": 7,
+  "scope_boundary": "Only noisy PCI filmstrip recovery is generated. Faraday camera panels, dual-port flicker, operating maps, and shot-noise maps are not generated.",
+  "selected_frame_indices": [
+    0,
+    5,
+    10,
+    14
+  ],
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "cloud_fading_camera_variant": 44,
+    "step_14_noisy_filmstrip": 93
+  },
+  "status": "Notebook-aligned noisy PCI multishot filmstrip recovery output."
+}

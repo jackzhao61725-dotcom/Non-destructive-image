@@ -1,0 +1,251 @@
+{
+  "frame_comparisons": [
+    {
+      "binned_image": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "binned_image_stats": {
+        "centre_value": 1.1339167724448815,
+        "max": 1.1339167724448815,
+        "mean": 0.9043924044803204,
+        "min": 0.8662054798811654,
+        "peak_index": [
+          34,
+          34
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4181.910478317001
+      },
+      "frame_index": 0,
+      "noisy_counts": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "noisy_frame": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "noisy_frame_stats": {
+        "centre_value": 1.1763902434023257,
+        "max": 1.1864651381235056,
+        "mean": 0.9048341400329197,
+        "min": 0.8037387044197736,
+        "peak_index": [
+          34,
+          36
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4183.953063512221
+      },
+      "residual_stats": {
+        "max": 0.11431610805061276,
+        "mean": 0.0004417355525995334,
+        "min": -0.09860994720361838,
+        "std": 0.030427061235380748
+      }
+    },
+    {
+      "binned_image": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "binned_image_stats": {
+        "centre_value": 1.1175817054714878,
+        "max": 1.1175817054714878,
+        "mean": 0.9042599814866008,
+        "min": 0.8686081027117739,
+        "peak_index": [
+          34,
+          34
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4181.298154394042
+      },
+      "frame_index": 5,
+      "noisy_counts": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "noisy_frame": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "noisy_frame_stats": {
+        "centre_value": 1.113281606357204,
+        "max": 1.1876563595378418,
+        "mean": 0.9045503168872816,
+        "min": 0.7948667537645705,
+        "peak_index": [
+          34,
+          35
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4182.64066528679
+      },
+      "residual_stats": {
+        "max": 0.12658908051615925,
+        "mean": 0.00029033540068067144,
+        "min": -0.1076854132866153,
+        "std": 0.030517108798712705
+      }
+    },
+    {
+      "binned_image": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "binned_image_stats": {
+        "centre_value": 1.100687326124011,
+        "max": 1.100687326124011,
+        "mean": 0.9041228791005826,
+        "min": 0.8711165818709027,
+        "peak_index": [
+          34,
+          34
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4180.664192961094
+      },
+      "frame_index": 10,
+      "noisy_counts": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "noisy_frame": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "noisy_frame_stats": {
+        "centre_value": 1.1384914020737067,
+        "max": 1.1384914020737067,
+        "mean": 0.9044529944801176,
+        "min": 0.7963191914284802,
+        "peak_index": [
+          34,
+          34
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4182.190646476064
+      },
+      "residual_stats": {
+        "max": 0.10577794906438998,
+        "mean": 0.00033011537953519073,
+        "min": -0.10622520085752374,
+        "std": 0.02956380887046506
+      }
+    },
+    {
+      "binned_image": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "binned_image_stats": {
+        "centre_value": 1.0866834616862273,
+        "max": 1.0866834616862273,
+        "mean": 0.9040091156297371,
+        "min": 0.8732143517554267,
+        "peak_index": [
+          34,
+          34
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4180.138150671904
+      },
+      "frame_index": 14,
+      "noisy_counts": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "noisy_frame": {
+        "max_absolute_difference": 0.0,
+        "max_relative_difference": 0.0
+      },
+      "noisy_frame_stats": {
+        "centre_value": 1.0714911263438092,
+        "max": 1.1158530354342058,
+        "mean": 0.9043769748075294,
+        "min": 0.7961670249253668,
+        "peak_index": [
+          33,
+          37
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4181.839131510016
+      },
+      "residual_stats": {
+        "max": 0.11658043249606553,
+        "mean": 0.0003678591777922904,
+        "min": -0.10314647734515459,
+        "std": 0.029429505453540096
+      }
+    }
+  ],
+  "notebook_formula": {
+    "binning": "I_s[:_nb2,:_nb2].reshape(_nb2//15,15,_nb2//15,15).mean(axis=(1,3))",
+    "display": "imshow(frame, extent=ext, origin='lower', cmap='inferno', vmin=0.90, vmax=1.18)",
+    "frame_selection": "st_show = [0, 5, 10, 14]",
+    "ideal_image": "I_s, _ = sim_image(SEQ_axis, phi_s, 'PCI')",
+    "noise": "(rng.poisson(clip(b,0,None)*st_Nd_run) + rng.normal(0, read_e, b.shape)) / st_Nd_run",
+    "phase_source": "phi_s = seq_h['phi'][s]"
+  },
+  "parameters": {
+    "bin_size": 15,
+    "frame_shape": [
+      68,
+      68
+    ],
+    "photons_per_pixel": 1072.6265629146646,
+    "read_noise_electrons": 7.0
+  },
+  "primary_recovered_cell": 93,
+  "related_cell44_frame_indices": [
+    0,
+    7,
+    14
+  ],
+  "rng_policy": {
+    "exact_full_notebook_rng_reproduction": false,
+    "notebook_rng": "global np.random.default_rng(7)",
+    "reason": "Cell 93 appears after earlier stochastic camera and detuning-strip draws, so exact global notebook state depends on full interactive execution history.",
+    "recovery_rng": "explicit np.random.default_rng(seed)",
+    "rng_seed": 7,
+    "tested_reproducibility": "The recovered filmstrip is exactly reproducible under the explicit-seed replay used by this script."
+  },
+  "scope_boundary": "Only the noisy PCI multishot filmstrip is recovered. Faraday camera panels, dual-port flicker, operating maps, and shot-noise maps are not generated.",
+  "selected_frame_indices": [
+    0,
+    5,
+    10,
+    14
+  ],
+  "source_notebook_cells": {
+    "cloud_fading_camera_variant": 44,
+    "step_14_noisy_filmstrip": 93
+  },
+  "status": "notebook-aligned noisy PCI multishot filmstrip recovered for the tested explicit-seed recipe"
+}

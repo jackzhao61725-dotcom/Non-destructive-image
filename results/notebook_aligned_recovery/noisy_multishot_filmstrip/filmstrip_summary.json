@@ -1,0 +1,123 @@
+{
+  "cell44_related_frame_indices": [
+    0,
+    7,
+    14
+  ],
+  "frame_summaries": [
+    {
+      "N0": 24999.999999999978,
+      "accumulated_snr": 7.755454842736431,
+      "frame_index": 0,
+      "loss_fraction": 8.881784197001252e-16,
+      "noisy_frame_stats": {
+        "centre_value": 1.1763902434023257,
+        "max": 1.1864651381235056,
+        "mean": 0.9048341400329197,
+        "min": 0.8037387044197736,
+        "peak_index": [
+          34,
+          36
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4183.953063512221
+      },
+      "phi_rad": 0.20294165287929006,
+      "snr": 7.755454842736431,
+      "temperature_k": 2e-07
+    },
+    {
+      "N0": 22251.24175853835,
+      "accumulated_snr": 18.383674274183647,
+      "frame_index": 5,
+      "loss_fraction": 0.10995032965846607,
+      "noisy_frame_stats": {
+        "centre_value": 1.113281606357204,
+        "max": 1.1876563595378418,
+        "mean": 0.9045503168872816,
+        "min": 0.7948667537645705,
+        "peak_index": [
+          34,
+          35
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4182.64066528679
+      },
+      "phi_rad": 0.18924296307881183,
+      "snr": 7.247913437683137,
+      "temperature_k": 2.019901884601822e-07
+    },
+    {
+      "N0": 19529.04745904292,
+      "accumulated_snr": 24.047846590361974,
+      "frame_index": 10,
+      "loss_fraction": 0.2188381016382832,
+      "noisy_frame_stats": {
+        "centre_value": 1.1384914020737067,
+        "max": 1.1384914020737067,
+        "mean": 0.9044529944801176,
+        "min": 0.7963191914284802,
+        "peak_index": [
+          34,
+          34
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4182.190646476064
+      },
+      "phi_rad": 0.1749910449421481,
+      "snr": 6.7170985109672285,
+      "temperature_k": 2.0392322976988778e-07
+    },
+    {
+      "N0": 17369.583984817014,
+      "accumulated_snr": 27.281738255565195,
+      "frame_index": 14,
+      "loss_fraction": 0.30521664060731946,
+      "noisy_frame_stats": {
+        "centre_value": 1.0714911263438092,
+        "max": 1.1158530354342058,
+        "mean": 0.9043769748075294,
+        "min": 0.7961670249253668,
+        "peak_index": [
+          33,
+          37
+        ],
+        "shape": [
+          68,
+          68
+        ],
+        "sum": 4181.839131510016
+      },
+      "phi_rad": 0.16311009404814675,
+      "snr": 6.272471467228013,
+      "temperature_k": 2.0543100787139788e-07
+    }
+  ],
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "photons_per_pixel": 1072.6265629146646,
+  "read_noise_electrons": 7.0,
+  "rng_seed": 7,
+  "scope_boundary": "No noisy Faraday, dual-port, operating-map, or shot-noise figures are generated.",
+  "selected_frame_indices": [
+    0,
+    5,
+    10,
+    14
+  ],
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "cloud_fading_camera_variant": 44,
+    "step_14_noisy_filmstrip": 93
+  },
+  "status": "Notebook-aligned noisy PCI multishot filmstrip recovery output."
+}
