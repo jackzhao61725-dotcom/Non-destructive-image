@@ -1,0 +1,2 @@
+frame_index,deterministic_mean,noisy_mean,noisy_counts_mean,residual_mean,residual_std,expected_image_std_mean,expected_image_std_min,expected_image_std_max
+0,0.90439240448,0.904788190319,1386.4283525,0.000395785838679,0.0251762560788,0.0247190003317,0.0242106904855,0.02758381587

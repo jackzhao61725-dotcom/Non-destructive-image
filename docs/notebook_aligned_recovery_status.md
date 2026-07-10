@@ -6,7 +6,7 @@ The canonical notebook-aligned recovery path now covers:
 
 ```text
 parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map -> PCI image -> DGI image -> ideal Faraday outputs
--> deterministic camera image
+-> deterministic camera image -> stochastic camera frame
 ```
 
 This is a recovery of the historical Version 1 notebook computation. It does
@@ -206,6 +206,50 @@ Status:
 - all tested deterministic camera helper/notebook-expression max absolute
   differences against `simulate_camera_image(...)`: `0.0`.
 
+### Stochastic Camera
+
+Script:
+
+```text
+scripts/recover_notebook_noisy_camera_stage.py
+```
+
+Recovered notebook references:
+
+- cell 0: `rng = np.random.default_rng(7)`;
+- cell 20: `to_camera(...)`.
+
+Recovered stochastic convention:
+
+```text
+counts = rng.poisson(np.clip(binned, 0, None) * N_phot_pix)
+       + rng.normal(0, read_e, binned.shape)
+noisy_camera_image = counts / N_phot_pix
+```
+
+Status:
+
+- closed for the tested explicit-seed stochastic recipe;
+- input: recovered deterministic PCI camera image / binned PCI ideal image;
+- RNG seed used for recovery: `7`;
+- notebook RNG policy: global `np.random.default_rng(7)`;
+- recovery RNG policy: explicit `np.random.default_rng(seed)`;
+- exact replay is available for the isolated first PCI camera call under clean
+  notebook execution order;
+- arbitrary interactive notebook-global RNG state is not claimed to be
+  reproducible;
+- photons per camera pixel: `1532.3236613066642`;
+- read noise: `7.0 e-`;
+- noisy camera image shape: `68 x 68`;
+- noisy camera image centre value: `1.1547265453246764`;
+- noisy camera image mean: `0.9047881903189995`;
+- deterministic camera image mean: `0.9043924044803204`;
+- residual standard deviation: `0.02517625607875563`;
+- residual standard deviation divided by mean expected per-pixel image noise:
+  `1.0184981488308726`;
+- all tested seeded stochastic helper/notebook-expression max absolute
+  differences against `simulate_noisy_camera_image(...)`: `0.0`.
+
 ## Generated Recovery Outputs
 
 Current recovery outputs are grouped under:
@@ -221,7 +265,8 @@ Stage directories:
 - `pci_stage/`;
 - `dgi_stage/`;
 - `faraday_stage/`;
-- `camera_stage/`.
+- `camera_stage/`;
+- `noisy_camera_stage/`.
 
 The Faraday stage generates only:
 
@@ -241,6 +286,14 @@ The camera stage generates only:
 It does not generate Poisson photon noise, Gaussian read-noise frames, or
 multi-shot sequences.
 
+The noisy camera stage generates only:
+
+- `noisy_camera_stage.svg`;
+- JSON comparison/summary/metadata files;
+- noise statistics CSV.
+
+It does not generate multi-shot frame sequences.
+
 ## Regression Tests
 
 Focused regression tests:
@@ -252,6 +305,7 @@ tests/regression/test_notebook_pci_recovery.py
 tests/regression/test_notebook_dgi_recovery.py
 tests/regression/test_notebook_faraday_recovery.py
 tests/regression/test_notebook_camera_recovery.py
+tests/regression/test_notebook_noisy_camera_recovery.py
 ```
 
 These tests check stable numerical outputs and helper/notebook-expression
@@ -261,7 +315,6 @@ agreement. They do not test SVG pixel appearance.
 
 The recovery still has not locked down end-to-end notebook-aligned recipes for:
 
-- noisy frame rendering;
 - multi-shot frame rendering;
 - optimisation and SNR operating maps.
 
@@ -271,12 +324,11 @@ target.
 
 ## Recommended Next Step
 
-The next candidate recovery should be the stochastic camera/noise stage:
+The next candidate recovery should be the multi-shot / continuous-imaging stage:
 
 ```text
-deterministic camera image -> noisy frame
+recovered imaging and camera stages -> frame sequence
 ```
 
-That recovery should keep the existing deterministic camera stage fixed and
-compare the notebook Poisson/read-noise recipe before any multi-shot frame
-sequence is attempted.
+That recovery should keep the deterministic and stochastic camera recipes fixed
+and only then compare notebook frame-sequence bookkeeping.

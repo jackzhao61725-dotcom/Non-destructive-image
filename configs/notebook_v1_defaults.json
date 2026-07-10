@@ -124,6 +124,22 @@
     ],
     "map_cmap": "inferno"
   },
+  "noisy_camera_recovery": {
+    "input_stage": "deterministic_camera_stage",
+    "rng_seed": 7,
+    "notebook_rng_source": "notebook_sections/00_imports.py",
+    "notebook_reference_cells": [
+      0,
+      20
+    ],
+    "figure_size_inches": [
+      12.4,
+      3.6
+    ],
+    "map_cmap": "inferno",
+    "map_vmin": 0.85,
+    "map_vmax": 1.15
+  },
   "unit_conventions": {
     "internal": "SI",
     "density_display": "cm^-3",

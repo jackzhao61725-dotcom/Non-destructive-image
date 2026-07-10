@@ -1,0 +1,76 @@
+{
+  "camera_parameters": {
+    "input_stage": "deterministic_camera_stage",
+    "photons_per_pixel": 1532.3236613066642,
+    "read_noise_electrons": 7.0,
+    "shape": [
+      68,
+      68
+    ]
+  },
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "noisy_camera_image_stats": {
+    "centre_value": 1.1547265453246764,
+    "max": 1.1616523905537648,
+    "mean": 0.9047881903189995,
+    "min": 0.8196905139413712,
+    "peak_index": [
+      34,
+      38
+    ],
+    "shape": [
+      68,
+      68
+    ],
+    "sum": 4183.740592035054
+  },
+  "noisy_counts_stats": {
+    "centre_value": 1769.414807739904,
+    "max": 1780.027444258984,
+    "mean": 1386.4283524966404,
+    "min": 1256.0311694609832,
+    "peak_index": [
+      34,
+      38
+    ],
+    "shape": [
+      68,
+      68
+    ],
+    "sum": 6410844.701944465
+  },
+  "rng_policy": {
+    "exact_notebook_frame_reproduction": "Exact for this isolated first PCI camera call under clean notebook execution order; ambiguous for arbitrary interactive notebook RNG state.",
+    "hidden_rng_introduced": false,
+    "notebook_rng": "global np.random.default_rng(7)",
+    "recovery_rng": "explicit np.random.default_rng(seed)",
+    "rng_seed": 7
+  },
+  "scope_boundary": "Only deterministic camera image -> one stochastic noisy camera frame is recovered. Multishot frame sequences are not generated.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "camera_helpers": 20,
+    "rng_initialisation": 0
+  },
+  "status": "Canonical notebook-aligned stochastic camera-stage recovery output.",
+  "stochastic_statistics": {
+    "deterministic_mean": 0.9043924044803204,
+    "different_seed_max_absolute_difference": 0.13828151131217714,
+    "expected_per_pixel_image_std_stats": {
+      "max": 0.027583815870025015,
+      "mean": 0.02471900033167001,
+      "min": 0.024210690485511565,
+      "std": 0.0002224464119825588
+    },
+    "mean_difference": 0.0003957858386790525,
+    "noisy_mean": 0.9047881903189995,
+    "residual_stats": {
+      "max": 0.09421237709834784,
+      "mean": 0.0003957858386791019,
+      "min": -0.08225647104167388,
+      "std": 0.02517625607875563
+    },
+    "sample_residual_std_over_mean_expected_std": 1.0184981488308726
+  }
+}

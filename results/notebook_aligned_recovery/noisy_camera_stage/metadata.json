@@ -1,0 +1,24 @@
+{
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "exact_notebook_frame_reproduction": "Exact for this isolated first PCI camera call under clean notebook execution order; ambiguous for arbitrary interactive notebook RNG state.",
+  "generated_outputs": {
+    "comparison_report": "results\\notebook_aligned_recovery\\noisy_camera_stage\\comparison_report.json",
+    "figure": "results\\notebook_aligned_recovery\\noisy_camera_stage\\noisy_camera_stage.svg",
+    "metadata": "results\\notebook_aligned_recovery\\noisy_camera_stage\\metadata.json",
+    "noisy_camera_statistics": "results\\notebook_aligned_recovery\\noisy_camera_stage\\noisy_camera_statistics.csv",
+    "noisy_camera_summary": "results\\notebook_aligned_recovery\\noisy_camera_stage\\noisy_camera_summary.json"
+  },
+  "git_commit_hash": "88ec2d531b9e4c08ce35c0a160ba740b7a926355",
+  "label": "notebook_v1_defaults_uncalibrated",
+  "no_experimental_calibration_applied": true,
+  "photons_per_pixel": 1532.3236613066642,
+  "read_noise_electrons": 7.0,
+  "rng_seed": 7,
+  "scope_boundary": "Only stochastic camera recovery is generated. Multishot recovery is not performed.",
+  "source_notebook": "1 calculations revised 2  multishot  6  extended.ipynb",
+  "source_notebook_cells": {
+    "camera_helpers": 20,
+    "rng_initialisation": 0
+  },
+  "status": "Canonical notebook-aligned stochastic camera-stage recovery output."
+}
