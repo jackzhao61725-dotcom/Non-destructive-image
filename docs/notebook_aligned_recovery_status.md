@@ -5,7 +5,7 @@
 The canonical notebook-aligned recovery path now covers:
 
 ```text
-parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map -> PCI image
+parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map -> PCI image -> DGI image
 ```
 
 This remains a recovery of the historical Version 1 notebook computation. It
@@ -63,12 +63,6 @@ Outputs:
 results/notebook_aligned_recovery/phase_stage/
 ```
 
-Notebook phase references:
-
-- cell 10: `delta_of(...)` and `phi_peak(...)`;
-- cell 59: Stage 18.2 phase-map construction;
-- cell 67: Step 19.1 scalar phase-map display.
-
 Recovered notebook convention:
 
 ```text
@@ -82,8 +76,6 @@ Current deterministic comparison results:
 - detuning: `1.5e9 Hz`;
 - dimensionless detuning: `101.69491525423727`;
 - peak scalar phase: `0.20294165287929014 rad`;
-- dimensionless detuning absolute difference: `0.0`;
-- phase-peak absolute difference: `0.0`;
 - phase-map max absolute difference: `0.0`;
 - phase-map max relative difference: `0.0`;
 - phase-map shape: `1024 x 1024`;
@@ -104,11 +96,6 @@ Outputs:
 ```text
 results/notebook_aligned_recovery/pci_stage/
 ```
-
-Notebook PCI references:
-
-- cell 16: phase-to-intensity transfer curve and PCI normalisation notes;
-- cell 18: Fourier-optics `sim_image(...)` implementation.
 
 Recovered notebook convention:
 
@@ -133,19 +120,72 @@ Recovered parameters:
 Current deterministic comparison results:
 
 - object-field max absolute difference: `0.0`;
-- object-field max relative difference: `0.0`;
 - PCI reference-field absolute difference: `0.0`;
 - propagated-scattered-field max absolute difference: `1.1102230246251565e-16`;
 - propagated-scattered-field max relative difference: `4.117787554919934e-09`;
 - PCI image max absolute difference: `0.0`;
 - PCI image max relative difference: `0.0`;
 - PCI image shape: `1024 x 1024`;
-- PCI image peak location: centre pixel `[512, 512]`;
-- PCI image centre value: `1.1585677695076864`.
+- PCI image centre value: `1.1585677695076864`;
+- PCI image peak location: centre pixel `[512, 512]`.
 
-The optional SVG output, `pci_image_stage.svg`, follows the recovered notebook
-PCI intensity quantity only. It does not generate DGI, Faraday, camera, or
-multi-shot figures.
+## DGI Stage
+
+The DGI recovery is closed for the tested deterministic quantities.
+
+Script:
+
+```text
+scripts/recover_notebook_dgi_stage.py
+```
+
+Outputs:
+
+```text
+results/notebook_aligned_recovery/dgi_stage/
+```
+
+Notebook DGI references:
+
+- cell 16: phase-to-intensity transfer curve and DGI normalisation notes;
+- cell 18: Fourier-optics `sim_image(...)` implementation.
+
+Recovered notebook convention:
+
+```text
+object_field = np.exp(1j * phase_map)
+scattered_field = object_field - 1
+propagated_scattered_field = np.fft.ifft2(np.fft.fft2(scattered_field) * pupil)
+reference_field = 10 ** (-OD / 2)
+dgi_image_intensity = np.abs(reference_field + propagated_scattered_field) ** 2
+```
+
+Recovered parameters:
+
+- imaging axis: `x`, transverse plane `y,z`;
+- numerical aperture: `0.08`;
+- DGI stop optical depth: `4.0`;
+- residual reference field: `0.01`;
+- residual reference intensity: `0.0001`;
+- pupil nonzero pixels: `1245`;
+- intensity convention: incident-`I0` normalised.
+
+Current deterministic comparison results:
+
+- object-field max absolute difference: `0.0`;
+- object-field max relative difference: `0.0`;
+- DGI reference-field absolute difference: `0.0`;
+- propagated-scattered-field max absolute difference: `8.673617379884035e-19`;
+- propagated-scattered-field max relative difference: `6.939042325247647e-11`;
+- DGI image max absolute difference: `0.0`;
+- DGI image max relative difference: `0.0`;
+- DGI image shape: `1024 x 1024`;
+- DGI image centre value: `0.01595651906354294`;
+- DGI image peak location: centre pixel `[512, 512]`.
+
+The optional SVG output, `dgi_image_stage.svg`, follows the recovered notebook
+DGI intensity quantity only. It does not generate Faraday, camera, or multi-shot
+figures.
 
 ## Regression Tests
 
@@ -155,6 +195,7 @@ Focused regression tests:
 tests/regression/test_notebook_condensate_recovery.py
 tests/regression/test_notebook_phase_recovery.py
 tests/regression/test_notebook_pci_recovery.py
+tests/regression/test_notebook_dgi_recovery.py
 ```
 
 These tests check stable numerical outputs and helper/notebook-expression
@@ -164,7 +205,6 @@ agreement. They do not test SVG pixel appearance.
 
 The recovery still has not locked down end-to-end notebook-aligned recipes for:
 
-- DGI image formation;
 - Faraday image formation;
 - camera binning/noise workflows;
 - multi-shot frame rendering;
@@ -176,12 +216,13 @@ target.
 
 ## Recommended Next Step
 
-The next candidate recovery should be the DGI imaging path:
+The next candidate recovery should be the Faraday imaging path:
 
 ```text
-phase_map -> DGI image
+scalar phase / theta_F map -> Faraday image
 ```
 
 That recovery should reuse the same condensate, phase-map, grid, FFT, and pupil
-defaults, then compare only the DGI-specific reference-field and intensity
-convention. It should not generate Faraday, camera, or multi-shot figures.
+defaults, then compare the notebook's phenomenological `theta_F = kappa_F *
+phi_peak` convention and circular-to-linear recombination. It should not
+generate camera or multi-shot figures.

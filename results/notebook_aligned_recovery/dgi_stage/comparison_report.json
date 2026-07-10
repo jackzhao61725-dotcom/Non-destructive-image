@@ -1,0 +1,85 @@
+{
+  "dgi_image_intensity": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "centre_value": 0.01595651906354294,
+      "max": 0.01595651906354294,
+      "mean": 0.00018381101889794308,
+      "min": 9.854763408159256e-05,
+      "peak_index": [
+        512,
+        512
+      ],
+      "shape": [
+        1024,
+        1024
+      ],
+      "sum": 192.73982295192957
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "dgi_stop": {
+    "reference_field_absolute_difference": 0.0,
+    "reference_field_helper": 0.01,
+    "reference_field_notebook": 0.01,
+    "reference_intensity": 0.0001,
+    "stop_optical_depth": 4.0
+  },
+  "notebook_formula": {
+    "dgi_image_intensity": "np.abs(reference_field + propagated_scattered_field) ** 2",
+    "object_field": "np.exp(1j * phase_map)",
+    "propagation": "np.fft.ifft2(np.fft.fft2(scattered_field) * pupil)",
+    "reference_field": "10 ** (-OD / 2)",
+    "scattered_field": "object_field - 1"
+  },
+  "object_field": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "stats": {
+      "imag_mean": 0.0009407750861179815,
+      "magnitude_max": 1.0000000000000002,
+      "magnitude_mean": 1.0,
+      "magnitude_min": 0.9999999999999998,
+      "phase_max": 0.2029416528792901,
+      "phase_min": 0.0,
+      "real_mean": 0.9999402655875498,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "propagated_scattered_field": {
+    "max_absolute_difference": 8.673617379884035e-19,
+    "max_relative_difference": 6.939042325247647e-11,
+    "stats": {
+      "imag_mean": 0.0009407750861179815,
+      "magnitude_max": 0.12673601530221407,
+      "magnitude_mean": 0.0020306268903174485,
+      "magnitude_min": 1.0319298315112296e-08,
+      "phase_max": 3.1363402096098865,
+      "phase_min": -3.1365576258937087,
+      "real_mean": -5.97344124502416e-05,
+      "shape": [
+        1024,
+        1024
+      ]
+    }
+  },
+  "pupil": {
+    "dgrid_m": 9.765625e-08,
+    "nonzero_pixels": 1245,
+    "numerical_aperture": 0.08,
+    "shape": [
+      1024,
+      1024
+    ]
+  },
+  "scope_boundary": "Only scalar phase map -> DGI image is recovered. Faraday, camera, and multishot stages are not generated.",
+  "source_notebook_cells": {
+    "dgi_transfer_curve": 16,
+    "fourier_optics_sim_image": 18
+  },
+  "status": "canonical notebook DGI stage matches simulate_dgi_image for tested deterministic quantities"
+}
