@@ -297,15 +297,8 @@ def write_figure(path: Path, plot_config: dict[str, Any], data: dict[str, np.nda
         lw=2.2,
         label=r"$N_\gamma$",
     )
-    ax_signal.loglog(
-        x,
-        data["normalised_residual_optical_depth"],
-        lw=1.8,
-        ls="--",
-        label="residual OD",
-    )
     ax_signal.set_ylabel("normalised value")
-    ax_signal.set_title("(a) Signal and destructiveness scaling")
+    ax_signal.set_title("(a) Signal and scattering")
     ax_signal.grid(alpha=0.25, which="both")
     ax_signal.legend(fontsize=8.5)
 
@@ -316,17 +309,9 @@ def write_figure(path: Path, plot_config: dict[str, Any], data: dict[str, np.nda
         color="C2",
         label=r"$|\phi|/N_\gamma$",
     )
-    ax_ratio.semilogx(
-        x,
-        data["normalised_signal_to_destruction"],
-        lw=1.8,
-        color="C4",
-        ls="--",
-        label="signal/destructiveness",
-    )
     ax_ratio.set_xlabel(r"$|\Delta|/2\pi$ (GHz)")
     ax_ratio.set_ylabel("normalised value")
-    ax_ratio.set_title("(b) Information-efficiency proxy")
+    ax_ratio.set_title("(b) Signal per scattered photon")
     ax_ratio.grid(alpha=0.25, which="both")
     ax_ratio.legend(fontsize=8.5)
 
@@ -337,7 +322,7 @@ def write_figure(path: Path, plot_config: dict[str, Any], data: dict[str, np.nda
     ax_signal.text(
         reference_ghz * 1.03,
         0.78,
-        "1.5 GHz reference",
+        "1.5 GHz",
         fontsize=8,
         color="0.3",
     )
@@ -373,6 +358,8 @@ def build_summary(data: dict[str, np.ndarray], params: dict[str, Any], plot_conf
         "best_signal_per_scattered_photon_detuning_ghz": float(data["detuning_ghz"][best_index]),
         "best_signal_per_scattered_photon": float(data["signal_per_scattered_photon"][best_index]),
         "normalisation": plot_config["normalisation"],
+        "plotted_quantities": plot_config["plotted_quantities"],
+        "data_note": "CSV retains additional absolute quantities such as residual OD and signal_to_destruction for provenance; the SVG intentionally plots only the simplified curve set.",
         "interpretation_note": (
             "In the far-detuned limit the phase-like signal scales approximately as 1/Delta, "
             "while scattering and residual OD scale approximately as 1/Delta^2."

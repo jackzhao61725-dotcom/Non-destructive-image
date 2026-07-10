@@ -31,7 +31,7 @@
     "resonant_cross_section_m2": 7.678673341230137e-14,
     "species": "166Er"
   },
-  "git_commit_hash": "eae16a09c9abcbbd8bbff17e7cd1d6742f8f680f",
+  "git_commit_hash": "5529bcd3c08a168e60fef8d379d80573cf0e11d1",
   "label": "v1_representative_uncalibrated",
   "model_status": "Uses current notebook-equivalent scalar light-atom formulas; no microscopic Faraday model is introduced.",
   "normalisation": {
@@ -55,12 +55,10 @@
   "plotted_quantities": {
     "panel_a": [
       "normalised_abs_scalar_phase",
-      "normalised_scattered_photons_per_atom",
-      "normalised_residual_optical_depth"
+      "normalised_scattered_photons_per_atom"
     ],
     "panel_b": [
-      "normalised_signal_per_scattered_photon",
-      "normalised_signal_to_destruction"
+      "normalised_signal_per_scattered_photon"
     ]
   },
   "prediction_status": "This is a representative Version 1 physics trade-off plot, not a final operating-point prediction.",

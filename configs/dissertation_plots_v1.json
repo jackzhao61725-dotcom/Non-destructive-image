@@ -22,12 +22,10 @@
   "plotted_quantities": {
     "panel_a": [
       "normalised_abs_scalar_phase",
-      "normalised_scattered_photons_per_atom",
-      "normalised_residual_optical_depth"
+      "normalised_scattered_photons_per_atom"
     ],
     "panel_b": [
-      "normalised_signal_per_scattered_photon",
-      "normalised_signal_to_destruction"
+      "normalised_signal_per_scattered_photon"
     ]
   },
   "normalisation": {
@@ -37,7 +35,7 @@
   },
   "figure": {
     "filename": "detuning_tradeoff.svg",
-    "title": "Detuning trade-off",
+    "title": "Detuning dependence of dispersive signal and scattering",
     "figsize_inches": [
       7.2,
       5.8

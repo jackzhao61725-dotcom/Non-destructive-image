@@ -3,6 +3,7 @@
   "best_signal_per_scattered_photon_detuning_ghz": 5.0,
   "best_signal_per_scattered_photon_index": 179,
   "column_density_peak_m2": 537596245257846.75,
+  "data_note": "CSV retains additional absolute quantities such as residual OD and signal_to_destruction for provenance; the SVG intentionally plots only the simplified curve set.",
   "detuning_max_ghz": 5.0,
   "detuning_min_ghz": 0.5,
   "far_detuned_log_slope_abs_phase": -0.9999587640392412,
@@ -22,5 +23,14 @@
     "rule": "Each plotted curve is divided by its own maximum finite absolute value over the configured detuning range. Absolute values are saved in CSV."
   },
   "num_points": 180,
+  "plotted_quantities": {
+    "panel_a": [
+      "normalised_abs_scalar_phase",
+      "normalised_scattered_photons_per_atom"
+    ],
+    "panel_b": [
+      "normalised_signal_per_scattered_photon"
+    ]
+  },
   "status": "Version 1 representative / uncalibrated detuning trade-off analysis"
 }
