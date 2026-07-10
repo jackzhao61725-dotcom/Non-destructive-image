@@ -1,0 +1,94 @@
+{
+  "calibration_status": "No experimental RAI / absorption calibration has been applied.",
+  "config_files_used": {
+    "notebook_defaults": "configs\\notebook_v1_defaults.json",
+    "plot_config": "configs\\dissertation_plots_v1.json"
+  },
+  "detuning_convention": "positive detuning magnitude Delta_Hz; dimensionless delta = 2 * Delta_Hz * 2*pi / Gamma_rad_s",
+  "detuning_range": {
+    "max_ghz": 5.0,
+    "min_ghz": 0.5,
+    "num_points": 180,
+    "spacing": "log"
+  },
+  "fixed_optical_parameters": {
+    "probe_diameter_m": 0.024,
+    "probe_power_mw": 3.5,
+    "pulse_duration_s": 3.9999999999999996e-05,
+    "saturation_intensity_w_m2": 597.9627307559916,
+    "use_peak_intensity": true
+  },
+  "fixed_physical_parameters": {
+    "atom_number": 25000.0,
+    "column_densities_m2": [
+      537596245257846.75,
+      1.1251121418610648e+16,
+      676033046611798.5
+    ],
+    "column_density_peak_m2": 537596245257846.75,
+    "gamma_rad_per_s": 185353966.5617978,
+    "kappa_F": 1.0,
+    "resonant_cross_section_m2": 7.678673341230137e-14,
+    "species": "166Er"
+  },
+  "git_commit_hash": "eae16a09c9abcbbd8bbff17e7cd1d6742f8f680f",
+  "label": "v1_representative_uncalibrated",
+  "model_status": "Uses current notebook-equivalent scalar light-atom formulas; no microscopic Faraday model is introduced.",
+  "normalisation": {
+    "absolute_values_saved": true,
+    "mode": "normalised_for_display",
+    "rule": "Each plotted curve is divided by its own maximum finite absolute value over the configured detuning range. Absolute values are saved in CSV."
+  },
+  "notebook_expressions_used": {
+    "dimensionless_detuning": "delta = 2 * Delta_Hz * 2*pi / Gamma_rad_s",
+    "faraday": "theta_F = kappa_F * phi",
+    "residual_od": "OD = sigma0 * n_col_peak / (1 + delta**2)",
+    "scalar_phase": "phi = sigma0 * n_col_peak * delta / (2 * (1 + delta**2))",
+    "scattering": "N_gamma = (Gamma/2) * s/(1 + s + delta**2) * tau"
+  },
+  "outputs": {
+    "data": "results\\dissertation_plots_v1\\detuning_tradeoff\\detuning_tradeoff_data.csv",
+    "figure": "results\\dissertation_plots_v1\\detuning_tradeoff\\detuning_tradeoff.svg",
+    "metadata": "results\\dissertation_plots_v1\\detuning_tradeoff\\metadata.json",
+    "summary": "results\\dissertation_plots_v1\\detuning_tradeoff\\detuning_tradeoff_summary.json"
+  },
+  "plotted_quantities": {
+    "panel_a": [
+      "normalised_abs_scalar_phase",
+      "normalised_scattered_photons_per_atom",
+      "normalised_residual_optical_depth"
+    ],
+    "panel_b": [
+      "normalised_signal_per_scattered_photon",
+      "normalised_signal_to_destruction"
+    ]
+  },
+  "prediction_status": "This is a representative Version 1 physics trade-off plot, not a final operating-point prediction.",
+  "source_helper_functions": [
+    "build_thomas_fermi_state",
+    "dimensionless_detuning",
+    "scalar_phase_shift",
+    "residual_optical_depth",
+    "scattered_photons_per_atom",
+    "reabsorption_fraction",
+    "faraday_rotation_angle"
+  ],
+  "stage_specific_parameters": {
+    "imaging_axis": 0,
+    "probe_power_mw": 3.5,
+    "pulse_duration_us": 40.0,
+    "reason": "The plot describes continuous-imaging destructiveness per frame, so it uses the notebook-aligned multishot probe power and pulse duration.",
+    "source": "configs/notebook_v1_defaults.json: multishot_recovery"
+  },
+  "status": "representative Version 1 analysis, not notebook-aligned figure recovery",
+  "units": {
+    "detuning_ghz": "GHz",
+    "detuning_hz": "Hz",
+    "dimensionless_delta": "dimensionless",
+    "faraday_rotation_rad": "rad",
+    "residual_optical_depth": "dimensionless",
+    "scalar_phase_rad": "rad",
+    "scattered_photons_per_atom": "photons per atom per shot",
+    "signal_per_scattered_photon": "rad per scattered photon"
+  }
+}
