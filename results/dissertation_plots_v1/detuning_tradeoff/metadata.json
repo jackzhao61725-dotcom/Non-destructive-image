@@ -11,6 +11,20 @@
     "num_points": 180,
     "spacing": "log"
   },
+  "dimensionless_detuning_convention": "delta = 2 * Delta_Hz * 2*pi / Gamma_rad_s",
+  "far_detuned_scalings": {
+    "abs_scalar_phase": "approximately proportional to 1/Delta",
+    "scattered_photons_per_atom": "approximately proportional to 1/Delta^2",
+    "signal_per_scattered_photon": "approximately proportional to Delta in the far-detuned limit"
+  },
+  "figure_design": {
+    "internal_title": "removed",
+    "layout": "single-panel",
+    "reference_line": "vertical dashed line at 1.5 GHz",
+    "working_point_marker": "small marker on the |phi|/N_gamma curve at 1.5 GHz",
+    "x_axis_scale": "log",
+    "y_axis_scale": "log"
+  },
   "fixed_optical_parameters": {
     "probe_diameter_m": 0.024,
     "probe_power_mw": 3.5,
@@ -31,7 +45,7 @@
     "resonant_cross_section_m2": 7.678673341230137e-14,
     "species": "166Er"
   },
-  "git_commit_hash": "e173a74ef161609625f4249b7a8f4b6fd51b6bed",
+  "git_commit_hash": "633b2e0e1aebe2bdb398be5128f7cbbb69cc6533",
   "label": "v1_representative_uncalibrated",
   "model_status": "Uses current notebook-equivalent scalar light-atom formulas; no microscopic Faraday model is introduced.",
   "normalisation": {
@@ -53,15 +67,19 @@
     "summary": "results\\dissertation_plots_v1\\detuning_tradeoff\\detuning_tradeoff_summary.json"
   },
   "plotted_quantities": {
-    "panel_a": [
+    "single_panel": [
       "normalised_abs_scalar_phase",
-      "normalised_scattered_photons_per_atom"
-    ],
-    "panel_b": [
+      "normalised_scattered_photons_per_atom",
       "normalised_signal_per_scattered_photon"
     ]
   },
   "prediction_status": "This is a representative Version 1 physics trade-off plot, not a final operating-point prediction.",
+  "quantity_definitions": {
+    "abs_scalar_phase": "|phi| is the dispersive phase-like signal.",
+    "scattered_photons_per_atom": "N_gamma is scattered photons per atom.",
+    "scattering_time_relation": "N_gamma = R_sc * tau at fixed exposure time.",
+    "signal_per_scattered_photon": "|phi|/N_gamma is the displayed signal-per-scattered-photon proxy."
+  },
   "source_helper_functions": [
     "build_thomas_fermi_state",
     "dimensionless_detuning",
@@ -88,5 +106,11 @@
     "scalar_phase_rad": "rad",
     "scattered_photons_per_atom": "photons per atom per shot",
     "signal_per_scattered_photon": "rad per scattered photon"
-  }
+  },
+  "working_point": {
+    "detuning_ghz": 1.5,
+    "dimensionless_delta": 101.69491525423729,
+    "note": "1.5 GHz corresponds to dimensionless detuning approximately 102 under the notebook convention."
+  },
+  "x_axis_convention": "|Delta| / 2pi in GHz"
 }

@@ -20,11 +20,9 @@
     "use_peak_intensity": true
   },
   "plotted_quantities": {
-    "panel_a": [
+    "single_panel": [
       "normalised_abs_scalar_phase",
-      "normalised_scattered_photons_per_atom"
-    ],
-    "panel_b": [
+      "normalised_scattered_photons_per_atom",
       "normalised_signal_per_scattered_photon"
     ]
   },

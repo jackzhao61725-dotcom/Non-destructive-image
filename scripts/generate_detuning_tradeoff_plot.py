@@ -268,6 +268,13 @@ def _log_slope(x: np.ndarray, y: np.ndarray, fraction: float = 0.35) -> float:
     return float(np.polyfit(np.log(tail_x[mask]), np.log(tail_y[mask]), 1)[0])
 
 
+def _log_interpolate(x: np.ndarray, y: np.ndarray, x_value: float) -> float:
+    mask = (x > 0) & (y > 0) & np.isfinite(x) & np.isfinite(y)
+    if np.count_nonzero(mask) < 2:
+        return float("nan")
+    return float(np.exp(np.interp(np.log(x_value), np.log(x[mask]), np.log(y[mask]))))
+
+
 def write_data_csv(path: Path, data: dict[str, np.ndarray]) -> None:
     fieldnames = list(data)
     row_count = len(data["detuning_hz"])
@@ -310,6 +317,18 @@ def write_figure(path: Path, plot_config: dict[str, Any], data: dict[str, np.nda
     reference_ghz = 1.5
     if x.min() <= reference_ghz <= x.max():
         axis.axvline(reference_ghz, color="0.35", lw=1.0, ls=":", alpha=0.75)
+        marker_y = _log_interpolate(x, data["normalised_signal_per_scattered_photon"], reference_ghz)
+        if np.isfinite(marker_y):
+            axis.plot(
+                [reference_ghz],
+                [marker_y],
+                marker="o",
+                ms=4.5,
+                color="C2",
+                markeredgecolor="white",
+                markeredgewidth=0.8,
+                zorder=5,
+            )
     axis.text(
         reference_ghz * 1.03,
         0.72,
@@ -318,7 +337,6 @@ def write_figure(path: Path, plot_config: dict[str, Any], data: dict[str, np.nda
         color="0.3",
     )
 
-    fig.suptitle(figure_config["title"], fontsize=12.5)
     fig.savefig(path, format="svg", bbox_inches="tight", facecolor="white")
     plt.close(fig)
 
@@ -329,6 +347,19 @@ def build_summary(data: dict[str, np.ndarray], params: dict[str, Any], plot_conf
     residual_od_slope = _log_slope(data["detuning_hz"], data["residual_optical_depth"])
     ratio_slope = _log_slope(data["detuning_hz"], data["signal_per_scattered_photon"])
     best_index = int(np.nanargmax(data["signal_per_scattered_photon"]))
+    working_point_ghz = 1.5
+    working_point_hz = working_point_ghz * 1e9
+    working_point_delta = float(np.interp(working_point_hz, data["detuning_hz"], data["dimensionless_delta"]))
+    working_point_signal_per_scattered = _log_interpolate(
+        data["detuning_ghz"],
+        data["signal_per_scattered_photon"],
+        working_point_ghz,
+    )
+    working_point_normalised_signal_per_scattered = _log_interpolate(
+        data["detuning_ghz"],
+        data["normalised_signal_per_scattered_photon"],
+        working_point_ghz,
+    )
     return {
         "label": plot_config["label"],
         "status": "Version 1 representative / uncalibrated detuning trade-off analysis",
@@ -348,9 +379,28 @@ def build_summary(data: dict[str, np.ndarray], params: dict[str, Any], plot_conf
         "best_signal_per_scattered_photon_index": best_index,
         "best_signal_per_scattered_photon_detuning_ghz": float(data["detuning_ghz"][best_index]),
         "best_signal_per_scattered_photon": float(data["signal_per_scattered_photon"][best_index]),
+        "working_point_detuning_ghz": working_point_ghz,
+        "working_point_dimensionless_delta": working_point_delta,
+        "working_point_signal_per_scattered_photon": working_point_signal_per_scattered,
+        "working_point_normalised_signal_per_scattered_photon": working_point_normalised_signal_per_scattered,
+        "working_point_marker": "A small marker is plotted on the |phi|/N_gamma curve at 1.5 GHz.",
+        "x_axis_convention": "|Delta| / 2pi in GHz",
+        "dimensionless_detuning_convention": "delta = 2 * Delta_Hz * 2*pi / Gamma_rad_s",
+        "quantity_definitions": {
+            "abs_scalar_phase": "|phi| is the dispersive phase-like signal.",
+            "scattered_photons_per_atom": "N_gamma is scattered photons per atom.",
+            "scattering_time_relation": "N_gamma = R_sc * tau at fixed exposure time.",
+            "signal_per_scattered_photon": "|phi|/N_gamma is the displayed signal-per-scattered-photon proxy.",
+        },
+        "far_detuned_scalings": {
+            "abs_scalar_phase": "approximately proportional to 1/Delta",
+            "scattered_photons_per_atom": "approximately proportional to 1/Delta^2",
+            "signal_per_scattered_photon": "approximately proportional to Delta in the far-detuned limit",
+        },
         "normalisation": plot_config["normalisation"],
         "plotted_quantities": plot_config["plotted_quantities"],
         "figure_layout": "single-panel log-log plot with one shared detuning axis and one shared normalised-value axis",
+        "internal_title": "removed; dissertation caption should carry the explanatory title",
         "data_note": "CSV retains additional absolute quantities such as residual OD and signal_to_destruction for provenance; the SVG intentionally plots only |phi|, N_gamma, and |phi|/N_gamma.",
         "interpretation_note": (
             "In the far-detuned limit the phase-like signal scales approximately as 1/Delta, "
@@ -367,6 +417,9 @@ def build_metadata(
     data: dict[str, np.ndarray],
     outputs: dict[str, Path],
 ) -> dict[str, Any]:
+    working_point_ghz = 1.5
+    working_point_hz = working_point_ghz * 1e9
+    working_point_delta = float(np.interp(working_point_hz, data["detuning_hz"], data["dimensionless_delta"]))
     return {
         "label": plot_config["label"],
         "status": "representative Version 1 analysis, not notebook-aligned figure recovery",
@@ -392,6 +445,8 @@ def build_metadata(
             "faraday": "theta_F = kappa_F * phi",
         },
         "detuning_convention": plot_config["detuning"]["convention"],
+        "x_axis_convention": "|Delta| / 2pi in GHz",
+        "dimensionless_detuning_convention": "delta = 2 * Delta_Hz * 2*pi / Gamma_rad_s",
         "detuning_range": {
             "min_ghz": float(data["detuning_ghz"][0]),
             "max_ghz": float(data["detuning_ghz"][-1]),
@@ -433,6 +488,30 @@ def build_metadata(
         },
         "normalisation": plot_config["normalisation"],
         "plotted_quantities": plot_config["plotted_quantities"],
+        "figure_design": {
+            "layout": "single-panel",
+            "x_axis_scale": "log",
+            "y_axis_scale": "log",
+            "internal_title": "removed",
+            "reference_line": "vertical dashed line at 1.5 GHz",
+            "working_point_marker": "small marker on the |phi|/N_gamma curve at 1.5 GHz",
+        },
+        "working_point": {
+            "detuning_ghz": working_point_ghz,
+            "dimensionless_delta": working_point_delta,
+            "note": "1.5 GHz corresponds to dimensionless detuning approximately 102 under the notebook convention.",
+        },
+        "quantity_definitions": {
+            "abs_scalar_phase": "|phi| is the dispersive phase-like signal.",
+            "scattered_photons_per_atom": "N_gamma is scattered photons per atom.",
+            "scattering_time_relation": "N_gamma = R_sc * tau at fixed exposure time.",
+            "signal_per_scattered_photon": "|phi|/N_gamma is the displayed signal-per-scattered-photon proxy.",
+        },
+        "far_detuned_scalings": {
+            "abs_scalar_phase": "approximately proportional to 1/Delta",
+            "scattered_photons_per_atom": "approximately proportional to 1/Delta^2",
+            "signal_per_scattered_photon": "approximately proportional to Delta in the far-detuned limit",
+        },
         "calibration_status": plot_config["caveats"]["calibration_status"],
         "prediction_status": plot_config["caveats"]["prediction_status"],
         "model_status": plot_config["caveats"]["model_status"],
