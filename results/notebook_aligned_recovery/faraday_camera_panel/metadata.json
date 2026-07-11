@@ -1,0 +1,94 @@
+{
+  "camera_noise_parameters": {
+    "bin_size": 15,
+    "exposure_time_s": 0.0001,
+    "photons_per_pixel": 3830.8091532666604,
+    "quantum_efficiency": 0.4,
+    "read_noise_electrons": 7.0,
+    "rng_assumptions": "Explicit np.random.default_rng(seed) replay of notebook cell 51 dark/u/v camera call order.",
+    "rng_seed": 7
+  },
+  "caveats": [
+    "Version 1 notebook-aligned / uncalibrated output.",
+    "kappa_F = 1.0 is a phenomenological placeholder.",
+    "No microscopic Faraday model is introduced.",
+    "No experimental RAI or absorption calibration has been applied.",
+    "This is not a final optimised operating point.",
+    "Simulation uses finite-rotation expressions; small-angle formulae are interpretive scaling language only."
+  ],
+  "comparison_status": {
+    "claim": "Numerical replay is exact for the explicit-seed cell 51 call order; arbitrary interactive notebook RNG state is not claimed.",
+    "exact_arbitrary_notebook_global_rng_reproduction": false,
+    "exact_explicit_seed_helper_replay": true
+  },
+  "config_file_used": "configs\\notebook_v1_defaults.json",
+  "figure_type": "notebook-aligned recovery",
+  "generated_outputs": {
+    "comparison_report": "results\\notebook_aligned_recovery\\faraday_camera_panel\\comparison_report.json",
+    "figure": "results\\notebook_aligned_recovery\\faraday_camera_panel\\faraday_camera_panel.svg",
+    "frame_statistics": "results\\notebook_aligned_recovery\\faraday_camera_panel\\frame_statistics.csv",
+    "lineouts": "results\\notebook_aligned_recovery\\faraday_camera_panel\\lineouts.csv",
+    "metadata": "results\\notebook_aligned_recovery\\faraday_camera_panel\\metadata.json",
+    "summary": "results\\notebook_aligned_recovery\\faraday_camera_panel\\faraday_camera_panel_summary.json"
+  },
+  "generation_script": "scripts/recover_notebook_faraday_camera_panel.py",
+  "git_commit_hash": "3adf8020021d3f23071eb1a0d425d54655d3262f",
+  "grid_and_axis": {
+    "camera_shape": [
+      68,
+      68
+    ],
+    "display_plane": "y,z",
+    "field_of_view_m": 0.0001,
+    "high_resolution_shape": [
+      1024,
+      1024
+    ],
+    "imaging_axis": 0,
+    "ngrid": 1024
+  },
+  "label": "notebook_v1_defaults_uncalibrated",
+  "normalisation_conventions": {
+    "dark_field": "camera-level I_dark/I0, noisy after Poisson photon noise plus Gaussian read noise",
+    "dual_port_ports": "camera-level I/I0 for each port",
+    "dual_port_signal": "S = (I_v - I_u) / (I_v + I_u)",
+    "lineouts": "central camera row versus y coordinate in um"
+  },
+  "notebook_counterpart": {
+    "context_cells": [
+      85,
+      87,
+      89,
+      91
+    ],
+    "file": "notebook_sections/06_faraday.py",
+    "primary_cell": 51,
+    "section": "17.2 / 17.3"
+  },
+  "optical_parameters": {
+    "focal_length_1_m": 0.15,
+    "focal_length_2_m": 0.3,
+    "numerical_aperture": 0.08,
+    "probe_diameter_m": 0.024,
+    "probe_power_mw": 5.0
+  },
+  "physical_parameters": {
+    "atom_number": 25000.0,
+    "detuning_hz": 1500000000.0,
+    "kappa_F": 1.0,
+    "kappa_F_status": "phenomenological Version 1 placeholder",
+    "natural_linewidth_rad_s": 185353966.5617978,
+    "resonant_cross_section_m2": 7.678673341230137e-14,
+    "scattering_length_bohr": 72.0,
+    "species": "166Er",
+    "temperature_k": 2e-07,
+    "theta_f_peak_rad": 0.20294165287929014,
+    "transition_wavelength_m": 4.01e-07,
+    "trap_frequencies_hz": [
+      293.0,
+      14.0,
+      233.0
+    ]
+  },
+  "status": "Notebook-aligned Faraday camera-level reference panel."
+}

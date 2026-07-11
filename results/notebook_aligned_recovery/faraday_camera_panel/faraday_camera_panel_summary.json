@@ -1,0 +1,55 @@
+{
+  "calibration_status": "Version 1 notebook-aligned / uncalibrated; no experimental RAI or absorption calibration applied.",
+  "camera_shape": [
+    68,
+    68
+  ],
+  "dark_field_noisy_stats": {
+    "centre_value": 0.01617456315961192,
+    "max": 0.01908564855048136,
+    "mean": 6.620543242516266e-05,
+    "min": -0.006341162650794738,
+    "peak_index": [
+      34,
+      33
+    ],
+    "shape": [
+      68,
+      68
+    ],
+    "sum": 0.30613391953395214
+  },
+  "detuning_ghz": 1.5,
+  "detuning_hz": 1500000000.0,
+  "dual_port_noisy_signal_stats": {
+    "centre_value": 0.23867929119031744,
+    "max": 0.23867929119031744,
+    "mean": 0.0016842858266908226,
+    "min": -0.06343382680929806,
+    "peak_index": [
+      34,
+      34
+    ],
+    "shape": [
+      68,
+      68
+    ],
+    "sum": 7.788137662618364
+  },
+  "exposure_time_s": 0.0001,
+  "kappa_F": 1.0,
+  "label": "notebook_v1_defaults_uncalibrated",
+  "model_status": "Finite-rotation propagation with kappa_F = 1.0 phenomenological placeholder; no microscopic Faraday model.",
+  "notebook_counterpart": {
+    "file": "notebook_sections/06_faraday.py",
+    "primary_cell": 51,
+    "reference": "notebook_sections/06_faraday.py cell 51, section 17.2 / 17.3",
+    "section": "17.2 / 17.3"
+  },
+  "photons_per_pixel": 3830.8091532666604,
+  "probe_power_mw": 5.0,
+  "read_noise_electrons": 7.0,
+  "rng_seed": 7,
+  "status": "Notebook-aligned Faraday camera-level reference panel recovered.",
+  "theta_f_peak_rad": 0.20294165287929014
+}

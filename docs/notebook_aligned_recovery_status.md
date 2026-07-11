@@ -6,7 +6,7 @@ The canonical notebook-aligned recovery path now covers:
 
 ```text
 parameters -> Thomas-Fermi condensate -> projected profile -> column-density map -> scalar phase map -> PCI image -> DGI image -> ideal Faraday outputs
--> deterministic camera image -> stochastic camera frame -> deterministic multishot sequence -> noisy PCI multishot filmstrip
+-> Faraday camera-level reference panel -> deterministic camera image -> stochastic camera frame -> deterministic multishot sequence -> noisy PCI multishot filmstrip
 ```
 
 This is a recovery of the historical Version 1 notebook computation. It does
@@ -204,6 +204,75 @@ Existing Faraday baseline compatibility:
   `< 3e-5` and dark-field intensity max absolute difference `< 5e-6`;
 - the canonical notebook recovery and current helper output are the primary
   closure criteria for this stage.
+
+### Faraday Camera-Level Reference Panel
+
+Script:
+
+```text
+scripts/recover_notebook_faraday_camera_panel.py
+```
+
+Recovered notebook reference:
+
+- cell 51: `faraday_maps(1.5e9, axis=0)` and the 2 x 2
+  `fig_faraday_reference.png` camera-level reference panel.
+
+Recovered convention:
+
+```text
+fm = faraday_maps(1.5e9, axis=0)
+cam_dark, ideal_dark = to_camera(fm["I_dark"], 5.0)
+cam_u, ideal_u = to_camera(fm["I_u"], 5.0)
+cam_v, ideal_v = to_camera(fm["I_v"], 5.0)
+S_map = (cam_v - cam_u) / (cam_v + cam_u)
+S_ideal = (ideal_v - ideal_u) / (ideal_v + ideal_u)
+```
+
+Status:
+
+- closed for the tested explicit-seed notebook cell 51 replay;
+- `Delta = 1.5 GHz`;
+- imaging axis: `0` / displayed `y,z` plane;
+- `kappa_F = 1.0` remains a Version 1 phenomenological placeholder;
+- probe power: `5.0 mW`;
+- exposure: `100 us`;
+- camera quantum efficiency: `0.40`;
+- read noise: `7.0 e-`;
+- binning: `15 x 15`;
+- camera image shape: `68 x 68`;
+- photons per camera pixel: `3830.8091532666604`;
+- dark-field noisy centre value: `0.01617456315961192`;
+- dual-port noisy signal centre value: `0.23867929119031744`;
+- dark-field and dual-port noisy arrays match explicit helper replay with max
+  absolute difference `0.0`.
+
+RNG status:
+
+- notebook RNG policy: global `np.random.default_rng(7)`;
+- recovery RNG policy: explicit `np.random.default_rng(seed)`;
+- the recovery replays the cell 51 dark/u/v camera call order exactly for the
+  explicit seed;
+- arbitrary interactive notebook-global RNG state is not claimed to be
+  reproducible.
+
+Generated outputs:
+
+```text
+results/notebook_aligned_recovery/faraday_camera_panel/faraday_camera_panel.svg
+results/notebook_aligned_recovery/faraday_camera_panel/comparison_report.json
+results/notebook_aligned_recovery/faraday_camera_panel/faraday_camera_panel_summary.json
+results/notebook_aligned_recovery/faraday_camera_panel/metadata.json
+results/notebook_aligned_recovery/faraday_camera_panel/lineouts.csv
+results/notebook_aligned_recovery/faraday_camera_panel/frame_statistics.csv
+```
+
+Scope boundary:
+
+- no dual-port flicker robustness panel was generated;
+- no Faraday multishot sequence was generated;
+- no calibration, microscopic Faraday model, optimisation plot, or unrelated
+  Faraday figure was introduced.
 
 ### Deterministic Camera
 
@@ -406,6 +475,7 @@ Stage directories:
 - `pci_stage/`;
 - `dgi_stage/`;
 - `faraday_stage/`;
+- `faraday_camera_panel/`;
 - `camera_stage/`;
 - `noisy_camera_stage/`;
 - `multishot_stage/`;
@@ -419,6 +489,15 @@ The Faraday stage generates only:
 - central lineouts CSV.
 
 It does not generate camera, noisy-frame, or multi-shot figures.
+
+The Faraday camera panel stage generates only:
+
+- `faraday_camera_panel.svg`;
+- JSON comparison/summary/metadata files;
+- lineouts and frame-statistics CSV files.
+
+It does not generate dual-port flicker robustness panels, Faraday multishot
+sequences, operating maps, or shot-noise maps.
 
 The camera stage generates only:
 
@@ -464,6 +543,7 @@ tests/regression/test_notebook_phase_recovery.py
 tests/regression/test_notebook_pci_recovery.py
 tests/regression/test_notebook_dgi_recovery.py
 tests/regression/test_notebook_faraday_recovery.py
+tests/regression/test_notebook_faraday_camera_panel.py
 tests/regression/test_notebook_camera_recovery.py
 tests/regression/test_notebook_noisy_camera_recovery.py
 tests/regression/test_notebook_multishot_recovery.py
@@ -477,7 +557,6 @@ agreement. They do not test SVG pixel appearance.
 
 The recovery still has not locked down end-to-end notebook-aligned recipes for:
 
-- Faraday camera-level reference panels;
 - Faraday dual-port noisy frame and flicker robustness;
 - optimisation and SNR operating maps.
 
@@ -487,12 +566,12 @@ target.
 
 ## Recommended Next Step
 
-The next candidate recovery should be the Faraday camera-level reference panel:
+The Faraday camera-level reference panel is now recovered. The next candidate
+recovery should be the dual-port flicker robustness panel:
 
 ```text
-ideal Faraday dark-field and dual-port outputs -> camera-level Faraday reference panel
+dual-port Faraday port frames -> noisy common-mode flicker sequence -> extracted theta_F stability
 ```
 
 That recovery should keep the ideal Faraday outputs and camera/noise recipes
-fixed. Dual-port flicker and operating maps should remain separate later
-recovery targets.
+fixed. Operating maps should remain a separate later recovery target.
