@@ -1,5 +1,9 @@
 # Accumulated-SNR Invariance Physics Audit
 
+For the complete physics-first and code-traceability review, including
+clean-loss versus heating/reabsorption benchmarks and integer-frame semantics,
+see `docs/accumulated_snr_full_physics_audit.md`.
+
 ## Scope
 
 This audit checks the accumulated-SNR figure against the current Version 1

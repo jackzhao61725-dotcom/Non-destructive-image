@@ -1,0 +1,72 @@
+{
+  "benchmark_count": 3,
+  "critical_or_quantitative_issues": [
+    {
+      "affected_result": "absolute N_max and accumulated-SNR magnitude",
+      "issue": "Figure uses optimistic clean-loss N_max rather than heating plus reabsorption",
+      "numerical_conclusion_change": "yes; allowed frame count is lower in heating model",
+      "required_action": "use explicit heating sequence for quantitative dissertation result; retain clean-loss only as labelled bound",
+      "severity": "Quantitative model mismatch"
+    },
+    {
+      "affected_result": "accumulated-SNR magnitude",
+      "issue": "SNR_shot*sqrt(N_max) assumes identical frames although condensate phase and SNR decline",
+      "numerical_conclusion_change": "yes; benchmark overestimate reaches 10.6%",
+      "required_action": "use sqrt(sum_i SNR_i^2) for sequence results",
+      "severity": "Quantitative model mismatch"
+    }
+  ],
+  "current_nmax_definition": "fractional continuous pulse index -log(1-0.30)/(eta_coll*N_gamma) from the optimistic clean-loss model",
+  "delta_squared_assessment": "asymptotic and numerically close over the audited range; not exact, and the full model changes the coefficient and slightly changes the exponent",
+  "explicit_multishot_benchmark": {
+    "clean_loss_pci_accumulated_snr_0.75_to_3_GHz_ratio": 1.0569306051574654,
+    "heating_reabs_pci_accumulated_snr_0.75_to_3_GHz_ratio": 1.0947689347569876,
+    "identical_frame_overestimate_fraction_range": [
+      0.05617352070543048,
+      0.10606746153485173
+    ]
+  },
+  "full_multishot_invariance": "not exact in magnitude because phase and per-frame SNR decline; approximate asymptotic detuning scaling can survive self-similar evolution, but must be evaluated by explicit RMS accumulation",
+  "mode_independence": "physically justified for the same probe before the downstream PCI/DGI optics; detection mode does not alter upstream scattering",
+  "parameters": {
+    "config": "configs\\dissertation_plots_v1.json",
+    "eta_coll": 1.3,
+    "exposure_time_us": 40.0,
+    "loss_fraction": 0.3,
+    "notebook_defaults": "configs\\notebook_v1_defaults.json",
+    "power_mw": 3.5,
+    "quantum_efficiency": 0.4,
+    "read_noise_e": 7.0,
+    "saturation_parameter": 0.0258768589565485
+  },
+  "pci_dgi_ideal_prefactor": "expected factor near two from current peak-pixel observable definitions and PCI homodyne carrier reference; not a coding normalisation bug",
+  "recommended_dissertation_nmax": "integer stopping budget from the explicit heating-plus-reabsorption condensate-depletion sequence, with clean-loss retained as an optimistic comparison bound",
+  "scaling_exponents": [
+    {
+      "clean_loss_nmax_exponent": 1.999759859645157,
+      "heating_reabs_nmax_exponent": 2.062810506237015,
+      "range": "0.75_to_3.0_GHz",
+      "scattered_photons_exponent": -1.9997598596451591
+    },
+    {
+      "clean_loss_nmax_exponent": 1.9998318899979233,
+      "heating_reabs_nmax_exponent": 2.0449746308396195,
+      "range": "full_0.75_to_5.0_GHz",
+      "scattered_photons_exponent": -1.999831889997926
+    },
+    {
+      "clean_loss_nmax_exponent": 1.9995829974891526,
+      "heating_reabs_nmax_exponent": 2.102213872959572,
+      "range": "low_0.75_to_1.5_GHz",
+      "scattered_photons_exponent": -1.9995829974891541
+    },
+    {
+      "clean_loss_nmax_exponent": 1.999931702667985,
+      "heating_reabs_nmax_exponent": 2.0202013686887232,
+      "range": "high_1.5_to_5.0_GHz",
+      "scattered_photons_exponent": -1.9999317026679848
+    }
+  ],
+  "sqrt_nmax_assessment": "valid only for independent identical frames; the migrated multishot model requires sqrt(sum_i SNR_i^2)",
+  "verdict": "B. Current figure valid only as an idealised clean-loss analytical model"
+}
