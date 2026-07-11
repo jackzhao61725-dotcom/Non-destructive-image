@@ -23,6 +23,8 @@ work, and dissertation outputs.
 - `optimisation_readiness.md`
 - `faraday_optimisation_interpretation.md`
 - `faraday_optimisation_layer_summary.md`
+- `dissertation_plot_strategy.md`
+- `linear_approximation_validity_audit.md`
 - `results_readme.md`
 - `figure_index.md`
 
@@ -35,6 +37,7 @@ work, and dissertation outputs.
 ## Dissertation-Facing Material
 
 - `msc_dissertation_structure.md`
+- `figure_language_conventions.md`
 - `reproducibility.md`
 - `zenodo_release_checklist.md`
 

@@ -17,6 +17,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = REPO_ROOT / "results" / "reproducibility_manifest.json"
 NOTEBOOK_CONFIG = "configs/notebook_v1_defaults.json"
 FARADAY_RESULTS_CONFIG = "configs/dissertation_results_v1.json"
+DETUNING_PLOT_CONFIG = "configs/dissertation_plots_v1.json"
 
 
 @dataclass(frozen=True)
@@ -165,17 +166,34 @@ RUN_STEPS: tuple[RunStep, ...] = (
         ),
         result_type="representative V1 plot",
     ),
+    RunStep(
+        name="generate_detuning_tradeoff_plot",
+        script="scripts/generate_detuning_tradeoff_plot.py",
+        args=("--config", DETUNING_PLOT_CONFIG),
+        configs=(NOTEBOOK_CONFIG, DETUNING_PLOT_CONFIG),
+        expected_outputs=(
+            "results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff.svg",
+            "results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff_data.csv",
+            "results/dissertation_plots_v1/detuning_tradeoff/metadata.json",
+        ),
+        result_type="dissertation physics plot",
+    ),
+    RunStep(
+        name="audit_linear_approximation_validity",
+        script="scripts/audit_linear_approximation_validity.py",
+        args=("--config", NOTEBOOK_CONFIG),
+        configs=(NOTEBOOK_CONFIG, FARADAY_RESULTS_CONFIG, DETUNING_PLOT_CONFIG),
+        expected_outputs=(
+            "docs/linear_approximation_validity_audit.md",
+            "results/linear_approximation_audit/linear_approximation_summary.json",
+            "results/linear_approximation_audit/metadata.json",
+        ),
+        result_type="numerical validity audit",
+    ),
 )
 
 
-PENDING_ITEMS: tuple[dict[str, str], ...] = (
-    {
-        "name": "detuning_tradeoff_physics_plot",
-        "status": "pending merge into main",
-        "branch": "work/detuning-tradeoff-plot",
-        "reason": "Not included in main at the time this reproducibility layer was prepared.",
-    },
-)
+PENDING_ITEMS: tuple[dict[str, str], ...] = ()
 
 
 def git_commit() -> str:

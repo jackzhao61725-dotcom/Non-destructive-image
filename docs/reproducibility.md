@@ -74,10 +74,9 @@ The current `run_all` entry point includes:
 - deterministic multishot recovery;
 - noisy PCI multishot filmstrip recovery;
 - condensate three-view projection;
-- representative Faraday optimisation result generation.
-
-The detuning trade-off physics plot is pending until the
-`work/detuning-tradeoff-plot` branch is approved and merged into `main`.
+- representative Faraday optimisation result generation;
+- detuning trade-off physics plot generation;
+- finite-phase / finite-Faraday-rotation linear-approximation audit.
 
 ## Parameter Provenance
 
@@ -104,6 +103,20 @@ Representative Faraday optimisation outputs use:
 
 ```text
 configs/dissertation_results_v1.json
+```
+
+The dissertation detuning trade-off plot uses:
+
+```text
+configs/dissertation_plots_v1.json
+```
+
+The linear-approximation audit uses the notebook defaults and records whether
+the dissertation plot config is present:
+
+```text
+configs/notebook_v1_defaults.json
+configs/dissertation_plots_v1.json
 ```
 
 ## Current Scientific Boundary

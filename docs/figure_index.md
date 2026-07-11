@@ -1,7 +1,8 @@
 # Figure Index
 
-This index lists approved dissertation-facing figures and plots available on
-`main` at the time the reproducibility layer was prepared.
+This index lists approved dissertation-facing figures, plots, and numerical
+audit outputs available on `main` at the time the reproducibility layer was
+prepared.
 
 ## Notebook-Aligned Recovery Figures
 
@@ -31,12 +32,14 @@ This index lists approved dissertation-facing figures and plots available on
 | `results/faraday_optimisation_v1/detuning_tradeoff.svg` | `scripts/generate_dissertation_results.py` | `configs/dissertation_results_v1.json` | representative V1 plot | uncalibrated, `kappa_F = 1.0` | `results/faraday_optimisation_v1/metadata.json` | appendix or workflow demonstration |
 | `results/faraday_optimisation_v1/intensity_tradeoff.svg` | `scripts/generate_dissertation_results.py` | `configs/dissertation_results_v1.json` | representative V1 plot | uncalibrated, `kappa_F = 1.0` | `results/faraday_optimisation_v1/metadata.json` | appendix or workflow demonstration |
 | `results/faraday_optimisation_v1/exposure_time_tradeoff.svg` | `scripts/generate_dissertation_results.py` | `configs/dissertation_results_v1.json` | representative V1 plot | uncalibrated, `kappa_F = 1.0` | `results/faraday_optimisation_v1/metadata.json` | appendix or workflow demonstration |
+| `results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff.svg` | `scripts/generate_detuning_tradeoff_plot.py` | `configs/dissertation_plots_v1.json` | dissertation physics plot | uncalibrated V1, exact notebook-equivalent light-atom formulas | `results/dissertation_plots_v1/detuning_tradeoff/metadata.json` | main text candidate |
 
-## Pending Figure Workflows
+## Numerical Audit Outputs
 
-| Figure | Branch | Status |
-| --- | --- | --- |
-| `results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff.svg` | `work/detuning-tradeoff-plot` | pending approval and merge into `main` |
+| Output | Generating script | Config | Type | Calibration status | Metadata | Use |
+| --- | --- | --- | --- | --- | --- | --- |
+| `docs/linear_approximation_validity_audit.md` | `scripts/audit_linear_approximation_validity.py` | `configs/notebook_v1_defaults.json` | numerical validity audit | uncalibrated V1 audit, no recalibration | `results/linear_approximation_audit/metadata.json` | methods/discussion support |
+| `results/linear_approximation_audit/linear_approximation_summary.json` | `scripts/audit_linear_approximation_validity.py` | `configs/notebook_v1_defaults.json` | machine-readable audit summary | uncalibrated V1 audit, no recalibration | `results/linear_approximation_audit/metadata.json` | reproducibility support |
 
 ## Provenance Rule
 

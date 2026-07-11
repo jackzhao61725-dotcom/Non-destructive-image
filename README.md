@@ -36,6 +36,8 @@ Current status:
 - migrated Version 1 simulator core is implemented and tested;
 - notebook-aligned recovery figures are generated and documented;
 - representative Version 1 Faraday optimisation outputs are generated;
+- a dissertation detuning trade-off physics plot is generated;
+- finite-phase and finite-Faraday-rotation approximation validity is audited;
 - absorption / RAI calibration-readiness helpers exist;
 - release metadata and reproducibility documentation are being prepared.
 
@@ -92,8 +94,9 @@ Primary output locations:
 
 - `results/notebook_aligned_recovery/` - canonical notebook-aligned recovery
   figures and stage metadata.
-- `results/dissertation_plots_v1/` - dissertation physics plots once approved
-  and merged.
+- `results/dissertation_plots_v1/` - approved dissertation physics plots.
+- `results/linear_approximation_audit/` - finite-phase and finite-rotation
+  approximation-validity audit outputs.
 - `results/faraday_optimisation_v1/` - representative Version 1 deterministic
   Faraday optimisation tables and plots.
 

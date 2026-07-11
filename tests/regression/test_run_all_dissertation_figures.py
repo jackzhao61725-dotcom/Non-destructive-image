@@ -35,14 +35,14 @@ def test_run_all_plan_contains_only_approved_main_generators() -> None:
     assert "scripts/recover_notebook_noisy_multishot_filmstrip.py" in scripts
     assert "scripts/generate_condensate_three_view.py" in scripts
     assert "scripts/generate_dissertation_results.py" in scripts
-    assert "scripts/generate_detuning_tradeoff_plot.py" not in scripts
+    assert "scripts/generate_detuning_tradeoff_plot.py" in scripts
+    assert "scripts/audit_linear_approximation_validity.py" in scripts
 
 
-def test_run_all_records_detuning_tradeoff_as_pending() -> None:
+def test_run_all_has_no_pending_approved_outputs() -> None:
     module = _load_module()
 
-    pending_names = {item["name"] for item in module.PENDING_ITEMS}
-    assert "detuning_tradeoff_physics_plot" in pending_names
+    assert module.PENDING_ITEMS == ()
 
 
 def test_run_all_dry_run_succeeds_without_manifest(tmp_path: Path) -> None:
@@ -55,5 +55,6 @@ def test_run_all_dry_run_succeeds_without_manifest(tmp_path: Path) -> None:
     )
 
     assert "recover_condensate_stage" in result.stdout
-    assert "detuning_tradeoff_physics_plot" in result.stdout
+    assert "generate_detuning_tradeoff_plot" in result.stdout
+    assert "audit_linear_approximation_validity" in result.stdout
     assert not manifest.exists()
