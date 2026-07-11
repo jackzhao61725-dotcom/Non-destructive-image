@@ -1,0 +1,16 @@
+{
+  "task": "Deep physics discussion of accumulated-SNR invariance and its breakdown",
+  "branch": "work/accumulated-snr-invariance-plot",
+  "source_audits": [
+    "docs/accumulated_snr_invariance_physics_audit.md",
+    "docs/accumulated_snr_full_physics_audit.md",
+    "results/accumulated_snr_full_physics_audit/",
+    "docs/linear_approximation_validity_audit.md"
+  ],
+  "scope": "theory, claim audit, estimator comparison, and thesis wording",
+  "existing_figure_modified": false,
+  "existing_figure_data_modified": false,
+  "simulator_code_modified": false,
+  "calibration_status": "Version 1 uncalibrated; no experimental absorption/RAI calibration",
+  "new_figure_generated": false
+}

@@ -1,0 +1,8 @@
+mode,noise_regime,signal_scaling,noise_scaling,per_frame_snr_scaling,nmax_scaling,accumulated_scaling,classification
+PCI,carrier photon shot noise,Delta^-1 in contrast,Delta^0 at fixed carrier photons,Delta^-1,approximately Delta^2,approximately Delta^0,asymptotically invariant
+PCI,shot plus fixed read noise,Delta^-1 in contrast,Delta^0 at fixed photons and read noise,Delta^-1,approximately Delta^2,approximately Delta^0,approximately invariant with lower prefactor
+PCI,correlated fractional technical noise,Delta^-1 in contrast,Delta^0 in one-frame normalized units,Delta^-1,approximately Delta^2,not generally sqrt N,not invariant without covariance model
+DGI,signal photon shot noise,Delta^-2 in intensity,Delta^-1 standard deviation,Delta^-1,approximately Delta^2,approximately Delta^0,asymptotically invariant for ideal dark port
+DGI,read noise dominated,Delta^-2 in intensity,Delta^0,Delta^-2,approximately Delta^2,Delta^-1,decreases
+DGI,leakage-background shot noise dominated,Delta^-2 useful signal,Delta^0 leakage standard deviation,Delta^-2,approximately Delta^2,Delta^-1,decreases at sufficiently weak signal
+PCI or DGI,evolving multishot,frame-dependent,frame-dependent,frame-dependent,model-dependent,sqrt sum SNR_i squared,not exactly invariant

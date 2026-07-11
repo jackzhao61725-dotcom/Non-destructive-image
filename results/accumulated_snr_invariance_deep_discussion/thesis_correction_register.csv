@@ -1,0 +1,13 @@
+priority,issue,affected_locations,recommended_action,numerical_recomputation_needed
+must correct,unqualified accumulated-SNR invariance,notebook_sections/04_pci.py and 08_shot_noise.py wording,"qualify as far-detuned photon-limited clean-loss identical-frame scaling",no for wording; yes for final quantitative result
+must correct,clean-loss threshold called realistic usable frames,notebook_sections/04_pci.py labels,"call continuous clean-loss threshold or optimistic bound and define integer frames separately",no
+must correct,initial SNR used as if every frame were identical,any thesis use of current analytical figure,"use explicit sqrt sum SNR_i squared for results",yes
+must correct,condensate depletion described as atom loss,destruction discussion,"separate total atom loss temperature and condensate fraction",no
+must correct,fundamental linear-mode advantage claim,results interpretation,"state detector and estimator dependent advantage",no
+should clarify,shot plus read noise called realistic,figure discussion,"use shot plus read noise and list omitted technical terms",no
+should clarify,PCI DGI ideal ratio treated as universal,mode comparison,"state peak-pixel homodyne prefactor and estimator dependence",no
+should clarify,N_max proportional to Delta squared written as exact,theory section,"write asymptotically or approximately proportional",no
+should clarify,DGI ideal stop assumption,figure caption or methods,"state opaque-stop limit and OD=4 omission",no
+optional refinement,peak-pixel SNR treated as total information,mode comparison,"add integrated ROI or matched-filter result",yes
+future model work,reabsorption held at initial density,multishot model,"update reabsorption as density evolves",yes
+future model work,no correlated noise model,calibrated optimization,"add covariance and drift after experimental characterization",yes

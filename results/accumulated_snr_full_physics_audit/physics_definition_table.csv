@@ -1,0 +1,17 @@
+quantity,definition,units,scope,time_dependence
+SNR_shot,signal expectation divided by single-frame noise standard deviation,dimensionless,per pixel per image in this figure,"changes if density, phase, photon scale, or noise changes"
+SNR_total,sqrt(sum_i SNR_i^2) for independent optimally combined frames,dimensionless,accumulated sequence,cumulative
+N_max,model-dependent pulse budget before a stated destruction threshold,pulses or frames only after integer convention,sequence,derived endpoint
+destruction budget,allowed fractional reduction of condensate atom number; configured as 0.30,fraction,cloud,threshold
+loss fraction,1 - N0(frame)/N0(initial),fraction,condensate cloud,frame-dependent
+scattered photons per atom per frame,Gamma/2 * s/(1+s+delta^2) * tau,photons atom^-1 frame^-1,per atom per pulse,constant in current fixed-probe model
+heating contribution,N_gamma*(1+reabsorption)*E_rec,J atom^-1 frame^-1,per atom per pulse,constant because current reabsorption uses initial density
+reabsorption contribution,mean_i[1-exp(-OD_i)] multiplying recoil deposition,fraction,angle-averaged cloud scalar,held constant in current sequence
+atom-number depletion,clean-loss N0=N0_initial exp(-eta N_gamma frame),atoms,condensate in clean-loss model,frame-dependent
+condensate depletion,heating model N0=N_total[1-(T/Tc)^3],atoms,condensate,frame-dependent
+temperature increase,T_next=(T^4+dE/A_E)^(1/4),K,cloud,frame-dependent in heating model
+PCI signal amplitude,figure uses 2*t_p*|phi| detected-photon contrast,electrons per pixel,analytical peak pixel,falls as condensate depletes
+DGI signal amplitude,figure uses 4*sin^2(phi/2) detected photons,electrons per pixel,ideal opaque-stop analytical peak pixel,falls quadratically with phase
+noise variance,photon-shot variance plus read-noise variance,electrons^2 pixel^-1 frame^-1,per pixel per image,signal/background dependent
+read-noise contribution,sigma_read^2 with sigma_read=7 e- rms,electrons^2 pixel^-1 frame^-1,one binned camera pixel read,constant and independent in model
+photon-shot-noise contribution,Poisson variance equal to expected detected count,electrons^2 pixel^-1 frame^-1,per pixel per image,depends on total detected intensity

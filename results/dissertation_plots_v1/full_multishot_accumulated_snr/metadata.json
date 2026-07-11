@@ -1,0 +1,98 @@
+{
+  "branch": "work/accumulated-snr-invariance-plot",
+  "calibration_status": "representative Version 1 uncalibrated",
+  "caption": "Accumulated matched-template SNR for PCI and DGI at a nominal 30% condensate-depletion budget. Panel (a) uses the identical-frame clean-loss limit with the same fixed ROI and image observable; panel (b) accumulates frame-dependent SNR as sqrt(sum_i SNR_i^2) over the integer frames accepted by the heating- and reabsorption-aware sequence. Each frame regenerates the Thomas-Fermi state, phase map, Fourier image, and camera-level photon/read variance. Results are representative Version 1 outputs and are not experimentally calibrated; technical noise, reference-image noise, and density-updated reabsorption remain omitted.",
+  "checks": {
+    "clean_continuous_log_slope": 1.9998224524166235,
+    "dgi_shot_noise_0.75_to_3_relative_range": 0.04650987727811482,
+    "dgi_shot_plus_read_0.75_to_3_relative_range": 1.1272098791628276,
+    "dgi_shot_plus_read_high_detuning_log_slope": -0.9333362822784405,
+    "dgi_shot_plus_read_le_shot_all": true,
+    "full_frame_count_less_than_clean_continuous_all": true,
+    "full_frame_count_log_slope": 2.1213726456532296,
+    "full_snr_below_clean_matched_reference_all": true,
+    "identical_frame_overestimate_fraction_range": [
+      0.08218567417098079,
+      0.2770281693665556
+    ],
+    "passed": true,
+    "pci_shot_noise_0.75_to_3_relative_range": 0.10484298757919548,
+    "pci_shot_plus_read_0.75_to_3_relative_range": 0.1018225528162015,
+    "pci_shot_plus_read_le_shot_all": true,
+    "pci_to_dgi_shot_noise_ratio_median": 1.9514455659372998,
+    "pci_to_dgi_shot_noise_ratio_relative_range": 0.19209093369772715
+  },
+  "config": "configs\\dissertation_plots_v1.json",
+  "detuning_points_ghz": [
+    0.75,
+    0.889139705019,
+    1.0,
+    1.077217345016,
+    1.305078607841,
+    1.5,
+    1.581138830084,
+    1.915593424779,
+    2.0,
+    2.320794416806,
+    2.811706625952,
+    3.0,
+    3.40646034529,
+    4.12702092634,
+    5.0
+  ],
+  "figure_type": "clean-loss matched-ROI reference versus evolving heating-aware multishot accumulated SNR",
+  "git_commit": "017460a5efc2007fe58c03665266234037ba2963",
+  "notebook_defaults": "configs\\notebook_v1_defaults.json",
+  "observable_design": {
+    "read_variance": "7 e- rms squared per binned camera pixel",
+    "reference_image_noise": "not included, matching the notebook convention of a known reference background",
+    "roi": {
+      "camera_shape": [
+        68,
+        68
+      ],
+      "half_widths_m": [
+        2.7747092623397376e-05,
+        4.421155779946623e-06
+      ],
+      "margin_camera_pixels": 2,
+      "plane_axes": [
+        "y",
+        "z"
+      ],
+      "roi_pixel_count": 228
+    },
+    "roi_fixed_across_frames_and_detunings": true,
+    "same_spatial_support_for_modes": true,
+    "shot_variance": "total expected atom-image photons in each ROI pixel",
+    "template_evolves_with_cloud": true,
+    "type": "diagonal-covariance matched-template SNR"
+  },
+  "parameter_provenance": {
+    "bin_size": 15,
+    "condensate_depletion_threshold": 0.3,
+    "exposure_time_us": 40.0,
+    "imaging_axis": 0,
+    "power_mw": 3.5,
+    "quantum_efficiency": 0.4,
+    "read_noise_e": 7.0
+  },
+  "physics_model": {
+    "condensate": "N0=N_total*(1-(T/Tc)^3)",
+    "dgi_reference": "finite OD=4 carrier leakage included",
+    "heating": "T_next=(T^4+dE/A_E)^(1/4)",
+    "image_update": "full complex phase field propagated through the configured Fourier pupil",
+    "reabsorption": "initial-density angle-averaged notebook fraction, held fixed within each sequence",
+    "state_update": "Thomas-Fermi state regenerated from evolving N0"
+  },
+  "script": "scripts\\generate_full_multishot_accumulated_snr.py",
+  "stopping_semantics": {
+    "acceptance_rule": "include a frame only when the post-pulse state remains within the threshold",
+    "accepted_frame_state": "pre-pulse state after frame_index prior pulses",
+    "analytical_name": "N_max_clean",
+    "integer_name": "N_frames_full",
+    "threshold_crossing_state_included": false,
+    "threshold_value": 0.3,
+    "threshold_variable": "1 - condensate_atom_number/initial_condensate_atom_number"
+  }
+}

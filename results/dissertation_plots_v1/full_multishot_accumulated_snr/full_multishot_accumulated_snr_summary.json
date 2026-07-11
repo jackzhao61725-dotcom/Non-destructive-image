@@ -1,0 +1,43 @@
+{
+  "benchmark_frame_counts": {
+    "0.75": {
+      "n_frames_full": 3,
+      "nmax_clean_continuous": 7.3976977761399425,
+      "nstop_heating_continuous": 3.2014962853752933
+    },
+    "1.5": {
+      "n_frames_full": 13,
+      "nmax_clean_continuous": 29.581988680261396,
+      "nstop_heating_continuous": 13.757594626407487
+    },
+    "3.0": {
+      "n_frames_full": 56,
+      "nmax_clean_continuous": 118.3191522967472,
+      "nstop_heating_continuous": 56.23145531836396
+    }
+  },
+  "checks": {
+    "clean_continuous_log_slope": 1.9998224524166235,
+    "dgi_shot_noise_0.75_to_3_relative_range": 0.04650987727811482,
+    "dgi_shot_plus_read_0.75_to_3_relative_range": 1.1272098791628276,
+    "dgi_shot_plus_read_high_detuning_log_slope": -0.9333362822784405,
+    "dgi_shot_plus_read_le_shot_all": true,
+    "full_frame_count_less_than_clean_continuous_all": true,
+    "full_frame_count_log_slope": 2.1213726456532296,
+    "full_snr_below_clean_matched_reference_all": true,
+    "identical_frame_overestimate_fraction_range": [
+      0.08218567417098079,
+      0.2770281693665556
+    ],
+    "passed": true,
+    "pci_shot_noise_0.75_to_3_relative_range": 0.10484298757919548,
+    "pci_shot_plus_read_0.75_to_3_relative_range": 0.1018225528162015,
+    "pci_shot_plus_read_le_shot_all": true,
+    "pci_to_dgi_shot_noise_ratio_median": 1.9514455659372998,
+    "pci_to_dgi_shot_noise_ratio_relative_range": 0.19209093369772715
+  },
+  "observable": "fixed spatial ROI with diagonal-covariance matched-template SNR",
+  "qualitative_conclusion": "The clean-loss cancellation remains a useful upper-bound scaling reference. Heating, reabsorption, depletion, integer stopping, and image formation lower the accumulated SNR and remove exact invariance; DGI with read noise still decreases at high detuning.",
+  "stopping_criterion": "integer pulse count whose post-pulse condensate depletion remains <=30%; threshold-crossing state excluded",
+  "verdict": "A. READY TO MERGE"
+}
