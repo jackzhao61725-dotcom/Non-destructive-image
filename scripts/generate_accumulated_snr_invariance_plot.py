@@ -139,40 +139,40 @@ def build_accumulated_snr_data(
     # Notebook section 8.2: linear PCI contrast against the phase-plate background.
     pci_signal_e = 2 * t_p * np.abs(phase) * detected_photons
     pci_noise_e = np.sqrt(t_p**2 * detected_photons + read_noise**2)
-    pci_snr_realistic = pci_signal_e / pci_noise_e
+    pci_snr_shot_plus_read = pci_signal_e / pci_noise_e
     pci_snr_shot_only = pci_signal_e / np.sqrt(t_p**2 * detected_photons)
 
     # Notebook DGI construction: the passed field is the scattered field. At its
     # peak, |exp(i phi)-1|^2 = 4 sin^2(phi/2), retaining the exact phase response.
     dgi_intensity = 4 * np.sin(phase / 2) ** 2
     dgi_signal_e = dgi_intensity * detected_photons
-    dgi_snr_realistic = dgi_signal_e / np.sqrt(dgi_signal_e + read_noise**2)
+    dgi_snr_shot_plus_read = dgi_signal_e / np.sqrt(dgi_signal_e + read_noise**2)
     dgi_snr_shot_only = np.sqrt(dgi_signal_e)
 
     sqrt_n_max = np.sqrt(n_max)
-    pci_total_realistic = pci_snr_realistic * sqrt_n_max
+    pci_total_shot_plus_read = pci_snr_shot_plus_read * sqrt_n_max
     pci_total_shot_only = pci_snr_shot_only * sqrt_n_max
-    dgi_total_realistic = dgi_snr_realistic * sqrt_n_max
+    dgi_total_shot_plus_read = dgi_snr_shot_plus_read * sqrt_n_max
     dgi_total_shot_only = dgi_snr_shot_only * sqrt_n_max
 
     read_dominated = dgi_signal_e <= 0.25 * read_noise**2
     ideal_mode_ratio = pci_total_shot_only / dgi_total_shot_only
     checks = {
-        "quadratic_realistic_snr_shot_high_detuning_log_slope": _log_slope(
-            detuning_ghz, dgi_snr_realistic, read_dominated
+        "quadratic_shot_plus_read_snr_high_detuning_log_slope": _log_slope(
+            detuning_ghz, dgi_snr_shot_plus_read, read_dominated
         ),
         "quadratic_shot_noise_only_snr_shot_log_slope": _log_slope(detuning_ghz, dgi_snr_shot_only),
         "n_max_log_slope": _log_slope(detuning_ghz, n_max),
-        "pci_realistic_total_relative_range": _relative_range(pci_total_realistic),
+        "pci_shot_plus_read_total_relative_range": _relative_range(pci_total_shot_plus_read),
         "pci_shot_noise_total_relative_range": _relative_range(pci_total_shot_only),
         "quadratic_shot_noise_total_relative_range": _relative_range(dgi_total_shot_only),
-        "quadratic_realistic_total_log_slope": _log_slope(detuning_ghz, dgi_total_realistic),
-        "quadratic_realistic_total_high_detuning_log_slope": _log_slope(
-            detuning_ghz, dgi_total_realistic, read_dominated
+        "quadratic_shot_plus_read_total_log_slope": _log_slope(detuning_ghz, dgi_total_shot_plus_read),
+        "quadratic_shot_plus_read_total_high_detuning_log_slope": _log_slope(
+            detuning_ghz, dgi_total_shot_plus_read, read_dominated
         ),
         "n_max_mode_independent": True,
-        "pci_realistic_le_shot_noise_limit": bool(np.all(pci_total_realistic <= pci_total_shot_only)),
-        "dgi_realistic_le_shot_noise_limit": bool(np.all(dgi_total_realistic <= dgi_total_shot_only)),
+        "pci_shot_plus_read_le_shot_noise_limit": bool(np.all(pci_total_shot_plus_read <= pci_total_shot_only)),
+        "dgi_shot_plus_read_le_shot_noise_limit": bool(np.all(dgi_total_shot_plus_read <= dgi_total_shot_only)),
         "pci_to_dgi_shot_noise_total_ratio_median": float(np.median(ideal_mode_ratio)),
         "pci_to_dgi_shot_noise_total_ratio_range": [
             float(np.min(ideal_mode_ratio)),
@@ -188,20 +188,24 @@ def build_accumulated_snr_data(
             "|phi|sqrt(N_ph). This is not a hidden normalisation correction."
         ),
         "read_dominated_points": int(np.count_nonzero(read_dominated)),
+        "maximum_abs_phase_rad": float(np.max(np.abs(phase))),
+        "notebook_linear_phase_regime_satisfied": bool(np.max(np.abs(phase)) < 0.5),
+        "full_fourier_camera_pipeline_used": False,
     }
     checks["passed"] = bool(
-        -2.2 <= checks["quadratic_realistic_snr_shot_high_detuning_log_slope"] <= -1.7
+        -2.2 <= checks["quadratic_shot_plus_read_snr_high_detuning_log_slope"] <= -1.7
         and -1.1 <= checks["quadratic_shot_noise_only_snr_shot_log_slope"] <= -0.9
         and 1.9 <= checks["n_max_log_slope"] <= 2.1
-        and checks["pci_realistic_total_relative_range"] <= 0.01
+        and checks["pci_shot_plus_read_total_relative_range"] <= 0.01
         and checks["pci_shot_noise_total_relative_range"] <= 0.01
         and checks["quadratic_shot_noise_total_relative_range"] <= 0.03
-        and checks["quadratic_realistic_total_log_slope"] < -0.2
-        and -1.1 <= checks["quadratic_realistic_total_high_detuning_log_slope"] <= -0.7
-        and checks["pci_realistic_le_shot_noise_limit"]
-        and checks["dgi_realistic_le_shot_noise_limit"]
+        and checks["quadratic_shot_plus_read_total_log_slope"] < -0.2
+        and -1.1 <= checks["quadratic_shot_plus_read_total_high_detuning_log_slope"] <= -0.7
+        and checks["pci_shot_plus_read_le_shot_noise_limit"]
+        and checks["dgi_shot_plus_read_le_shot_noise_limit"]
         and 1.9 <= checks["pci_to_dgi_shot_noise_total_ratio_median"] <= 2.1
         and checks["pci_to_dgi_shot_noise_ratio_relative_range"] <= 0.04
+        and checks["notebook_linear_phase_regime_satisfied"]
     )
 
     data = {
@@ -211,12 +215,12 @@ def build_accumulated_snr_data(
         "scattered_photons_per_atom": scattered,
         "n_max": n_max,
         "sqrt_n_max": sqrt_n_max,
-        "pci_realistic_snr_shot": pci_snr_realistic,
-        "pci_realistic_snr_total": pci_total_realistic,
+        "pci_shot_plus_read_snr_shot": pci_snr_shot_plus_read,
+        "pci_shot_plus_read_snr_total": pci_total_shot_plus_read,
         "pci_shot_only_snr_shot": pci_snr_shot_only,
         "pci_shot_only_snr_total": pci_total_shot_only,
-        "dgi_realistic_snr_shot": dgi_snr_realistic,
-        "dgi_realistic_snr_total": dgi_total_realistic,
+        "dgi_shot_plus_read_snr_shot": dgi_snr_shot_plus_read,
+        "dgi_shot_plus_read_snr_total": dgi_total_shot_plus_read,
         "dgi_shot_only_snr_shot": dgi_snr_shot_only,
         "dgi_shot_only_snr_total": dgi_total_shot_only,
     }
@@ -239,9 +243,9 @@ def build_accumulated_snr_data(
 def _write_csv(path: Path, data: dict[str, np.ndarray]) -> None:
     rows = []
     series = [
-        ("PCI", "realistic", data["pci_realistic_snr_shot"], data["pci_realistic_snr_total"]),
+        ("PCI", "shot_plus_read_noise", data["pci_shot_plus_read_snr_shot"], data["pci_shot_plus_read_snr_total"]),
         ("PCI", "shot_noise_only", data["pci_shot_only_snr_shot"], data["pci_shot_only_snr_total"]),
-        ("DGI", "realistic", data["dgi_realistic_snr_shot"], data["dgi_realistic_snr_total"]),
+        ("DGI", "shot_plus_read_noise", data["dgi_shot_plus_read_snr_shot"], data["dgi_shot_plus_read_snr_total"]),
         ("DGI", "shot_noise_only", data["dgi_shot_only_snr_shot"], data["dgi_shot_only_snr_total"]),
     ]
     for mode, noise_model, snr_shot, snr_total in series:
@@ -259,9 +263,9 @@ def _write_csv(path: Path, data: dict[str, np.ndarray]) -> None:
 def _plot(path: Path, data: dict[str, np.ndarray], cfg: dict[str, Any]) -> None:
     plt.style.use("default")
     fig, ax = plt.subplots(figsize=tuple(cfg["figure_size_inches"]))
-    ax.plot(data["detuning_ghz"], data["pci_realistic_snr_total"], color="#1769aa", lw=2.2, label="PCI (realistic)")
+    ax.plot(data["detuning_ghz"], data["pci_shot_plus_read_snr_total"], color="#1769aa", lw=2.2, label="PCI (shot + read noise)")
     ax.plot(data["detuning_ghz"], data["pci_shot_only_snr_total"], color="#1769aa", lw=2.0, ls="--", label="PCI (shot-noise limit)")
-    ax.plot(data["detuning_ghz"], data["dgi_realistic_snr_total"], color="#3f8c4d", lw=2.2, label="DGI (realistic)")
+    ax.plot(data["detuning_ghz"], data["dgi_shot_plus_read_snr_total"], color="#3f8c4d", lw=2.2, label="DGI (shot + read noise)")
     ax.plot(data["detuning_ghz"], data["dgi_shot_only_snr_total"], color="#3f8c4d", lw=2.0, ls="--", label="DGI (shot-noise limit)")
     ax.set_xscale(cfg["x_axis_scale"])
     ax.set_yscale(cfg["y_axis_scale"])
@@ -299,9 +303,9 @@ def generate(config_path: Path) -> dict[str, Path]:
         "parameters": params,
         "scaling_checks": checks,
         "curve_ranges": {
-            "pci_realistic_snr_total": [float(np.min(data["pci_realistic_snr_total"])), float(np.max(data["pci_realistic_snr_total"]))],
+            "pci_shot_plus_read_snr_total": [float(np.min(data["pci_shot_plus_read_snr_total"])), float(np.max(data["pci_shot_plus_read_snr_total"]))],
             "pci_shot_noise_only_snr_total": [float(np.min(data["pci_shot_only_snr_total"])), float(np.max(data["pci_shot_only_snr_total"]))],
-            "dgi_realistic_snr_total": [float(np.min(data["dgi_realistic_snr_total"])), float(np.max(data["dgi_realistic_snr_total"]))],
+            "dgi_shot_plus_read_snr_total": [float(np.min(data["dgi_shot_plus_read_snr_total"])), float(np.max(data["dgi_shot_plus_read_snr_total"]))],
             "dgi_shot_noise_only_snr_total": [float(np.min(data["dgi_shot_only_snr_total"])), float(np.max(data["dgi_shot_only_snr_total"]))],
             "n_max": [float(np.min(data["n_max"])), float(np.max(data["n_max"]))],
         },
@@ -315,13 +319,27 @@ def generate(config_path: Path) -> dict[str, Path]:
         "notebook_defaults_config": str(notebook_path.resolve().relative_to(REPO_ROOT)),
         "mode_choices": {"linear": "PCI", "quadratic": "DGI"},
         "noise_assumptions": {
-            "realistic": "Poisson photon noise plus 7 e- rms read noise in quadrature",
+            "shot_plus_read_noise": "Poisson photon noise plus 7 e- rms read noise in quadrature; this label does not imply the full Fourier/pupil/binning camera pipeline",
             "shot_noise_only": "Poisson photon noise with read noise disabled",
         },
         "destruction_budget": "30% condensate loss using the notebook clean-loss model",
         "detuning_range_ghz": [float(data["detuning_ghz"][0]), float(data["detuning_ghz"][-1])],
         "axis_scales": {"x": cfg["x_axis_scale"], "y": cfg["y_axis_scale"]},
-        "physical_interpretation": "N_max is mode-independent and grows approximately as detuning squared. Both PCI curves and the DGI shot-noise-limit curve are invariant; realistic DGI falls at large detuning because read noise dominates its quadratic signal.",
+        "physical_interpretation": "Within the notebook small-phase analytical scaling model, N_max is mode-independent and grows approximately as detuning squared. Both PCI curves and the DGI shot-noise-limit curve are invariant; DGI with shot plus read noise falls at large detuning because read noise dominates its quadratic signal.",
+        "model_scope": {
+            "classification": "analytical scaling figure",
+            "pci_signal": "notebook linear small-phase contrast 2*t_p*|phi|",
+            "dgi_signal": "opaque-stop limit 4*sin(phi/2)^2",
+            "camera_terms": "detected photon scale, Poisson variance, and Gaussian read-noise variance only",
+            "not_included": [
+                "finite-NA Fourier propagation and axis-dependent blur",
+                "camera binning and spatial integration",
+                "finite OD=4 stop leakage",
+                "condensate depletion during the accumulated sequence",
+                "heating plus reabsorption destruction model"
+            ],
+            "destruction_boundary": "N_max uses the notebook optimistic clean-loss model, not its later realistic heating-plus-reabsorption model"
+        },
         "ideal_cross_mode_comparison": {
             "coincide": checks["pci_and_dgi_shot_noise_curves_coincide"],
             "pci_to_dgi_ratio_median": checks["pci_to_dgi_shot_noise_total_ratio_median"],
@@ -329,16 +347,18 @@ def generate(config_path: Path) -> dict[str, Path]:
             "interpretation": checks["ideal_cross_mode_offset_interpretation"],
         },
         "same_mode_noise_checks": {
-            "pci_realistic_le_shot_noise_limit": checks["pci_realistic_le_shot_noise_limit"],
-            "dgi_realistic_le_shot_noise_limit": checks["dgi_realistic_le_shot_noise_limit"],
+            "pci_shot_plus_read_le_shot_noise_limit": checks["pci_shot_plus_read_le_shot_noise_limit"],
+            "dgi_shot_plus_read_le_shot_noise_limit": checks["dgi_shot_plus_read_le_shot_noise_limit"],
         },
-        "caption": "Accumulated signal-to-noise at a fixed 30% destruction budget. Shot-noise-limit curves provide the ideal reference for each mode, while solid curves include camera read noise. PCI uses a carrier reference and therefore retains an expected factor-of-two ideal prefactor relative to DGI under the present SNR definitions. Both ideal curves are detuning-invariant; the realistic DGI curve falls at large detuning as read noise acts on its quadratic signal.",
+        "caption": "Accumulated signal-to-noise in the notebook small-phase analytical model at a fixed 30% clean-loss budget. Dashed curves are photon-shot-noise limits; solid curves add 7 e- rms read noise. PCI uses a carrier reference and therefore has an expected factor-of-two ideal prefactor relative to DGI under these SNR definitions. Both ideal curves are approximately detuning-invariant, while DGI with read noise falls at large detuning because its quadratic signal reaches the read-noise floor. This scaling figure does not include the full Fourier/pupil/binning pipeline or the later heating-plus-reabsorption destruction model.",
         "scaling_checks": checks,
         "caveats": [
             "Version 1 representative and uncalibrated.",
             "No experimental absorption/RAI calibration has been applied.",
             "This is not a final operating-point prediction.",
             "The figure uses fixed-destruction-budget simulation logic.",
+            "The clean-loss budget is an optimistic notebook bound; it is not the later realistic heating-plus-reabsorption model.",
+            "The curves are analytical scaling references, not outputs of the full spatial imaging and camera pipeline.",
         ],
     }
     _write_json(outputs["summary"], summary)
