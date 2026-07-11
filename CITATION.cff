@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use this repository, cite the archived Zenodo release once available. Until then, cite the GitHub repository."
+title: "Continuous non-destructive imaging simulations for an ultracold 166Er Bose-Einstein condensate"
+version: "0.1.0-pre"
+type: software
+authors:
+  - name: "TODO: author name"
+repository-code: "https://github.com/jackzhao61725-dotcom/Non-destructive-image"
+abstract: "Notebook-aligned Version 1 simulation and dissertation figure workflow for continuous non-destructive imaging of an ultracold 166Er Bose-Einstein condensate."
+keywords:
+  - ultracold atoms
+  - Bose-Einstein condensate
+  - erbium-166
+  - dispersive imaging
+  - Faraday imaging
+  - phase-contrast imaging
+  - non-destructive imaging
+  - reproducible research
+notes: "DOI will be added after the first archived Zenodo release. Affiliation, ORCID, and final version metadata remain TODO."
