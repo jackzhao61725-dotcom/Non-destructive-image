@@ -1,0 +1,10 @@
+metric,physical_question,strength,limitation,recommended_use
+SNR_shot sqrt N_max,ideal scaling under identical frames,transparent analytic cancellation,ignores depletion and integer semantics,theory explanation or appendix
+sqrt sum SNR_i squared,detectability across an evolving independent sequence,already matches migrated multishot convention,requires specified per-frame observable,main-text deterministic result
+integrated ROI SNR,total image contrast in a fixed region,less sensitive to peak-pixel artifacts,ROI choice and read-noise count matter,near-term mode comparison
+matched-filter SNR,detection of a known spatial template,statistically efficient for Gaussian noise,requires template and covariance,preferred next numerical comparison
+Fisher information,precision on a chosen physical parameter,general and estimator-aware,requires likelihood nuisance parameters and calibration,future calibrated optimization
+signal per scattered photon,dispersive response per microscopic damage,simple destruction-efficiency proxy,not equal to measurable information,supporting metric
+information per condensate atom depleted,information against project-relevant damage,connects directly to continuous imaging,requires validated depletion model,main text after heating calibration
+maximum useful frame number,temporal observation capacity,intuitive experimental quantity,depends on explicit stopping definition,report with threshold and model
+parameter uncertainty,direct scientific inference precision,most interpretable for experiment,parameter-specific and calibration-dependent,future experimental comparison

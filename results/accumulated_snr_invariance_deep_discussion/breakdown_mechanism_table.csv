@@ -1,0 +1,13 @@
+mechanism,physical_pathway,changes_prefactor,changes_exponent,changes_mode_ranking,requires_recomputation
+condensate depletion,column density and phase decline,yes,possibly,yes,yes
+recoil heating,temperature rises and condensate fraction falls,yes,slightly through stopping budget,yes,yes
+reabsorption,extra deposited recoil energy with detuning dependence,yes,yes,indirectly,yes
+integer frame budget,continuous threshold is rounded,yes,stepwise local behavior,no,yes for small N
+finite numerical aperture,spatial frequencies are removed,yes,if cloud geometry evolves,yes,yes
+camera binning,signal integration and read events change,yes,possibly,yes,yes
+DGI stop leakage,dark background contributes photon noise,yes,yes at high detuning,yes,yes
+PCI carrier background,local oscillator supplies signal gain and shot noise,yes,usually no,yes,already in analytical PCI model
+technical probe noise,correlated intensity frequency pointing fluctuations,yes,possibly,yes,yes after calibration
+atom-number noise,object fluctuates between frames,yes,possibly,yes,yes
+drift and covariance,frames do not average independently,yes,yes for sequence length,yes,yes
+estimator choice,peak pixel versus ROI or matched filter,yes,possibly,yes,yes
