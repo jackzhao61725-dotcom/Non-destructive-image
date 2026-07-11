@@ -547,3 +547,16 @@ the analytical upper bound from being mistaken for the quantitative result.
    models; the problem is model scope and interpretation.
 7. **Primary issue category:** modelling scope and estimator choice, followed by
    thesis wording; not a frozen-helper physics bug.
+
+## Implementation Status
+
+The recommended next numerical model is now implemented in
+`scripts/generate_full_multishot_accumulated_snr.py`. It uses integer stopping
+under the existing heating-plus-reabsorption condensate-depletion model,
+regenerates the Thomas-Fermi phase and Fourier image for every accepted frame,
+and accumulates a fixed-ROI matched-template SNR with
+`sqrt(sum_i SNR_i^2)`.
+
+The generated comparison is documented in
+`docs/full_multishot_accumulated_snr_analysis.md`. The ideal clean-loss figure
+remains a separate scaling result and has not been replaced or reinterpreted.

@@ -33,6 +33,8 @@ prepared.
 | `results/faraday_optimisation_v1/intensity_tradeoff.svg` | `scripts/generate_dissertation_results.py` | `configs/dissertation_results_v1.json` | representative V1 plot | uncalibrated, `kappa_F = 1.0` | `results/faraday_optimisation_v1/metadata.json` | appendix or workflow demonstration |
 | `results/faraday_optimisation_v1/exposure_time_tradeoff.svg` | `scripts/generate_dissertation_results.py` | `configs/dissertation_results_v1.json` | representative V1 plot | uncalibrated, `kappa_F = 1.0` | `results/faraday_optimisation_v1/metadata.json` | appendix or workflow demonstration |
 | `results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff.svg` | `scripts/generate_detuning_tradeoff_plot.py` | `configs/dissertation_plots_v1.json` | dissertation physics plot | uncalibrated V1, exact notebook-equivalent light-atom formulas | `results/dissertation_plots_v1/detuning_tradeoff/metadata.json` | main text candidate |
+| `results/dissertation_plots_v1/accumulated_snr_invariance/accumulated_snr_invariance.svg` | `scripts/generate_accumulated_snr_invariance_plot.py` | `configs/dissertation_plots_v1.json` | idealised clean-loss analytical scaling plot | uncalibrated V1, continuous optimistic clean-loss budget | `results/dissertation_plots_v1/accumulated_snr_invariance/metadata.json` | theory section or appendix |
+| `results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr.svg` | `scripts/generate_full_multishot_accumulated_snr.py` | `configs/dissertation_plots_v1.json` | evolving heating/reabsorption multishot comparison | uncalibrated V1, integer condensate-depletion stopping | `results/dissertation_plots_v1/full_multishot_accumulated_snr/metadata.json` | main text candidate |
 
 ## Numerical Audit Outputs
 
