@@ -1,0 +1,43 @@
+{
+  "axis_scales": {
+    "x": "log",
+    "y": "linear"
+  },
+  "caveats": [
+    "Version 1 representative and uncalibrated.",
+    "No experimental absorption/RAI calibration has been applied.",
+    "This is not a final operating-point prediction.",
+    "The figure uses fixed-destruction-budget simulation logic."
+  ],
+  "config": "configs\\dissertation_plots_v1.json",
+  "destruction_budget": "30% condensate loss using the notebook clean-loss model",
+  "detuning_range_ghz": [
+    0.75,
+    5.0
+  ],
+  "figure_type": "fixed-destruction-budget accumulated-SNR simulation",
+  "git_branch": "work/accumulated-snr-invariance-plot",
+  "git_commit": "a939116d21e0a54145c95e5a6bf086c787796906",
+  "mode_choices": {
+    "linear": "PCI",
+    "quadratic": "DGI"
+  },
+  "noise_assumptions": {
+    "realistic": "Poisson photon noise plus 7 e- rms read noise in quadrature",
+    "shot_noise_only": "Poisson photon noise with read noise disabled"
+  },
+  "notebook_defaults_config": "configs\\notebook_v1_defaults.json",
+  "physical_interpretation": "N_max is mode-independent and grows approximately as detuning squared. Linear accumulated SNR remains invariant; quadratic invariance survives only in the photon-shot-noise limit and breaks under read noise.",
+  "scaling_checks": {
+    "linear_total_relative_range": 0.00018410178820949265,
+    "n_max_log_slope": 1.9998315676952214,
+    "n_max_mode_independent": true,
+    "passed": true,
+    "quadratic_realistic_snr_shot_high_detuning_log_slope": -1.8718054495198642,
+    "quadratic_realistic_total_log_slope": -0.6248949701642625,
+    "quadratic_shot_noise_only_snr_shot_log_slope": -0.9969197432221549,
+    "quadratic_shot_noise_total_relative_range": 0.00688704708704806,
+    "read_dominated_points": 48
+  },
+  "script": "scripts\\generate_accumulated_snr_invariance_plot.py"
+}

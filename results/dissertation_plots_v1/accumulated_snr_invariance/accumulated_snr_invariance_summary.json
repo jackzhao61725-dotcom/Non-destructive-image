@@ -1,0 +1,44 @@
+{
+  "curve_ranges": {
+    "dgi_realistic_snr_total": [
+      9.90174163449044,
+      31.713163002103503
+    ],
+    "dgi_shot_noise_only_snr_total": [
+      35.8975113594458,
+      36.14603574527761
+    ],
+    "n_max": [
+      7.3976977761399425,
+      328.6590956839729
+    ],
+    "pci_realistic_snr_total": [
+      70.5270134185282,
+      70.53999937950569
+    ]
+  },
+  "parameters": {
+    "destruction_budget_fraction": 0.3,
+    "destruction_model": "clean_loss",
+    "detected_photons_per_pixel_at_unit_intensity": 1072.6265629146646,
+    "eta_coll": 1.3,
+    "exposure_time_us": 40.0,
+    "imaging_axis": 0,
+    "linear_mode": "PCI",
+    "probe_power_mw": 3.5,
+    "quadratic_mode": "DGI",
+    "quantum_efficiency": 0.4,
+    "read_noise_electrons": 7.0
+  },
+  "scaling_checks": {
+    "linear_total_relative_range": 0.00018410178820949265,
+    "n_max_log_slope": 1.9998315676952214,
+    "n_max_mode_independent": true,
+    "passed": true,
+    "quadratic_realistic_snr_shot_high_detuning_log_slope": -1.8718054495198642,
+    "quadratic_realistic_total_log_slope": -0.6248949701642625,
+    "quadratic_shot_noise_only_snr_shot_log_slope": -0.9969197432221549,
+    "quadratic_shot_noise_total_relative_range": 0.00688704708704806,
+    "read_dominated_points": 48
+  }
+}
