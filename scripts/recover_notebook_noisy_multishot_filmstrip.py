@@ -317,8 +317,8 @@ def write_filmstrip_figure(path: Path, config: dict[str, Any], stage: dict[str, 
     plt.colorbar(im, ax=axes[-1], fraction=0.04, label=NORMALISED_INTENSITY)
     params = config["multishot_recovery"]
     fig.suptitle(
-        "Step 14 - the same condensate across the run "
-        rf"(PCI, {DETUNING_GHZ} = {params['detuning_ghz']}, {params['probe_power_mw']} mW, "
+        "Noisy PCI multishot filmstrip "
+        rf"({DETUNING_GHZ} = {params['detuning_ghz']}, {params['probe_power_mw']} mW, "
         rf"{params['pulse_duration_us']:.0f} $\mu$s; stops at {params['loss_fraction_limit']:.0%} loss)",
         fontsize=12,
     )
