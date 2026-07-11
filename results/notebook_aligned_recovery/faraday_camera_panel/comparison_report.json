@@ -1,0 +1,189 @@
+{
+  "camera_binning": {
+    "bin_size": 15,
+    "camera_shape": [
+      68,
+      68
+    ],
+    "trimmed_high_resolution_shape": [
+      1020,
+      1020
+    ]
+  },
+  "central_lineouts": {
+    "dark_noisy_vs_noiseless_max_abs_difference": 0.005838215517982574,
+    "dual_port_noisy_vs_noiseless_max_abs_difference": 0.03463859223879076,
+    "lineout_axis": "central camera row versus y coordinate",
+    "position_units": "um",
+    "row_index": 34
+  },
+  "comparison_status": {
+    "exact_helper_replay": "All tested noisy arrays match direct helper replay with the same explicit RNG seed and cell 51 call order.",
+    "statistical_notebook_global_rng": "Arbitrary interactive notebook-global RNG state is not claimed."
+  },
+  "dark_field_noiseless_binned": {
+    "plotted_symbol": "I/I0",
+    "quantity_type": "normalised intensity",
+    "stats": {
+      "centre_value": 0.013306633660652338,
+      "max": 0.013306633660652338,
+      "mean": 8.523274026944363e-05,
+      "min": 3.1499791004100475e-12,
+      "peak_index": [
+        34,
+        34
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 0.39411619100590733
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "dark_field_noisy": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "plotted_symbol": "I/I0",
+    "quantity_type": "normalised intensity with Poisson photon noise plus Gaussian read noise",
+    "stats": {
+      "centre_value": 0.01617456315961192,
+      "max": 0.01908564855048136,
+      "mean": 6.620543242516266e-05,
+      "min": -0.006341162650794738,
+      "peak_index": [
+        34,
+        33
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 0.30613391953395214
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "dissertation_label_conventions": {
+    "dark_field_symbol": "I/I0",
+    "dual_port_port_mapping": {
+      "I_H": "notebook port v",
+      "I_V": "notebook port u"
+    },
+    "dual_port_signal_definition": "S = (I_H - I_V) / (I_H + I_V), equivalent to notebook (I_v - I_u) / (I_v + I_u)",
+    "dual_port_signal_is_intensity": false,
+    "dual_port_signal_symbol": "S"
+  },
+  "dual_port_noiseless_signal": {
+    "plotted_symbol": "S",
+    "quantity_type": "normalised difference signal, not intensity",
+    "stats": {
+      "centre_value": 0.22852964531262482,
+      "max": 0.22852964531262482,
+      "mean": 0.001898742890941979,
+      "min": -0.03853058797302699,
+      "peak_index": [
+        34,
+        34
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 8.77978712771571
+    },
+    "units": "normalised difference"
+  },
+  "dual_port_noisy_signal": {
+    "max_absolute_difference": 0.0,
+    "max_relative_difference": 0.0,
+    "plotted_symbol": "S",
+    "quantity_type": "normalised difference signal with noisy port frames, not intensity",
+    "stats": {
+      "centre_value": 0.23867929119031744,
+      "max": 0.23867929119031744,
+      "mean": 0.0016842858266908226,
+      "min": -0.06343382680929806,
+      "peak_index": [
+        34,
+        34
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 7.788137662618364
+    },
+    "units": "normalised difference"
+  },
+  "dual_port_u_noiseless_binned": {
+    "dissertation_symbol": "I_V/I0",
+    "quantity_type": "normalised port intensity",
+    "stats": {
+      "centre_value": 0.3837272514592539,
+      "max": 0.5212102807738443,
+      "mean": 0.4990375241339173,
+      "min": 0.3837272514592539,
+      "peak_index": [
+        31,
+        34
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 2307.5495115952335
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "dual_port_v_noiseless_binned": {
+    "dissertation_symbol": "I_H/I0",
+    "quantity_type": "normalised port intensity",
+    "stats": {
+      "centre_value": 0.6110672967116934,
+      "max": 0.6110672967116934,
+      "mean": 0.500927360454027,
+      "min": 0.4825353706491475,
+      "peak_index": [
+        34,
+        34
+      ],
+      "shape": [
+        68,
+        68
+      ],
+      "sum": 2316.288114739421
+    },
+    "units": "incident-I0-normalised intensity"
+  },
+  "noise": {
+    "exact_explicit_seed_replay": true,
+    "exact_notebook_global_rng_reproduction": false,
+    "notebook_rng_policy": "global np.random.default_rng(7)",
+    "read_noise_electrons": 7.0,
+    "recovery_rng_policy": "explicit np.random.default_rng(seed), replaying the cell 51 dark/u/v call order",
+    "rng_seed": 7
+  },
+  "notebook_counterpart": {
+    "file": "notebook_sections/06_faraday.py",
+    "primary_cell": 51,
+    "reference": "notebook_sections/06_faraday.py cell 51, section 17.2 / 17.3",
+    "section": "17.2 / 17.3"
+  },
+  "notebook_formula": {
+    "dark_camera": "cam_dark, ideal_dark = to_camera(fm['I_dark'], 5.0)",
+    "faraday_maps": "fm = faraday_maps(1.5e9, axis=0)",
+    "ideal_signal": "S_ideal = (ideal_v - ideal_u) / (ideal_v + ideal_u)",
+    "noisy_signal": "S_map = (cam_v - cam_u) / (cam_v + cam_u)",
+    "port_u_camera": "cam_u, ideal_u = to_camera(fm['I_u'], 5.0)",
+    "port_v_camera": "cam_v, ideal_v = to_camera(fm['I_v'], 5.0)"
+  },
+  "photon_scale": {
+    "intensity_at_atoms_w_m2": 22.104853207207686,
+    "magnification": 2.0,
+    "object_pixel_m": 1.465e-06,
+    "photon_energy_j": 4.953730314044377e-19,
+    "photons_per_pixel": 3830.8091532666604,
+    "probe_power_mw": 5.0
+  },
+  "status": "notebook cell 51 Faraday camera panel recovered with explicit-seed replay"
+}
