@@ -10,8 +10,11 @@ COLUMN_DENSITY_M2 = r"$\mathrm{m}^{-2}$"
 PHASE_RAD = r"$\phi$ (rad)"
 FARADAY_ANGLE_RAD = r"$\theta_F$ (rad)"
 NORMALISED_INTENSITY = r"$I/I_0$"
-DARK_FIELD_INTENSITY = r"$I_{\mathrm{dark}}/I_0$"
-DUAL_PORT_SIGNAL = r"$S=(I_v-I_u)/(I_v+I_u)$"
+DARK_FIELD_INTENSITY = NORMALISED_INTENSITY
+DUAL_PORT_SIGNAL = r"$S$"
+DUAL_PORT_SIGNAL_DEFINITION = r"$S=(I_H-I_V)/(I_H+I_V)$"
+DUAL_PORT_H_INTENSITY = r"$I_H/I_0$"
+DUAL_PORT_V_INTENSITY = r"$I_V/I_0$"
 ATOM_NUMBER = r"$N_0$"
 TEMPERATURE_NK = r"$T$ (nK)"
 SNR = "SNR"
@@ -28,6 +31,8 @@ PEAK_DENSITY = r"$n_0$ ($\mathrm{m}^{-3}$)"
 PEAK_COLUMN_DENSITY = r"$\tilde{n}_i$ ($\mathrm{m}^{-2}$)"
 DETUNING_HZ = r"$\Delta$ (Hz)"
 DETUNING_GHZ = r"$\Delta$ (GHz)"
+SCATTERED_PHOTONS_PER_ATOM = r"$N_\gamma$"
+SCATTERING_RATE = r"$R_{\mathrm{sc}}$"
 
 
 def coordinate_label(axis: str | None = None) -> str:

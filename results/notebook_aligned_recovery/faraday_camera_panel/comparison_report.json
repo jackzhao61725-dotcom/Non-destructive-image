@@ -22,6 +22,8 @@
     "statistical_notebook_global_rng": "Arbitrary interactive notebook-global RNG state is not claimed."
   },
   "dark_field_noiseless_binned": {
+    "plotted_symbol": "I/I0",
+    "quantity_type": "normalised intensity",
     "stats": {
       "centre_value": 0.013306633660652338,
       "max": 0.013306633660652338,
@@ -42,6 +44,8 @@
   "dark_field_noisy": {
     "max_absolute_difference": 0.0,
     "max_relative_difference": 0.0,
+    "plotted_symbol": "I/I0",
+    "quantity_type": "normalised intensity with Poisson photon noise plus Gaussian read noise",
     "stats": {
       "centre_value": 0.01617456315961192,
       "max": 0.01908564855048136,
@@ -59,7 +63,19 @@
     },
     "units": "incident-I0-normalised intensity"
   },
+  "dissertation_label_conventions": {
+    "dark_field_symbol": "I/I0",
+    "dual_port_port_mapping": {
+      "I_H": "notebook port v",
+      "I_V": "notebook port u"
+    },
+    "dual_port_signal_definition": "S = (I_H - I_V) / (I_H + I_V), equivalent to notebook (I_v - I_u) / (I_v + I_u)",
+    "dual_port_signal_is_intensity": false,
+    "dual_port_signal_symbol": "S"
+  },
   "dual_port_noiseless_signal": {
+    "plotted_symbol": "S",
+    "quantity_type": "normalised difference signal, not intensity",
     "stats": {
       "centre_value": 0.22852964531262482,
       "max": 0.22852964531262482,
@@ -80,6 +96,8 @@
   "dual_port_noisy_signal": {
     "max_absolute_difference": 0.0,
     "max_relative_difference": 0.0,
+    "plotted_symbol": "S",
+    "quantity_type": "normalised difference signal with noisy port frames, not intensity",
     "stats": {
       "centre_value": 0.23867929119031744,
       "max": 0.23867929119031744,
@@ -98,6 +116,8 @@
     "units": "normalised difference"
   },
   "dual_port_u_noiseless_binned": {
+    "dissertation_symbol": "I_V/I0",
+    "quantity_type": "normalised port intensity",
     "stats": {
       "centre_value": 0.3837272514592539,
       "max": 0.5212102807738443,
@@ -116,6 +136,8 @@
     "units": "incident-I0-normalised intensity"
   },
   "dual_port_v_noiseless_binned": {
+    "dissertation_symbol": "I_H/I0",
+    "quantity_type": "normalised port intensity",
     "stats": {
       "centre_value": 0.6110672967116934,
       "max": 0.6110672967116934,

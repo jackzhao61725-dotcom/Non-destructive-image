@@ -238,6 +238,16 @@ def comparison_report(config: dict[str, Any], stage: dict[str, Any]) -> dict[str
             "noisy_signal": "S_map = (cam_v - cam_u) / (cam_v + cam_u)",
             "ideal_signal": "S_ideal = (ideal_v - ideal_u) / (ideal_v + ideal_u)",
         },
+        "dissertation_label_conventions": {
+            "dark_field_symbol": "I/I0",
+            "dual_port_signal_symbol": "S",
+            "dual_port_signal_is_intensity": False,
+            "dual_port_port_mapping": {
+                "I_H": "notebook port v",
+                "I_V": "notebook port u",
+            },
+            "dual_port_signal_definition": "S = (I_H - I_V) / (I_H + I_V), equivalent to notebook (I_v - I_u) / (I_v + I_u)",
+        },
         "camera_binning": {
             "bin_size": stage["bin_size"],
             "trimmed_high_resolution_shape": [1020, 1020],
@@ -253,27 +263,39 @@ def comparison_report(config: dict[str, Any], stage: dict[str, Any]) -> dict[str
             "exact_explicit_seed_replay": True,
         },
         "dark_field_noiseless_binned": {
+            "plotted_symbol": "I/I0",
+            "quantity_type": "normalised intensity",
             "units": "incident-I0-normalised intensity",
             "stats": real_array_stats(dark["camera_image"]),
         },
         "dark_field_noisy": {
+            "plotted_symbol": "I/I0",
+            "quantity_type": "normalised intensity with Poisson photon noise plus Gaussian read noise",
             "units": "incident-I0-normalised intensity",
             "stats": real_array_stats(dark["noisy_image"]),
             **field_comparison(dark["noisy_image"], stage["replay"]["dark_noisy_image"]),
         },
         "dual_port_u_noiseless_binned": {
+            "dissertation_symbol": "I_V/I0",
+            "quantity_type": "normalised port intensity",
             "units": "incident-I0-normalised intensity",
             "stats": real_array_stats(port_u["camera_image"]),
         },
         "dual_port_v_noiseless_binned": {
+            "dissertation_symbol": "I_H/I0",
+            "quantity_type": "normalised port intensity",
             "units": "incident-I0-normalised intensity",
             "stats": real_array_stats(port_v["camera_image"]),
         },
         "dual_port_noiseless_signal": {
+            "plotted_symbol": "S",
+            "quantity_type": "normalised difference signal, not intensity",
             "units": "normalised difference",
             "stats": real_array_stats(stage["dual_port_ideal_signal"]),
         },
         "dual_port_noisy_signal": {
+            "plotted_symbol": "S",
+            "quantity_type": "normalised difference signal with noisy port frames, not intensity",
             "units": "normalised difference",
             "stats": real_array_stats(stage["dual_port_noisy_signal"]),
             **field_comparison(stage["dual_port_noisy_signal"], stage["replay"]["dual_port_noisy_signal"]),
@@ -333,10 +355,10 @@ def write_lineouts(path: Path, stage: dict[str, Any]) -> None:
                 "dark_field_noisy_i0": float(stage["dark"]["noisy_image"][mid, index]),
                 "dual_port_signal_noiseless": float(stage["dual_port_ideal_signal"][mid, index]),
                 "dual_port_signal_noisy": float(stage["dual_port_noisy_signal"][mid, index]),
-                "port_u_noiseless_binned_i0": float(stage["port_u"]["camera_image"][mid, index]),
-                "port_v_noiseless_binned_i0": float(stage["port_v"]["camera_image"][mid, index]),
-                "port_u_noisy_i0": float(stage["port_u"]["noisy_image"][mid, index]),
-                "port_v_noisy_i0": float(stage["port_v"]["noisy_image"][mid, index]),
+                "I_V_noiseless_binned_i0": float(stage["port_u"]["camera_image"][mid, index]),
+                "I_H_noiseless_binned_i0": float(stage["port_v"]["camera_image"][mid, index]),
+                "I_V_noisy_i0": float(stage["port_u"]["noisy_image"][mid, index]),
+                "I_H_noisy_i0": float(stage["port_v"]["noisy_image"][mid, index]),
             }
             for index in range(stage["dark"]["camera_image"].shape[1])
         ],
@@ -345,12 +367,12 @@ def write_lineouts(path: Path, stage: dict[str, Any]) -> None:
 
 def write_frame_statistics(path: Path, stage: dict[str, Any]) -> None:
     rows = [
-        _frame_row("dark_field_noiseless_binned", stage["dark"]["camera_image"], "I_dark/I0", False),
-        _frame_row("dark_field_noisy", stage["dark"]["noisy_image"], "I_dark/I0", True),
-        _frame_row("dual_port_u_noiseless_binned", stage["port_u"]["camera_image"], "I/I0", False),
-        _frame_row("dual_port_u_noisy", stage["port_u"]["noisy_image"], "I/I0", True),
-        _frame_row("dual_port_v_noiseless_binned", stage["port_v"]["camera_image"], "I/I0", False),
-        _frame_row("dual_port_v_noisy", stage["port_v"]["noisy_image"], "I/I0", True),
+        _frame_row("dark_field_noiseless_binned", stage["dark"]["camera_image"], "I/I0", False),
+        _frame_row("dark_field_noisy", stage["dark"]["noisy_image"], "I/I0", True),
+        _frame_row("dual_port_I_V_noiseless_binned", stage["port_u"]["camera_image"], "I_V/I0", False),
+        _frame_row("dual_port_I_V_noisy", stage["port_u"]["noisy_image"], "I_V/I0", True),
+        _frame_row("dual_port_I_H_noiseless_binned", stage["port_v"]["camera_image"], "I_H/I0", False),
+        _frame_row("dual_port_I_H_noisy", stage["port_v"]["noisy_image"], "I_H/I0", True),
         _frame_row("dual_port_signal_noiseless", stage["dual_port_ideal_signal"], "S", False),
         _frame_row("dual_port_signal_noisy", stage["dual_port_noisy_signal"], "S", True),
     ]
@@ -490,9 +512,10 @@ def metadata(config: dict[str, Any], config_path: Path, stage: dict[str, Any], o
             "rng_assumptions": "Explicit np.random.default_rng(seed) replay of notebook cell 51 dark/u/v camera call order.",
         },
         "normalisation_conventions": {
-            "dark_field": "camera-level I_dark/I0, noisy after Poisson photon noise plus Gaussian read noise",
-            "dual_port_ports": "camera-level I/I0 for each port",
-            "dual_port_signal": "S = (I_v - I_u) / (I_v + I_u)",
+            "dark_field": "camera-level I/I0, noisy after Poisson photon noise plus Gaussian read noise",
+            "dual_port_ports": "camera-level I_H/I0 and I_V/I0 port intensities; I_H maps to notebook port v and I_V maps to notebook port u",
+            "dual_port_signal": "S = (I_H - I_V) / (I_H + I_V), equivalent to notebook (I_v - I_u) / (I_v + I_u)",
+            "dual_port_signal_is_intensity": False,
             "lineouts": "central camera row versus y coordinate in um",
         },
         "comparison_status": {

@@ -1,4 +1,4 @@
-position_um,dark_field_noiseless_binned_i0,dark_field_noisy_i0,dual_port_signal_noiseless,dual_port_signal_noisy,port_u_noiseless_binned_i0,port_v_noiseless_binned_i0,port_u_noisy_i0,port_v_noisy_i0
+position_um,dark_field_noiseless_binned_i0,dark_field_noisy_i0,dual_port_signal_noiseless,dual_port_signal_noisy,I_V_noiseless_binned_i0,I_H_noiseless_binned_i0,I_V_noisy_i0,I_H_noisy_i0
 -49.31640625,2.59087792806e-10,-0.00026866813753,2.94498078171e-05,-0.0148702424003,0.499985627729,0.500015077558,0.511149891688,0.496170788992
 -47.8515625,2.47367700841e-10,0.000771278985662,2.99837309941e-05,0.00496310181193,0.499985148414,0.500015132154,0.505510273114,0.510553099078
 -46.38671875,3.40374674948e-11,5.50689047679e-05,4.99287064029e-06,0.0114032276104,0.499997411878,0.500002404747,0.496305883836,0.507755423458

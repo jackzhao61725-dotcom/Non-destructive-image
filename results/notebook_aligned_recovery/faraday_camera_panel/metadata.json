@@ -32,7 +32,7 @@
     "summary": "results\\notebook_aligned_recovery\\faraday_camera_panel\\faraday_camera_panel_summary.json"
   },
   "generation_script": "scripts/recover_notebook_faraday_camera_panel.py",
-  "git_commit_hash": "3adf8020021d3f23071eb1a0d425d54655d3262f",
+  "git_commit_hash": "308e3d4f7f134ee0ad6e5ae50c0b277b29c2b12f",
   "grid_and_axis": {
     "camera_shape": [
       68,
@@ -49,9 +49,10 @@
   },
   "label": "notebook_v1_defaults_uncalibrated",
   "normalisation_conventions": {
-    "dark_field": "camera-level I_dark/I0, noisy after Poisson photon noise plus Gaussian read noise",
-    "dual_port_ports": "camera-level I/I0 for each port",
-    "dual_port_signal": "S = (I_v - I_u) / (I_v + I_u)",
+    "dark_field": "camera-level I/I0, noisy after Poisson photon noise plus Gaussian read noise",
+    "dual_port_ports": "camera-level I_H/I0 and I_V/I0 port intensities; I_H maps to notebook port v and I_V maps to notebook port u",
+    "dual_port_signal": "S = (I_H - I_V) / (I_H + I_V), equivalent to notebook (I_v - I_u) / (I_v + I_u)",
+    "dual_port_signal_is_intensity": false,
     "lineouts": "central camera row versus y coordinate in um"
   },
   "notebook_counterpart": {
