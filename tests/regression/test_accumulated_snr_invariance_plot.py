@@ -26,8 +26,16 @@ def test_accumulated_snr_scaling_and_mode_independent_budget() -> None:
     assert 1.9 <= checks["n_max_log_slope"] <= 2.1
     assert -2.2 <= checks["quadratic_realistic_snr_shot_high_detuning_log_slope"] <= -1.7
     assert -1.1 <= checks["quadratic_shot_noise_only_snr_shot_log_slope"] <= -0.9
-    assert checks["linear_total_relative_range"] <= 0.01
+    assert checks["pci_realistic_total_relative_range"] <= 0.01
+    assert checks["pci_shot_noise_total_relative_range"] <= 0.01
     assert checks["quadratic_shot_noise_total_relative_range"] <= 0.03
+    assert checks["pci_realistic_le_shot_noise_limit"] is True
+    assert checks["dgi_realistic_le_shot_noise_limit"] is True
+    assert checks["pci_and_dgi_shot_noise_curves_coincide"] is False
+    assert 1.9 <= checks["pci_to_dgi_shot_noise_total_ratio_median"] <= 2.1
+    assert checks["pci_to_dgi_shot_noise_ratio_relative_range"] <= 0.04
+    assert np.all(data["pci_realistic_snr_total"] <= data["pci_shot_only_snr_total"])
+    assert np.all(data["dgi_realistic_snr_total"] <= data["dgi_shot_only_snr_total"])
     assert data["dgi_realistic_snr_total"][-1] < data["dgi_realistic_snr_total"][0]
     assert np.all(np.isfinite(data["n_max"]))
 

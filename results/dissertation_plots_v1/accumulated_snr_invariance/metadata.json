@@ -3,6 +3,7 @@
     "x": "log",
     "y": "linear"
   },
+  "caption": "Accumulated signal-to-noise at a fixed 30% destruction budget. Shot-noise-limit curves provide the ideal reference for each mode, while solid curves include camera read noise. PCI uses a carrier reference and therefore retains an expected factor-of-two ideal prefactor relative to DGI under the present SNR definitions. Both ideal curves are detuning-invariant; the realistic DGI curve falls at large detuning as read noise acts on its quadratic signal.",
   "caveats": [
     "Version 1 representative and uncalibrated.",
     "No experimental absorption/RAI calibration has been applied.",
@@ -17,7 +18,16 @@
   ],
   "figure_type": "fixed-destruction-budget accumulated-SNR simulation",
   "git_branch": "work/accumulated-snr-invariance-plot",
-  "git_commit": "a939116d21e0a54145c95e5a6bf086c787796906",
+  "git_commit": "870a16a464cb0173de40fa9c1a023b49ab87c2af",
+  "ideal_cross_mode_comparison": {
+    "coincide": false,
+    "interpretation": "Expected mode-dependent prefactor: PCI uses the carrier as a homodyne reference, giving approximately 2|phi|sqrt(N_ph), while DGI gives approximately |phi|sqrt(N_ph). This is not a hidden normalisation correction.",
+    "pci_to_dgi_ratio_median": 2.002061057378028,
+    "ratio_range": [
+      2.000308977629658,
+      2.0137866528109716
+    ]
+  },
   "mode_choices": {
     "linear": "PCI",
     "quadratic": "DGI"
@@ -27,13 +37,29 @@
     "shot_noise_only": "Poisson photon noise with read noise disabled"
   },
   "notebook_defaults_config": "configs\\notebook_v1_defaults.json",
-  "physical_interpretation": "N_max is mode-independent and grows approximately as detuning squared. Linear accumulated SNR remains invariant; quadratic invariance survives only in the photon-shot-noise limit and breaks under read noise.",
+  "physical_interpretation": "N_max is mode-independent and grows approximately as detuning squared. Both PCI curves and the DGI shot-noise-limit curve are invariant; realistic DGI falls at large detuning because read noise dominates its quadratic signal.",
+  "same_mode_noise_checks": {
+    "dgi_realistic_le_shot_noise_limit": true,
+    "pci_realistic_le_shot_noise_limit": true
+  },
   "scaling_checks": {
-    "linear_total_relative_range": 0.00018410178820949265,
+    "dgi_realistic_le_shot_noise_limit": true,
+    "ideal_cross_mode_offset_interpretation": "Expected mode-dependent prefactor: PCI uses the carrier as a homodyne reference, giving approximately 2|phi|sqrt(N_ph), while DGI gives approximately |phi|sqrt(N_ph). This is not a hidden normalisation correction.",
     "n_max_log_slope": 1.9998315676952214,
     "n_max_mode_independent": true,
     "passed": true,
+    "pci_and_dgi_shot_noise_curves_coincide": false,
+    "pci_realistic_le_shot_noise_limit": true,
+    "pci_realistic_total_relative_range": 0.00018410178820949265,
+    "pci_shot_noise_total_relative_range": 0.0001841017882094476,
+    "pci_to_dgi_shot_noise_ratio_relative_range": 0.006726840685302234,
+    "pci_to_dgi_shot_noise_total_ratio_median": 2.002061057378028,
+    "pci_to_dgi_shot_noise_total_ratio_range": [
+      2.000308977629658,
+      2.0137866528109716
+    ],
     "quadratic_realistic_snr_shot_high_detuning_log_slope": -1.8718054495198642,
+    "quadratic_realistic_total_high_detuning_log_slope": -0.8718216095301259,
     "quadratic_realistic_total_log_slope": -0.6248949701642625,
     "quadratic_shot_noise_only_snr_shot_log_slope": -0.9969197432221549,
     "quadratic_shot_noise_total_relative_range": 0.00688704708704806,
