@@ -1,0 +1,436 @@
+{
+  "approximation_sites": [
+    {
+      "actual_code_uses": "exact lineshape for phi_peak and residual OD",
+      "approximation_role": "interpretation and regime classification",
+      "code_or_text": "Text gives phi -> sigma0*n_col/(2*delta) and PCI linear regime phi < 0.5; code uses exact delta/(1+delta^2).",
+      "figures_rely_on_it": "phase table/regime wording only; recovered phase map uses exact expression",
+      "site": "notebook_sections/03_light_atom_interaction.py cells 9-12",
+      "topic": "scalar phase and far-detuned scaling"
+    },
+    {
+      "actual_code_uses": "exact exp(i phi) propagation for images; linear formula only for ideal SNR/reference tangent",
+      "approximation_role": "interpretation and idealised SNR comparison",
+      "code_or_text": "Text expands PCI as t_p^2 + 2*t_p*phi; code also plots I_lin but sim_image uses exp(1j*phi). SNR_shot_ideal uses linear contrast.",
+      "figures_rely_on_it": "transfer-curve plot includes tangent; recovered PCI image uses exact expression",
+      "site": "notebook_sections/04_pci.py cells 15-18 and 22",
+      "topic": "PCI transfer and SNR"
+    },
+    {
+      "actual_code_uses": "exact complex phase field",
+      "approximation_role": "not applicable",
+      "code_or_text": "object_field = exp(1j * phase_map), scattered_field = object_field - 1.",
+      "figures_rely_on_it": "notebook-aligned PCI/DGI outputs use exact expression",
+      "site": "src/non_destructive_image/imaging.py simulate_pci_image and simulate_dgi_image",
+      "topic": "scalar field propagation"
+    },
+    {
+      "actual_code_uses": "field recombination with exp(+/- i theta_F), then exact intensities/ratio",
+      "approximation_role": "interpretation of dark-field and dual-port response",
+      "code_or_text": "Text states I_dark = sin^2(theta_F) approx theta_F^2 and S = sin(2 theta_F) approx 2 theta_F.",
+      "figures_rely_on_it": "Faraday explanatory wording; recovered Faraday figures use exact helper outputs",
+      "site": "notebook_sections/06_faraday.py cells 84-89",
+      "topic": "Faraday rotation readout"
+    },
+    {
+      "actual_code_uses": "exact finite-rotation field expression for Version 1 phenomenological theta_F",
+      "approximation_role": "not applicable to propagation; theta_F model itself is phenomenological",
+      "code_or_text": "sigma_plus/minus object fields are exp(+/- 1j*theta_f_map); Ex/Ey and dual-port intensities are computed from fields.",
+      "figures_rely_on_it": "notebook-aligned Faraday outputs use exact expression",
+      "site": "src/non_destructive_image/imaging.py simulate_faraday_image",
+      "topic": "Faraday field propagation"
+    },
+    {
+      "actual_code_uses": "scalar proxy proportional to theta_F, not an image-field simulation",
+      "approximation_role": "single-variable optimisation proxy, not a final camera/image prediction",
+      "code_or_text": "Uses abs(faraday_signal) and ratios such as signal_per_scattered_photon.",
+      "figures_rely_on_it": "representative Faraday optimisation tables/plots rely on this proxy",
+      "site": "src/non_destructive_image/analysis.py evaluate_faraday_operating_point",
+      "topic": "optimisation signal proxy"
+    },
+    {
+      "actual_code_uses": "exact phase lineshape, exact PCI transfer for realistic SNR, and exact scattering denominator",
+      "approximation_role": "physical explanation and idealised invariance arguments",
+      "code_or_text": "phi scales as column density and SNR_pixel_phi uses full I_full(phi); detuning sweep comments use far-detuned trends.",
+      "figures_rely_on_it": "multishot recovery uses exact notebook formulas for sequence values",
+      "site": "notebook_sections/09_multishot_simulation.py cells 40-46",
+      "topic": "multishot signal/loss interpretation"
+    }
+  ],
+  "calibration_status": "notebook-aligned Version 1 / uncalibrated audit; no experimental RAI or absorption calibration applied",
+  "canonical_ranges": {
+    "central_abs_phi_rad": 0.20294165287929014,
+    "central_abs_theta_rad": 0.20294165287929014,
+    "max_abs_phi_rad": 0.20294165287929014,
+    "max_abs_theta_rad": 0.20294165287929014,
+    "p95_abs_phi_rad": 0.1881893889236963,
+    "p95_abs_theta_rad": 0.1881893889236963,
+    "p99_abs_phi_rad": 0.20008160141301856,
+    "p99_abs_theta_rad": 0.20008160141301856
+  },
+  "config_label": "notebook_v1_defaults_uncalibrated",
+  "detuning_plot_config_present": true,
+  "detuning_scaling_errors": [
+    {
+      "detuning_ghz": "0.5",
+      "detuning_hz": "500000000",
+      "dimensionless_delta": "33.8983050847",
+      "od_exact_1_over_1_plus_delta2": "0.000869493323435",
+      "od_far_detuned_1_over_delta2": "0.00087025",
+      "od_scaling_relative_error": "0.00087025",
+      "phase_exact_delta_over_1_plus_delta2": "0.029474349947",
+      "phase_far_detuned_1_over_delta": "0.0295",
+      "phase_scaling_relative_error": "0.00087025",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "0.000869472434336",
+      "scattering_far_detuned_1_over_delta2": "0.00087025",
+      "scattering_scaling_relative_error": "0.000894295935629"
+    },
+    {
+      "detuning_ghz": "0.75",
+      "detuning_hz": "750000000",
+      "dimensionless_delta": "50.8474576271",
+      "od_exact_1_over_1_plus_delta2": "0.000386628238567",
+      "od_far_detuned_1_over_delta2": "0.000386777777778",
+      "od_scaling_relative_error": "0.000386777777778",
+      "phase_exact_delta_over_1_plus_delta2": "0.019659062978",
+      "phase_far_detuned_1_over_delta": "0.0196666666667",
+      "phase_scaling_relative_error": "0.000386777777778",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "0.000386624108281",
+      "scattering_far_detuned_1_over_delta2": "0.000386777777778",
+      "scattering_scaling_relative_error": "0.00039746486028"
+    },
+    {
+      "detuning_ghz": "1",
+      "detuning_hz": "1000000000",
+      "dimensionless_delta": "67.7966101695",
+      "od_exact_1_over_1_plus_delta2": "0.000217515176854",
+      "od_far_detuned_1_over_delta2": "0.0002175625",
+      "od_scaling_relative_error": "0.0002175625",
+      "phase_exact_delta_over_1_plus_delta2": "0.0147467916511",
+      "phase_far_detuned_1_over_delta": "0.01475",
+      "phase_scaling_relative_error": "0.0002175625",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "0.000217513869558",
+      "scattering_far_detuned_1_over_delta2": "0.0002175625",
+      "scattering_scaling_relative_error": "0.000223573983907"
+    },
+    {
+      "detuning_ghz": "1.25",
+      "detuning_hz": "1250000000",
+      "dimensionless_delta": "84.7457627119",
+      "od_exact_1_over_1_plus_delta2": "0.000139220614922",
+      "od_far_detuned_1_over_delta2": "0.00013924",
+      "od_scaling_relative_error": "0.00013924",
+      "phase_exact_delta_over_1_plus_delta2": "0.0117983571967",
+      "phase_far_detuned_1_over_delta": "0.0118",
+      "phase_scaling_relative_error": "0.00013924",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "0.000139220079368",
+      "scattering_far_detuned_1_over_delta2": "0.00013924",
+      "scattering_scaling_relative_error": "0.000143087349701"
+    },
+    {
+      "detuning_ghz": "1.5",
+      "detuning_hz": "1500000000",
+      "dimensionless_delta": "101.694915254",
+      "od_exact_1_over_1_plus_delta2": "9.66850955328e-05",
+      "od_far_detuned_1_over_delta2": "9.66944444444e-05",
+      "od_scaling_relative_error": "9.66944444445e-05",
+      "phase_exact_delta_over_1_plus_delta2": "0.00983238259656",
+      "phase_far_detuned_1_over_delta": "0.00983333333333",
+      "phase_scaling_relative_error": "9.66944444444e-05",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "9.66848372381e-05",
+      "scattering_far_detuned_1_over_delta2": "9.66944444444e-05",
+      "scattering_scaling_relative_error": "9.93662150699e-05"
+    },
+    {
+      "detuning_ghz": "1.75",
+      "detuning_hz": "1750000000",
+      "dimensionless_delta": "118.644067797",
+      "od_exact_1_over_1_plus_delta2": "7.10357698874e-05",
+      "od_far_detuned_1_over_delta2": "7.10408163265e-05",
+      "od_scaling_relative_error": "7.10408163265e-05",
+      "phase_exact_delta_over_1_plus_delta2": "0.00842797269851",
+      "phase_far_detuned_1_over_delta": "0.00842857142857",
+      "phase_scaling_relative_error": "7.10408163265e-05",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "7.10356304591e-05",
+      "scattering_far_detuned_1_over_delta2": "7.10408163265e-05",
+      "scattering_scaling_relative_error": "7.30037498472e-05"
+    },
+    {
+      "detuning_ghz": "2",
+      "detuning_hz": "2000000000",
+      "dimensionless_delta": "135.593220339",
+      "od_exact_1_over_1_plus_delta2": "5.43876668208e-05",
+      "od_far_detuned_1_over_delta2": "5.4390625e-05",
+      "od_scaling_relative_error": "5.43906249999e-05",
+      "phase_exact_delta_over_1_plus_delta2": "0.00737459889096",
+      "phase_far_detuned_1_over_delta": "0.007375",
+      "phase_scaling_relative_error": "5.43906250001e-05",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "5.43875850877e-05",
+      "scattering_far_detuned_1_over_delta2": "5.4390625e-05",
+      "scattering_scaling_relative_error": "5.58934959769e-05"
+    },
+    {
+      "detuning_ghz": "2.5",
+      "detuning_hz": "2500000000",
+      "dimensionless_delta": "169.491525424",
+      "od_exact_1_over_1_plus_delta2": "3.48087883061e-05",
+      "od_far_detuned_1_over_delta2": "3.481e-05",
+      "od_scaling_relative_error": "3.481e-05",
+      "phase_exact_delta_over_1_plus_delta2": "0.00589979462815",
+      "phase_far_detuned_1_over_delta": "0.0059",
+      "phase_scaling_relative_error": "3.48100000001e-05",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "3.48087548269e-05",
+      "scattering_far_detuned_1_over_delta2": "3.481e-05",
+      "scattering_scaling_relative_error": "3.57718374253e-05"
+    },
+    {
+      "detuning_ghz": "3",
+      "detuning_hz": "3000000000",
+      "dimensionless_delta": "203.389830508",
+      "od_exact_1_over_1_plus_delta2": "2.41730267618e-05",
+      "od_far_detuned_1_over_delta2": "2.41736111111e-05",
+      "od_scaling_relative_error": "2.41736111111e-05",
+      "phase_exact_delta_over_1_plus_delta2": "0.00491654781595",
+      "phase_far_detuned_1_over_delta": "0.00491666666667",
+      "phase_scaling_relative_error": "2.41736111111e-05",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "2.4173010616e-05",
+      "scattering_far_detuned_1_over_delta2": "2.41736111111e-05",
+      "scattering_scaling_relative_error": "2.48415537674e-05"
+    },
+    {
+      "detuning_ghz": "5",
+      "detuning_hz": "5000000000",
+      "dimensionless_delta": "338.983050847",
+      "od_exact_1_over_1_plus_delta2": "8.70242426715e-06",
+      "od_far_detuned_1_over_delta2": "8.7025e-06",
+      "od_scaling_relative_error": "8.70250000004e-06",
+      "phase_exact_delta_over_1_plus_delta2": "0.00294997432785",
+      "phase_far_detuned_1_over_delta": "0.00295",
+      "phase_scaling_relative_error": "8.70250000002e-06",
+      "saturation_parameter_for_scattering_check": "0.027631066509",
+      "scattering_exact_1_over_1_plus_s_plus_delta2": "8.70242217459e-06",
+      "scattering_far_detuned_1_over_delta2": "8.7025e-06",
+      "scattering_scaling_relative_error": "8.94295935631e-06"
+    }
+  ],
+  "phase_rotation_ranges": [
+    {
+      "central_abs": "0.202941652879",
+      "max_abs": "0.202941652879",
+      "nonzero_pixel_count": 12231,
+      "p50_abs": "0.0707259222981",
+      "p90_abs": "0.172458264156",
+      "p95_abs": "0.188189388924",
+      "p99_abs": "0.200081601413",
+      "quantity": "scalar_phase_phi",
+      "sample_scope": "nonzero cloud pixels",
+      "stage": "canonical_phase_stage",
+      "units": "rad"
+    },
+    {
+      "central_abs": "0.202941652879",
+      "max_abs": "0.202941652879",
+      "nonzero_pixel_count": 12231,
+      "p50_abs": "0.0707259222981",
+      "p90_abs": "0.172458264156",
+      "p95_abs": "0.188189388924",
+      "p99_abs": "0.200081601413",
+      "quantity": "faraday_rotation_theta_F",
+      "sample_scope": "nonzero cloud pixels",
+      "stage": "canonical_faraday_stage",
+      "units": "rad"
+    }
+  ],
+  "representative_faraday_optimisation_reference": {
+    "faraday_optimisation_config": {
+      "fixed_operating_point": {
+        "detuning_hz": 1500000000.0,
+        "probe_power_mw": 2.0,
+        "pulse_duration_s": 4e-05
+      },
+      "label": "v1_representative_uncalibrated",
+      "metric_key": "signal_per_scattered_photon",
+      "output_dir": "results/faraday_optimisation_v1",
+      "physical_parameters": {
+        "atom_number": 100000.0,
+        "camera_parameters": {
+          "normalisation": "representative_placeholder",
+          "photon_count_scale": 500.0
+        },
+        "cloud_size_parameters": {
+          "radius_x_m": 2e-05,
+          "radius_y_m": 2e-05,
+          "radius_z_m": 8e-05
+        },
+        "column_densities_for_reabsorption": [
+          200000000000000.0,
+          100000000000000.0,
+          150000000000000.0
+        ],
+        "column_density_peak": 200000000000000.0,
+        "density_scale_label": "representative_peak_column_density",
+        "gamma_rad_per_s": 185353966.5617978,
+        "kappa_F": 1.0,
+        "photons_per_camera_pixel": 500.0,
+        "probe_diameter_m": 0.024,
+        "resonant_cross_section": 7.68e-14,
+        "saturation_intensity": 560.0,
+        "use_peak_intensity": true
+      },
+      "sweeps": {
+        "detuning_values_hz": [
+          750000000.0,
+          1000000000.0,
+          1250000000.0,
+          1500000000.0,
+          1750000000.0,
+          2000000000.0,
+          2500000000.0,
+          3000000000.0
+        ],
+        "probe_power_mw_values": [
+          0.5,
+          1.0,
+          1.5,
+          2.0,
+          3.0,
+          4.0,
+          6.0
+        ],
+        "pulse_duration_s_values": [
+          1e-05,
+          2e-05,
+          4e-05,
+          6e-05,
+          8e-05,
+          0.0001
+        ]
+      }
+    }
+  },
+  "small_angle_errors": [
+    {
+      "cos_phi_vs_1_absolute_error": "0.0205220779375",
+      "exp_i_phi_vs_1_plus_i_phi_absolute_field_error": "0.0205691092638",
+      "exp_i_phi_vs_1_plus_i_phi_relative_field_error": "0.0205691092638",
+      "quantity": "scalar_phase_phi",
+      "sample": "central",
+      "sin_phi_vs_phi_relative_error": "0.00689734516912",
+      "value_rad": "0.202941652879"
+    },
+    {
+      "cos_phi_vs_1_absolute_error": "0.0176554247204",
+      "exp_i_phi_vs_1_plus_i_phi_absolute_field_error": "0.0176902099103",
+      "exp_i_phi_vs_1_plus_i_phi_relative_field_error": "0.0176902099103",
+      "quantity": "scalar_phase_phi",
+      "sample": "p95_cloud",
+      "sin_phi_vs_phi_relative_error": "0.00592702041322",
+      "value_rad": "0.188189388924"
+    },
+    {
+      "cos_phi_vs_1_absolute_error": "0.0199496371199",
+      "exp_i_phi_vs_1_plus_i_phi_absolute_field_error": "0.0199940749993",
+      "exp_i_phi_vs_1_plus_i_phi_relative_field_error": "0.0199940749993",
+      "quantity": "scalar_phase_phi",
+      "sample": "p99_cloud",
+      "sin_phi_vs_phi_relative_error": "0.00670340186708",
+      "value_rad": "0.200081601413"
+    },
+    {
+      "cos_phi_vs_1_absolute_error": "0.0205220779375",
+      "exp_i_phi_vs_1_plus_i_phi_absolute_field_error": "0.0205691092638",
+      "exp_i_phi_vs_1_plus_i_phi_relative_field_error": "0.0205691092638",
+      "quantity": "scalar_phase_phi",
+      "sample": "peak",
+      "sin_phi_vs_phi_relative_error": "0.00689734516912",
+      "value_rad": "0.202941652879"
+    },
+    {
+      "cos_theta_vs_1_absolute_error": "0.0205220779375",
+      "cos_theta_vs_1_relative_error": "0.0209520576985",
+      "dual_port_sin_2theta_vs_2theta_relative_error": "0.0279939164416",
+      "quantity": "faraday_rotation_theta_F",
+      "sample": "central",
+      "sin2_theta_vs_theta2_relative_error": "0.0138422637086",
+      "sin_theta_vs_theta_relative_error": "0.00689734516912",
+      "value_rad": "0.202941652879"
+    },
+    {
+      "cos_theta_vs_1_absolute_error": "0.0176554247204",
+      "cos_theta_vs_1_relative_error": "0.0179727410979",
+      "dual_port_sin_2theta_vs_2theta_relative_error": "0.0240062863144",
+      "quantity": "faraday_rotation_theta_F",
+      "sample": "p95_cloud",
+      "sin2_theta_vs_theta2_relative_error": "0.0118891703974",
+      "sin_theta_vs_theta_relative_error": "0.00592702041322",
+      "value_rad": "0.188189388924"
+    },
+    {
+      "cos_theta_vs_1_absolute_error": "0.0199496371199",
+      "cos_theta_vs_1_relative_error": "0.0203557264764",
+      "dual_port_sin_2theta_vs_2theta_relative_error": "0.0271955809584",
+      "quantity": "faraday_rotation_theta_F",
+      "sample": "p99_cloud",
+      "sin2_theta_vs_theta2_relative_error": "0.0134517393308",
+      "sin_theta_vs_theta_relative_error": "0.00670340186708",
+      "value_rad": "0.200081601413"
+    },
+    {
+      "cos_theta_vs_1_absolute_error": "0.0205220779375",
+      "cos_theta_vs_1_relative_error": "0.0209520576985",
+      "dual_port_sin_2theta_vs_2theta_relative_error": "0.0279939164416",
+      "quantity": "faraday_rotation_theta_F",
+      "sample": "peak",
+      "sin2_theta_vs_theta2_relative_error": "0.0138422637086",
+      "sin_theta_vs_theta_relative_error": "0.00689734516912",
+      "value_rad": "0.202941652879"
+    }
+  ],
+  "status": "linear approximation validity audit",
+  "validity_classification": [
+    {
+      "classification": "Not applicable because code already uses exact expression",
+      "reason": "Images use exp(i phi). The peak first-order field-expansion error is 2.057%, so first-order propagation should not replace the exact field.",
+      "topic": "scalar phase propagation"
+    },
+    {
+      "classification": "Safe to marginal as an interpretive tangent only",
+      "reason": "Canonical peak |phi|=0.203 rad and p99=0.200 rad are below the notebook phi<0.5 PCI-linear guide, but finite-phase curvature is measurable.",
+      "topic": "PCI interpretation"
+    },
+    {
+      "classification": "Marginal but acceptable with caveat",
+      "reason": "kappa_F=1 gives peak |theta_F|=0.203 rad. This is weak rotation, not infinitesimal rotation.",
+      "topic": "Faraday rotation angle"
+    },
+    {
+      "classification": "Marginal but acceptable with caveat",
+      "reason": "At peak theta_F, sin^2(theta) vs theta^2 differs by 1.384%. Use exact expression in simulation and quadratic only as scaling.",
+      "topic": "Faraday dark-field signal"
+    },
+    {
+      "classification": "Marginal but acceptable with caveat",
+      "reason": "At peak theta_F, sin(2 theta) vs 2 theta differs by 2.799%; the exact dual-port expression should be cited for quantitative results.",
+      "topic": "Faraday dual-port signal"
+    },
+    {
+      "classification": "Safe far-detuned scaling at >=0.5 GHz for trend statements",
+      "reason": "For the audited detunings, |delta| is large and 1/Delta, 1/Delta^2 errors are small; wording should still call them asymptotic trends.",
+      "topic": "detuning scaling plot"
+    },
+    {
+      "classification": "Not applicable because code already uses exact expression",
+      "reason": "Sequence recovery uses exact scattering denominator, exact phase expression, and full PCI transfer for realistic SNR; linear invariance arguments are explanatory.",
+      "topic": "multishot signal/loss interpretation"
+    }
+  ]
+}
