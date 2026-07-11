@@ -7,8 +7,8 @@ This audit checks whether the current Version 1 dissertation simulation and inte
 - Canonical config: `configs\notebook_v1_defaults.json`
 - Calibration status: audit only; no recalibration performed
 - Detuning convention: `delta = 2 * detuning_hz * 2*pi / Gamma_rad_per_s`
-- Git commit audited: `eae16a09c9abcbbd8bbff17e7cd1d6742f8f680f`
-- Detuning plot config present on this branch: `False`
+- Git commit audited: `d6b0ac23df4e0a492ea407c5d1ebdd7ce94a7ed0`
+- Detuning plot config present on this branch: `True`
 
 ## Approximation Sites
 

@@ -45,7 +45,7 @@
     "resonant_cross_section_m2": 7.678673341230137e-14,
     "species": "166Er"
   },
-  "git_commit_hash": "633b2e0e1aebe2bdb398be5128f7cbbb69cc6533",
+  "git_commit_hash": "d6b0ac23df4e0a492ea407c5d1ebdd7ce94a7ed0",
   "label": "v1_representative_uncalibrated",
   "model_status": "Uses current notebook-equivalent scalar light-atom formulas; no microscopic Faraday model is introduced.",
   "normalisation": {

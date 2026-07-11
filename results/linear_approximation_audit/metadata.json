@@ -2,7 +2,8 @@
   "calibration_status": "audit only; no recalibration performed",
   "config_files_used": [
     "configs\\notebook_v1_defaults.json",
-    "configs\\dissertation_results_v1.json"
+    "configs\\dissertation_results_v1.json",
+    "configs\\dissertation_plots_v1.json"
   ],
   "detuning_convention": "delta = 2 * detuning_hz * 2*pi / Gamma_rad_per_s",
   "error_definitions": {
@@ -12,7 +13,7 @@
     "phase_field_error": "|exp(i phi) - (1 + i phi)|",
     "sin_theta_error": "|theta - sin(theta)| / |sin(theta)|"
   },
-  "git_commit_hash": "eae16a09c9abcbbd8bbff17e7cd1d6742f8f680f",
+  "git_commit_hash": "d6b0ac23df4e0a492ea407c5d1ebdd7ce94a7ed0",
   "helper_apis_changed": false,
   "helper_functions_scripts_inspected": [
     "src/non_destructive_image/light_atom.py",

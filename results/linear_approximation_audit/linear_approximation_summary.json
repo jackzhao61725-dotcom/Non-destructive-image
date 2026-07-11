@@ -69,7 +69,7 @@
     "p99_abs_theta_rad": 0.20008160141301856
   },
   "config_label": "notebook_v1_defaults_uncalibrated",
-  "detuning_plot_config_present": false,
+  "detuning_plot_config_present": true,
   "detuning_scaling_errors": [
     {
       "detuning_ghz": "0.5",
