@@ -1,0 +1,3 @@
+Delta_over_2pi_GHz,power_mW,exposure_us,axis,peak_phase_rad,phase_regime,N_max_clean_continuous
+1.5,2.0,40.0,y (along cigar),4.247278878116572,phase-wrapped,51.7684246820672
+13.0,2.0,40.0,y (along cigar),0.49011739593728887,linear,3888.0074702873662

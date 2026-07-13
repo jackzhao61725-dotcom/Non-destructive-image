@@ -88,11 +88,14 @@ def build_accumulated_snr_data(
     )
 
     axis = int(cfg["imaging_axis"])
-    detuning_ghz = np.geomspace(
-        float(cfg["detuning_min_ghz"]),
-        float(cfg["detuning_max_ghz"]),
-        int(cfg["num_points"]),
-    )
+    detuning_ghz = np.unique(np.concatenate([
+        np.geomspace(
+            float(cfg["detuning_min_ghz"]),
+            float(cfg["detuning_max_ghz"]),
+            int(cfg["num_points"]),
+        ),
+        np.asarray([1.5]),
+    ]))
     detuning_hz = detuning_ghz * 1e9
     power_mw = float(cfg["probe_power_mw"])
     exposure_s = float(cfg["exposure_time_us"]) * 1e-6
@@ -240,7 +243,12 @@ def build_accumulated_snr_data(
     return data, params, checks
 
 
-def _write_csv(path: Path, data: dict[str, np.ndarray]) -> None:
+def _write_csv(
+    path: Path,
+    data: dict[str, np.ndarray],
+    params: dict[str, Any],
+    repo_path: str,
+) -> None:
     rows = []
     series = [
         ("PCI", "shot_plus_read_noise", data["pci_shot_plus_read_snr_shot"], data["pci_shot_plus_read_snr_total"]),
@@ -253,15 +261,67 @@ def _write_csv(path: Path, data: dict[str, np.ndarray]) -> None:
             rows.append([
                 data["detuning_hz"][index], data["detuning_ghz"][index], mode, noise_model,
                 snr_shot[index], data["n_max"][index], data["sqrt_n_max"][index], snr_total[index],
+                params["probe_power_mw"], params["exposure_time_us"], params["imaging_axis"],
+                "absolute dimensionless SNR; analytical peak object-space camera pixel; pre-NA/PSF; no spatial sum",
+                "30% continuous optimistic clean loss; identical-frame accumulation",
+                f"QE={params['quantum_efficiency']}; read={'0' if noise_model == 'shot_noise_only' else params['read_noise_electrons']} e- rms",
+                repo_path,
             ])
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["Delta_Hz", "Delta_over_2pi_GHz", "mode", "noise_model", "SNR_shot", "N_max", "sqrt_N_max", "SNR_total"])
+        writer.writerow([
+            "Delta_Hz", "Delta_over_2pi_GHz", "mode", "noise_model", "SNR_shot", "N_max",
+            "sqrt_N_max", "SNR_total", "P_mW", "tau_us", "imaging_axis", "normalisation",
+            "N_max_model", "QE_read", "repo_path",
+        ])
+        writer.writerows(rows)
+
+
+def _write_parameter_register(
+    path: Path,
+    data: dict[str, np.ndarray],
+    params: dict[str, Any],
+    repo_path: str,
+) -> None:
+    matches = np.flatnonzero(np.isclose(data["detuning_ghz"], 1.5, rtol=0.0, atol=1e-12))
+    if len(matches) != 1:
+        raise RuntimeError("Fig. 3.2 data must contain exactly one 1.5 GHz reference point")
+    index = int(matches[0])
+    normalisation = "absolute dimensionless SNR; analytical peak object-space camera pixel; pre-NA/PSF; no spatial sum"
+    nmax_model = "30% continuous optimistic clean loss; identical-frame accumulation"
+    common = [
+        1.5,
+        params["probe_power_mw"],
+        params["exposure_time_us"],
+        f"x ({params['imaging_axis']})",
+        normalisation,
+        nmax_model,
+    ]
+    rows = [
+        ["PCI accumulated SNR (shot + read)", data["pci_shot_plus_read_snr_total"][index], *common,
+         f"QE={params['quantum_efficiency']}; read={params['read_noise_electrons']} e- rms", repo_path],
+        ["PCI accumulated SNR (shot only)", data["pci_shot_only_snr_total"][index], *common,
+         f"QE={params['quantum_efficiency']}; read=0 e- rms", repo_path],
+        ["DGI accumulated SNR (shot + read)", data["dgi_shot_plus_read_snr_total"][index], *common,
+         f"QE={params['quantum_efficiency']}; read={params['read_noise_electrons']} e- rms", repo_path],
+        ["DGI accumulated SNR (shot only)", data["dgi_shot_only_snr_total"][index], *common,
+         f"QE={params['quantum_efficiency']}; read=0 e- rms", repo_path],
+        ["N_max clean continuous", data["n_max"][index], 1.5, params["probe_power_mw"],
+         params["exposure_time_us"], f"x ({params['imaging_axis']})",
+         "absolute continuous pulse budget; no integer rounding", nmax_model, "not applicable", repo_path],
+    ]
+    with path.open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.writer(handle)
+        writer.writerow([
+            "量", "值", "Δ/2π (GHz)", "P (mW)", "τ (µs)", "imaging axis", "归一化",
+            "N_max模型", "QE/read", "repo 路径",
+        ])
         writer.writerows(rows)
 
 
 def _plot(path: Path, data: dict[str, np.ndarray], cfg: dict[str, Any]) -> None:
     plt.style.use("default")
+    matplotlib.rcParams["svg.hashsalt"] = "figure-3-2-accumulated-snr-invariance"
     fig, ax = plt.subplots(figsize=tuple(cfg["figure_size_inches"]))
     ax.plot(data["detuning_ghz"], data["pci_shot_plus_read_snr_total"], color="#1769aa", lw=2.2, label="PCI (shot + read noise)")
     ax.plot(data["detuning_ghz"], data["pci_shot_only_snr_total"], color="#1769aa", lw=2.0, ls="--", label="PCI (shot-noise limit)")
@@ -277,6 +337,8 @@ def _plot(path: Path, data: dict[str, np.ndarray], cfg: dict[str, Any]) -> None:
     fig.tight_layout()
     fig.savefig(path, format="svg", metadata={"Date": None})
     plt.close(fig)
+    svg_text = path.read_text(encoding="utf-8")
+    path.write_text("\n".join(line.rstrip() for line in svg_text.splitlines()) + "\n", encoding="utf-8")
 
 
 def generate(config_path: Path) -> dict[str, Path]:
@@ -293,11 +355,16 @@ def generate(config_path: Path) -> dict[str, Path]:
     outputs = {
         "figure": output_dir / cfg["figure_filename"],
         "data": output_dir / "accumulated_snr_invariance_data.csv",
+        "parameter_register": output_dir / "figure_3_2_parameter_register.csv",
         "summary": output_dir / "accumulated_snr_invariance_summary.json",
         "metadata": output_dir / "metadata.json",
     }
-    _write_csv(outputs["data"], data)
+    data_repo_path = str(outputs["data"].relative_to(REPO_ROOT)).replace("\\", "/")
+    _write_csv(outputs["data"], data, params, data_repo_path)
+    _write_parameter_register(outputs["parameter_register"], data, params, data_repo_path)
     _plot(outputs["figure"], data, cfg)
+
+    reference_index = int(np.flatnonzero(np.isclose(data["detuning_ghz"], 1.5, rtol=0.0, atol=1e-12))[0])
 
     summary = {
         "parameters": params,
@@ -309,6 +376,14 @@ def generate(config_path: Path) -> dict[str, Path]:
             "dgi_shot_noise_only_snr_total": [float(np.min(data["dgi_shot_only_snr_total"])), float(np.max(data["dgi_shot_only_snr_total"]))],
             "n_max": [float(np.min(data["n_max"])), float(np.max(data["n_max"]))],
         },
+        "reference_point_1p5GHz": {
+            "Delta_over_2pi_GHz": 1.5,
+            "pci_shot_plus_read_snr_total": float(data["pci_shot_plus_read_snr_total"][reference_index]),
+            "pci_shot_noise_only_snr_total": float(data["pci_shot_only_snr_total"][reference_index]),
+            "dgi_shot_plus_read_snr_total": float(data["dgi_shot_plus_read_snr_total"][reference_index]),
+            "dgi_shot_noise_only_snr_total": float(data["dgi_shot_only_snr_total"][reference_index]),
+            "n_max_clean_continuous": float(data["n_max"][reference_index]),
+        },
     }
     metadata = {
         "figure_type": "fixed-destruction-budget accumulated-SNR simulation",
@@ -317,6 +392,7 @@ def generate(config_path: Path) -> dict[str, Path]:
         "script": str(Path(__file__).resolve().relative_to(REPO_ROOT)),
         "config": str(config_path.resolve().relative_to(REPO_ROOT)),
         "notebook_defaults_config": str(notebook_path.resolve().relative_to(REPO_ROOT)),
+        "parameter_register": str(outputs["parameter_register"].relative_to(REPO_ROOT)),
         "mode_choices": {"linear": "PCI", "quadratic": "DGI"},
         "noise_assumptions": {
             "shot_plus_read_noise": "Poisson photon noise plus 7 e- rms read noise in quadrature; this label does not imply the full Fourier/pupil/binning camera pipeline",

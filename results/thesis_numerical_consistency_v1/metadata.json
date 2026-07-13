@@ -1,0 +1,10 @@
+{
+  "audit": "thesis numerical parameter consistency",
+  "calibration_status": "Version 1 representative and uncalibrated",
+  "contract": "configs\\thesis_numerical_contract_v1.json",
+  "git_branch": "work/accumulated-snr-invariance-plot",
+  "git_commit": "ab0553d1a6bc618301d7b371df1fb7525326f389",
+  "notebook_modified": false,
+  "simulator_code_modified": false,
+  "status": "PASS_WITH_LEGACY_CORRECTIONS"
+}

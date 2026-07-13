@@ -6,6 +6,9 @@ work, and dissertation outputs.
 
 ## Core Architecture And Migration Status
 
+- `simulation_based_physics_report.md` - consolidated physical model,
+  equations, parameter sets, validated numerical results, limitations, and
+  future scientific roadmap.
 - `architecture.md`
 - `migration_status.md`
 - `version_1_migrated_core_summary.md`
@@ -25,6 +28,8 @@ work, and dissertation outputs.
 - `faraday_optimisation_layer_summary.md`
 - `dissertation_plot_strategy.md`
 - `linear_approximation_validity_audit.md`
+- `thesis_numerical_consistency_correction_report.md`
+- `full_multishot_accumulated_snr_analysis.md`
 - `results_readme.md`
 - `figure_index.md`
 

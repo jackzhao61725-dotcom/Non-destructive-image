@@ -41,7 +41,7 @@
     5.0
   ],
   "figure_type": "clean-loss matched-ROI reference versus evolving heating-aware multishot accumulated SNR",
-  "git_commit": "017460a5efc2007fe58c03665266234037ba2963",
+  "git_commit": "ab0553d1a6bc618301d7b371df1fb7525326f389",
   "notebook_defaults": "configs\\notebook_v1_defaults.json",
   "observable_design": {
     "read_variance": "7 e- rms squared per binned camera pixel",

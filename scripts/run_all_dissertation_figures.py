@@ -18,6 +18,7 @@ DEFAULT_MANIFEST = REPO_ROOT / "results" / "reproducibility_manifest.json"
 NOTEBOOK_CONFIG = "configs/notebook_v1_defaults.json"
 FARADAY_RESULTS_CONFIG = "configs/dissertation_results_v1.json"
 DETUNING_PLOT_CONFIG = "configs/dissertation_plots_v1.json"
+THESIS_NUMERICAL_CONFIG = "configs/thesis_numerical_contract_v1.json"
 
 
 @dataclass(frozen=True)
@@ -189,6 +190,45 @@ RUN_STEPS: tuple[RunStep, ...] = (
             "results/linear_approximation_audit/metadata.json",
         ),
         result_type="numerical validity audit",
+    ),
+    RunStep(
+        name="generate_accumulated_snr_invariance",
+        script="scripts/generate_accumulated_snr_invariance_plot.py",
+        args=("--config", DETUNING_PLOT_CONFIG),
+        configs=(NOTEBOOK_CONFIG, DETUNING_PLOT_CONFIG),
+        expected_outputs=(
+            "results/dissertation_plots_v1/accumulated_snr_invariance/accumulated_snr_invariance.svg",
+            "results/dissertation_plots_v1/accumulated_snr_invariance/accumulated_snr_invariance_data.csv",
+            "results/dissertation_plots_v1/accumulated_snr_invariance/figure_3_2_parameter_register.csv",
+            "results/dissertation_plots_v1/accumulated_snr_invariance/metadata.json",
+        ),
+        result_type="idealised accumulated-SNR scaling analysis",
+    ),
+    RunStep(
+        name="generate_full_multishot_accumulated_snr",
+        script="scripts/generate_full_multishot_accumulated_snr.py",
+        args=("--config", DETUNING_PLOT_CONFIG),
+        configs=(NOTEBOOK_CONFIG, DETUNING_PLOT_CONFIG),
+        expected_outputs=(
+            "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr.svg",
+            "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr_data.csv",
+            "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr_summary.json",
+            "results/dissertation_plots_v1/full_multishot_accumulated_snr/metadata.json",
+        ),
+        result_type="evolving heating-aware accumulated-SNR analysis",
+    ),
+    RunStep(
+        name="audit_thesis_numerical_consistency",
+        script="scripts/audit_thesis_numerical_consistency.py",
+        args=("--config", THESIS_NUMERICAL_CONFIG),
+        configs=(NOTEBOOK_CONFIG, DETUNING_PLOT_CONFIG, THESIS_NUMERICAL_CONFIG),
+        expected_outputs=(
+            "docs/thesis_numerical_consistency_correction_report.md",
+            "results/thesis_numerical_consistency_v1/corrected_numbers.json",
+            "results/thesis_numerical_consistency_v1/canonical_accumulated_snr_table.csv",
+            "results/thesis_numerical_consistency_v1/metadata.json",
+        ),
+        result_type="thesis numerical consistency audit",
     ),
 )
 
