@@ -147,7 +147,7 @@ Version 1 core closure.
 
 ## Related Documents
 
-- `docs/migration_status.md`
+- `docs/simulation_based_physics_report.md`
 - `docs/version_1_migrated_core_summary.md`
 - `docs/faraday_optimisation_layer_summary.md`
 - `docs/extension_roadmap.md`

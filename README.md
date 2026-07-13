@@ -41,6 +41,12 @@ The detailed model, equations, assumptions, verified values, and limitations
 are collected in
 [`docs/simulation_based_physics_report.md`](docs/simulation_based_physics_report.md).
 
+The `dissertation-v1-clean` branch is the compact dissertation working surface.
+It retains the simulator, tests, baselines, canonical recovery workflows,
+validated results, and thesis-facing documentation while omitting superseded
+milestone records and generated bundle archives. The full development history
+remains available through Git and `main`.
+
 ## Architecture
 
 ```text
@@ -216,7 +222,7 @@ configs/                      explicit notebook, plot, result, and thesis contra
 regression/                   stored numerical baselines
 results/                      generated numerical and dissertation outputs
 docs/                         physics, architecture, calibration, and thesis notes
-deliverables/                 reproducible portable code bundle
+deliverables/                 bundle instructions; generated zip is ignored
 ```
 
 Start with `docs/README.md` for the documentation index and
