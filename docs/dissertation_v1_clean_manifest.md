@@ -36,6 +36,7 @@ computational pipeline.
 
 - archived milestone reports and migration-time status notes;
 - superseded notebook-pipeline, unit, parameter, and figure-recovery reviews;
+- orphaned deep-discussion result tables superseded by the full physics audit;
 - the obsolete pre-canonical single condensate recovery workflow;
 - the tracked generated code-bundle zip.
 
