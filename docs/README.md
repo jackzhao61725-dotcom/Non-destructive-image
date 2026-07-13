@@ -26,6 +26,7 @@ available in Git history rather than on the active working surface.
 
 - `thesis_numerical_consistency_correction_report.md`
 - `full_multishot_accumulated_snr_analysis.md`
+- `faraday_full_multishot_snr_report.md`
 - `accumulated_snr_full_physics_audit.md`
 - `linear_approximation_validity_audit.md`
 - `faraday_optimisation_layer_summary.md`

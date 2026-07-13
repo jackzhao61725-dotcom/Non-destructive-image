@@ -16,12 +16,30 @@
       "nstop_heating_continuous": 56.23145531836396
     }
   },
+  "canonical_faraday_reference_1p5GHz": {
+    "Faraday dark-field": {
+      "shot_noise_only": 64.46872450095157,
+      "shot_plus_read_noise": 22.163032104041168
+    },
+    "Faraday dual-port": {
+      "shot_noise_only": 124.23007404156489,
+      "shot_plus_read_noise": 118.89881207407808
+    }
+  },
   "checks": {
     "clean_continuous_log_slope": 1.9998224524166235,
     "dgi_shot_noise_0.75_to_3_relative_range": 0.04650987727811482,
     "dgi_shot_plus_read_0.75_to_3_relative_range": 1.1272098791628276,
     "dgi_shot_plus_read_high_detuning_log_slope": -0.9333362822784405,
     "dgi_shot_plus_read_le_shot_all": true,
+    "faraday_dark_field_shot_noise_0.75_to_3_relative_range": 0.07129818721977978,
+    "faraday_dark_field_shot_plus_read_0.75_to_3_relative_range": 1.1066363548788885,
+    "faraday_dark_field_shot_plus_read_le_shot_all": true,
+    "faraday_dual_port_shot_noise_0.75_to_3_relative_range": 0.07859071490066329,
+    "faraday_dual_port_shot_plus_read_0.75_to_3_relative_range": 0.0788967542223497,
+    "faraday_dual_port_shot_plus_read_le_shot_all": true,
+    "faraday_kappa_f_is_v1_placeholder": true,
+    "faraday_results_finite_positive": true,
     "full_frame_count_less_than_clean_continuous_all": true,
     "full_frame_count_log_slope": 2.1213726456532296,
     "full_snr_below_clean_matched_reference_all": true,
@@ -36,7 +54,8 @@
     "pci_to_dgi_shot_noise_ratio_median": 1.9514455659372998,
     "pci_to_dgi_shot_noise_ratio_relative_range": 0.19209093369772715
   },
-  "observable": "fixed spatial ROI with diagonal-covariance matched-template SNR",
+  "faraday_interpretation": "These values complete the four-mode structural comparison under the canonical Version 1 convention. They are not calibrated absolute Faraday predictions because kappa_F remains the phenomenological placeholder 1.0.",
+  "observable": "fixed 228-pixel spatial ROI with diagonal-covariance matched-template SNR",
   "qualitative_conclusion": "The clean-loss cancellation remains a useful upper-bound scaling reference. Heating, reabsorption, depletion, integer stopping, and image formation lower the accumulated SNR and remove exact invariance; DGI with read noise still decreases at high detuning.",
   "stopping_criterion": "integer pulse count whose post-pulse condensate depletion remains <=30%; threshold-crossing state excluded",
   "verdict": "A. READY TO MERGE"

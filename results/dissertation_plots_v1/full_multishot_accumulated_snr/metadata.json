@@ -1,13 +1,21 @@
 {
-  "branch": "work/accumulated-snr-invariance-plot",
+  "branch": "work/faraday-full-multishot-snr",
   "calibration_status": "representative Version 1 uncalibrated",
-  "caption": "Accumulated matched-template SNR for PCI and DGI at a nominal 30% condensate-depletion budget. Panel (a) uses the identical-frame clean-loss limit with the same fixed ROI and image observable; panel (b) accumulates frame-dependent SNR as sqrt(sum_i SNR_i^2) over the integer frames accepted by the heating- and reabsorption-aware sequence. Each frame regenerates the Thomas-Fermi state, phase map, Fourier image, and camera-level photon/read variance. Results are representative Version 1 outputs and are not experimentally calibrated; technical noise, reference-image noise, and density-updated reabsorption remain omitted.",
+  "caption": "The plotted PCI/DGI curves retain the existing two-panel comparison. The accompanying CSV data and canonical ledger extend the identical evolving matched-ROI pipeline to dark-field and dual-port Faraday. Faraday values use kappa_F=1.0 and are Version 1 uncalibrated structural comparisons, not absolute predictions.",
   "checks": {
     "clean_continuous_log_slope": 1.9998224524166235,
     "dgi_shot_noise_0.75_to_3_relative_range": 0.04650987727811482,
     "dgi_shot_plus_read_0.75_to_3_relative_range": 1.1272098791628276,
     "dgi_shot_plus_read_high_detuning_log_slope": -0.9333362822784405,
     "dgi_shot_plus_read_le_shot_all": true,
+    "faraday_dark_field_shot_noise_0.75_to_3_relative_range": 0.07129818721977978,
+    "faraday_dark_field_shot_plus_read_0.75_to_3_relative_range": 1.1066363548788885,
+    "faraday_dark_field_shot_plus_read_le_shot_all": true,
+    "faraday_dual_port_shot_noise_0.75_to_3_relative_range": 0.07859071490066329,
+    "faraday_dual_port_shot_plus_read_0.75_to_3_relative_range": 0.0788967542223497,
+    "faraday_dual_port_shot_plus_read_le_shot_all": true,
+    "faraday_kappa_f_is_v1_placeholder": true,
+    "faraday_results_finite_positive": true,
     "full_frame_count_less_than_clean_continuous_all": true,
     "full_frame_count_log_slope": 2.1213726456532296,
     "full_snr_below_clean_matched_reference_all": true,
@@ -40,11 +48,15 @@
     4.12702092634,
     5.0
   ],
+  "faraday_absolute_prediction_valid": false,
   "figure_type": "clean-loss matched-ROI reference versus evolving heating-aware multishot accumulated SNR",
-  "git_commit": "ab0553d1a6bc618301d7b371df1fb7525326f389",
+  "git_commit": "014b774e66051a0306fce129337bec4f3e31560f",
   "notebook_defaults": "configs\\notebook_v1_defaults.json",
   "observable_design": {
-    "read_variance": "7 e- rms squared per binned camera pixel",
+    "faraday_dark_field_observable": "crossed-analyser electron counts relative to zero background",
+    "faraday_dual_port_observable": "electron-count difference N_V-N_U",
+    "faraday_dual_port_read_variance": "2*(7 e-)^2 for two independent readouts",
+    "faraday_dual_port_shot_variance": "N_U+N_V for independent Poisson ports",
     "reference_image_noise": "not included, matching the notebook convention of a known reference background",
     "roi": {
       "camera_shape": [
@@ -64,7 +76,8 @@
     },
     "roi_fixed_across_frames_and_detunings": true,
     "same_spatial_support_for_modes": true,
-    "shot_variance": "total expected atom-image photons in each ROI pixel",
+    "single_port_read_variance": "7 e- rms squared per binned camera pixel",
+    "single_port_shot_variance": "total expected photons in each ROI pixel",
     "template_evolves_with_cloud": true,
     "type": "diagonal-covariance matched-template SNR"
   },
@@ -73,13 +86,19 @@
     "condensate_depletion_threshold": 0.3,
     "exposure_time_us": 40.0,
     "imaging_axis": 0,
+    "initial_atom_number": 25000.0,
+    "initial_peak_column_density_m2": 537596245257846.75,
+    "kappa_F": 1.0,
     "power_mw": 3.5,
     "quantum_efficiency": 0.4,
-    "read_noise_e": 7.0
+    "read_noise_e": 7.0,
+    "saturation_intensity_W_m2": 597.9627307559916
   },
   "physics_model": {
     "condensate": "N0=N_total*(1-(T/Tc)^3)",
     "dgi_reference": "finite OD=4 carrier leakage included",
+    "faraday_fields": "opposite circular phases propagated and recombined into Ex/Ey, dark field, and U/V ports",
+    "faraday_rotation": "theta_F=kappa_F*phi with kappa_F=1.0 placeholder",
     "heating": "T_next=(T^4+dE/A_E)^(1/4)",
     "image_update": "full complex phase field propagated through the configured Fourier pupil",
     "reabsorption": "initial-density angle-averaged notebook fraction, held fixed within each sequence",

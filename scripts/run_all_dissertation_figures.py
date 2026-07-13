@@ -213,6 +213,7 @@ RUN_STEPS: tuple[RunStep, ...] = (
             "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr.svg",
             "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr_data.csv",
             "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr_summary.json",
+            "results/dissertation_plots_v1/full_multishot_accumulated_snr/faraday_canonical_reference_at_1p5GHz.csv",
             "results/dissertation_plots_v1/full_multishot_accumulated_snr/metadata.json",
         ),
         result_type="evolving heating-aware accumulated-SNR analysis",

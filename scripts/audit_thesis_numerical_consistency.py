@@ -427,7 +427,9 @@ def build_audit(contract: dict[str, Any]) -> dict[str, Any]:
     )
     with full_model_path.open(encoding="utf-8", newline="") as handle:
         full_model_rows = [
-            row for row in csv.DictReader(handle) if float(row["detuning_ghz"]) == 1.5
+            row
+            for row in csv.DictReader(handle)
+            if float(row["detuning_ghz"]) == 1.5 and row["mode"] in {"PCI", "DGI"}
         ]
     if len(full_model_rows) != 4:
         raise ValueError("Expected four full-model PCI/DGI rows at 1.5 GHz")
