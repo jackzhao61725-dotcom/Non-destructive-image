@@ -76,7 +76,10 @@ The current `run_all` entry point includes:
 - condensate three-view projection;
 - representative Faraday optimisation result generation;
 - detuning trade-off physics plot generation;
-- finite-phase / finite-Faraday-rotation linear-approximation audit.
+- finite-phase / finite-Faraday-rotation linear-approximation audit;
+- idealised accumulated-SNR scaling generation with its parameter register;
+- full evolving matched-ROI accumulated-SNR generation;
+- thesis numerical consistency audit and corrected-number tables.
 
 ## Parameter Provenance
 
@@ -118,6 +121,18 @@ the dissertation plot config is present:
 configs/notebook_v1_defaults.json
 configs/dissertation_plots_v1.json
 ```
+
+The thesis-facing accumulated-SNR results and numerical correction audit use:
+
+```text
+configs/notebook_v1_defaults.json
+configs/dissertation_plots_v1.json
+configs/thesis_numerical_contract_v1.json
+```
+
+Every generated numerical conclusion should record quantity, value,
+`|Delta|/2pi`, power, exposure, imaging axis, normalisation, `N_max` model,
+QE/read-noise convention, and repository path.
 
 ## Current Scientific Boundary
 

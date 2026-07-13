@@ -34,30 +34,38 @@
     "quantum_efficiency": 0.4,
     "read_noise_electrons": 7.0
   },
+  "reference_point_1p5GHz": {
+    "Delta_over_2pi_GHz": 1.5,
+    "dgi_shot_noise_only_snr_total": 36.08806707616552,
+    "dgi_shot_plus_read_snr_total": 24.826391457303775,
+    "n_max_clean_continuous": 29.581988680261396,
+    "pci_shot_noise_only_snr_total": 72.30014129652055,
+    "pci_shot_plus_read_snr_total": 70.5369764315994
+  },
   "scaling_checks": {
     "dgi_shot_plus_read_le_shot_noise_limit": true,
     "full_fourier_camera_pipeline_used": false,
     "ideal_cross_mode_offset_interpretation": "Expected mode-dependent prefactor: PCI uses the carrier as a homodyne reference, giving approximately 2|phi|sqrt(N_ph), while DGI gives approximately |phi|sqrt(N_ph). This is not a hidden normalisation correction.",
     "maximum_abs_phase_rad": 0.40576561129790345,
-    "n_max_log_slope": 1.9998315676952214,
+    "n_max_log_slope": 1.9998318111839941,
     "n_max_mode_independent": true,
     "notebook_linear_phase_regime_satisfied": true,
     "passed": true,
     "pci_and_dgi_shot_noise_curves_coincide": false,
-    "pci_shot_noise_total_relative_range": 0.0001841017882094476,
+    "pci_shot_noise_total_relative_range": 0.00018410178622656624,
     "pci_shot_plus_read_le_shot_noise_limit": true,
-    "pci_shot_plus_read_total_relative_range": 0.00018410178820949265,
-    "pci_to_dgi_shot_noise_ratio_relative_range": 0.006726840685302234,
-    "pci_to_dgi_shot_noise_total_ratio_median": 2.002061057378028,
+    "pci_shot_plus_read_total_relative_range": 0.0001841017862266113,
+    "pci_to_dgi_shot_noise_ratio_relative_range": 0.006726843409616082,
+    "pci_to_dgi_shot_noise_total_ratio_median": 2.0020856627449475,
     "pci_to_dgi_shot_noise_total_ratio_range": [
       2.000308977629658,
       2.0137866528109716
     ],
-    "quadratic_shot_noise_only_snr_shot_log_slope": -0.9969197432221549,
-    "quadratic_shot_noise_total_relative_range": 0.00688704708704806,
+    "quadratic_shot_noise_only_snr_shot_log_slope": -0.9969241979536108,
+    "quadratic_shot_noise_total_relative_range": 0.006887044362105324,
     "quadratic_shot_plus_read_snr_high_detuning_log_slope": -1.8718054495198642,
     "quadratic_shot_plus_read_total_high_detuning_log_slope": -0.8718216095301259,
-    "quadratic_shot_plus_read_total_log_slope": -0.6248949701642625,
+    "quadratic_shot_plus_read_total_log_slope": -0.6251845527887343,
     "read_dominated_points": 48
   }
 }

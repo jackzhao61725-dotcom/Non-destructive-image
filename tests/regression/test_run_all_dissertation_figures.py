@@ -37,6 +37,9 @@ def test_run_all_plan_contains_only_approved_main_generators() -> None:
     assert "scripts/generate_dissertation_results.py" in scripts
     assert "scripts/generate_detuning_tradeoff_plot.py" in scripts
     assert "scripts/audit_linear_approximation_validity.py" in scripts
+    assert "scripts/generate_accumulated_snr_invariance_plot.py" in scripts
+    assert "scripts/generate_full_multishot_accumulated_snr.py" in scripts
+    assert "scripts/audit_thesis_numerical_consistency.py" in scripts
 
 
 def test_run_all_has_no_pending_approved_outputs() -> None:
@@ -57,4 +60,7 @@ def test_run_all_dry_run_succeeds_without_manifest(tmp_path: Path) -> None:
     assert "recover_condensate_stage" in result.stdout
     assert "generate_detuning_tradeoff_plot" in result.stdout
     assert "audit_linear_approximation_validity" in result.stdout
+    assert "generate_accumulated_snr_invariance" in result.stdout
+    assert "generate_full_multishot_accumulated_snr" in result.stdout
+    assert "audit_thesis_numerical_consistency" in result.stdout
     assert not manifest.exists()

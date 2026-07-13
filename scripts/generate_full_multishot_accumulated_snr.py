@@ -436,6 +436,7 @@ def _checks(results: dict[str, Any]) -> dict[str, Any]:
 
 
 def _plot(path: Path, rows: list[dict[str, Any]], detunings: np.ndarray) -> None:
+    matplotlib.rcParams["svg.hashsalt"] = "full-multishot-accumulated-snr-v1"
     colors = {"PCI": "#1769aa", "DGI": "#3f8c4d"}
     styles = {"shot_plus_read_noise": "-", "shot_noise_only": "--"}
     labels = {
@@ -469,6 +470,8 @@ def _plot(path: Path, rows: list[dict[str, Any]], detunings: np.ndarray) -> None
     fig.tight_layout()
     fig.savefig(path, format="svg", metadata={"Date": None})
     plt.close(fig)
+    svg_text = path.read_text(encoding="utf-8")
+    path.write_text("\n".join(line.rstrip() for line in svg_text.splitlines()) + "\n", encoding="utf-8")
 
 
 def generate(config_path: Path) -> dict[str, Path]:
