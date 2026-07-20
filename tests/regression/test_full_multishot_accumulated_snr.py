@@ -64,12 +64,12 @@ def test_generated_full_multishot_summary_contract() -> None:
         assert 0 < values["shot_plus_read_noise"] <= values["shot_noise_only"]
     expected = {
         "Faraday dark-field": {
-            "shot_noise_only": 64.46872450095157,
-            "shot_plus_read_noise": 22.163032104041168,
+            "shot_noise_only": 55.77833731293387,
+            "shot_plus_read_noise": 34.70877083139104,
         },
         "Faraday dual-port": {
-            "shot_noise_only": 124.23007404156489,
-            "shot_plus_read_noise": 118.89881207407808,
+            "shot_noise_only": 107.48197734510573,
+            "shot_plus_read_noise": 106.555526352218,
         },
     }
     for mode, values in expected.items():
@@ -90,10 +90,10 @@ def test_generated_full_multishot_summary_contract() -> None:
         ledger = list(csv.DictReader(handle))
     assert len(ledger) == 4
     assert {int(row["roi_pixel_count"]) for row in ledger} == {228}
-    assert {int(row["n_frames_full"]) for row in ledger} == {13}
+    assert {int(row["n_frames_full"]) for row in ledger} == {10}
     assert {float(row["initial_atom_number"]) for row in ledger} == {25000.0}
     assert {float(row["kappa_F"]) for row in ledger} == {1.0}
-    assert {float(row["probe_power_mW"]) for row in ledger} == {3.5}
-    assert {float(row["exposure_time_us"]) for row in ledger} == {40.0}
+    assert {float(row["probe_power_mW"]) for row in ledger} == {1.0}
+    assert all(np.isclose(float(row["exposure_time_us"]), 90.0) for row in ledger)
     assert {row["imaging_axis"] for row in ledger} == {"x"}
     assert all("uncalibrated" in row["calibration_status"] for row in ledger)

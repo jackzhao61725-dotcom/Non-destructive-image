@@ -1,0 +1,143 @@
+{
+  "label": "dissertation_v2_dcc3260m_uncalibrated",
+  "description": "Dissertation Version 2 defaults using the existing Thorlabs DCC3260M camera. Atomic and optical inputs retain the notebook-derived Version 1 model; catalogue camera bounds remain subject to in-apparatus calibration.",
+  "baseline_config": "configs/notebook_v1_defaults.json",
+  "reference_parameter_record": "docs/simulation_reference_parameters.md",
+  "constants": {
+    "hbar": 1.054571817e-34,
+    "speed_of_light": 299792458.0,
+    "boltzmann_constant": 1.380649e-23,
+    "atomic_mass_unit": 1.66053907e-27,
+    "bohr_radius_m": 5.29177211e-11
+  },
+  "atom": {
+    "species": "166Er",
+    "mass_number": 166.0,
+    "transition_wavelength_m": 4.01e-7,
+    "natural_linewidth_rad_s": 185353966.5617978,
+    "resonant_cross_section_m2": 7.678673341230136e-14
+  },
+  "condensate": {
+    "atom_number": 25000.0,
+    "scattering_length_bohr": 72.0,
+    "trap_frequencies_hz": [293.0, 14.0, 233.0],
+    "temperature_k": 2e-7
+  },
+  "imaging_geometry": {
+    "imaging_axis": 0,
+    "axis_labels": ["x", "y", "z"],
+    "imaging_axis_note": "axis 0 is the across-cigar x direction; the plotted transverse plane is y,z.",
+    "probe_diameter_m": 0.024,
+    "focal_length_1_m": 0.15,
+    "focal_length_2_m": 0.6,
+    "magnification": 4.0,
+    "magnification_status": "provisional screening value selected to sample the NA=0.080 Rayleigh resolution with approximately two camera pixels; not measured on the installed apparatus",
+    "camera_model": "Thorlabs DCC3260M",
+    "camera_pixel_m": 5.86e-6,
+    "camera_pixel_role": "physical sensor pitch; code divides by magnification exactly once",
+    "object_plane_pixel_m": 1.465e-6
+  },
+  "grid": {
+    "ngrid": 1024,
+    "field_of_view_m": 0.0001,
+    "density_cut_points": 400,
+    "density_cut_span_rmax": 1.5
+  },
+  "phase_recovery": {
+    "detuning_hz": 1500000000.0,
+    "notebook_reference_cells": [10, 59, 67],
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "inferno"
+  },
+  "pci_recovery": {
+    "phase_plate_transmittance": 0.95,
+    "phase_plate_phase_rad": 1.5707963267948966,
+    "notebook_reference_cells": [16, 18],
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "viridis"
+  },
+  "dgi_recovery": {
+    "stop_optical_depth": 4.0,
+    "notebook_reference_cells": [16, 18],
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "inferno"
+  },
+  "faraday_recovery": {
+    "kappa_F": 1.0,
+    "notebook_reference_cells": [39, 43, 51, 85, 89],
+    "figure_size_inches": [12.4, 3.6],
+    "dark_field_cmap": "inferno",
+    "dual_port_cmap": "coolwarm"
+  },
+  "camera_recovery": {
+    "input_stage": "pci_stage",
+    "camera_model": "Thorlabs DCC3260M",
+    "probe_power_mw": 1.0,
+    "bin_size": 15,
+    "binning_note": "15 simulation cells represent 1.46484375 um in the object plane, 0.011% below the nominal 1.465 um DCC3260M object-plane pitch at the provisional M=4 screening magnification.",
+    "default_exposure_s": 0.00009,
+    "quantum_efficiency": 0.6,
+    "quantum_efficiency_note": "experimentally plausible dissertation screening value; not a DCC3260M measurement and to be replaced during commissioning",
+    "read_noise_electrons": 3.0,
+    "read_noise_note": "experimentally plausible dissertation screening value; not a DCC3260M measurement",
+    "read_noise_treatment": "use 3 e- rms as the single reference detector value in the dissertation screening figures",
+    "adc_bits": 12,
+    "full_sensor_frame_rate_fps": 41.0,
+    "minimum_exposure_s": 0.000033,
+    "shutter": "global",
+    "manufacturer_product_url": "https://www.thorlabs.com/catalogpages/obsolete/2019/DCC3260M.pdf",
+    "manufacturer_qe_data_url": null,
+    "dual_port_sampling": "both Wollaston outputs are represented as simultaneous regions of interest on one sensor; the installed geometry remains to be measured",
+    "notebook_reference_cells": [20],
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "inferno"
+  },
+  "noisy_camera_recovery": {
+    "input_stage": "deterministic_camera_stage",
+    "rng_seed": 7,
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "inferno",
+    "map_vmin": 0.85,
+    "map_vmax": 1.15
+  },
+  "multishot_recovery": {
+    "detuning_ghz": 1.5,
+    "probe_power_mw": 1.0,
+    "pulse_duration_us": 90.0,
+    "imaging_axis": 0,
+    "loss_fraction_limit": 0.3,
+    "reabsorption_override": null,
+    "max_shots": 400,
+    "eta_coll": 1.3,
+    "recoil_energy_multiplier": 2.0,
+    "recoil_energy_convention": "complete absorption-spontaneous-emission cycle deposits 2 E_rec per primary or reabsorbed scattering event",
+    "notebook_reference_cells": [40, 42],
+    "figure_size_inches": [12.5, 8.4]
+  },
+  "noisy_multishot_filmstrip_recovery": {
+    "selected_frames": [0, 5, 10, 14],
+    "rng_seed": 7,
+    "profile_convention": "fresh-cloud image formation with the evolving frame state supplied by the full multishot model",
+    "figure_size_inches": [15.2, 3.6],
+    "map_cmap": "inferno",
+    "map_vmin": 0.9,
+    "map_vmax": 1.18
+  },
+  "unit_conventions": {
+    "internal": "SI",
+    "density_display": "cm^-3",
+    "column_density_display": "cm^-2",
+    "coordinate_display": "um",
+    "density_conversion_m3_to_cm3": 1e-6,
+    "column_density_conversion_m2_to_cm2": 0.0001,
+    "coordinate_conversion_m_to_um": 1000000.0
+  },
+  "display": {
+    "image_extent_um": [-50.0, 50.0, -50.0, 50.0],
+    "column_density_xlim_um": [-45.0, 45.0],
+    "column_density_ylim_um": [-12.0, 12.0],
+    "figure_size_inches": [11.8, 4.6],
+    "column_density_cmap": "viridis"
+  },
+  "status_note": "Dissertation screening configuration using the provisional M=4 sampling, QE=0.60 and read noise=3 e- rms. These are not installed-apparatus measurements; NA remains fixed at the reference value 0.080 and kappa_F remains uncalibrated."
+}

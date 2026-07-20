@@ -1,113 +1,66 @@
-# Dissertation Results Generation
+# Results and figure generation
 
-## Purpose
+Generated outputs are retained only when they support the historical regression
+baseline, the current dissertation figures or the canonical numerical gate.
+Every active result directory contains machine-readable metadata.
 
-This workflow generates dissertation-ready placeholder results for the Version
-1 deterministic Faraday optimisation layer.
+## Dissertation figures
 
-The outputs are representative and uncalibrated. They are intended to be easy
-to regenerate after closed-loop experimental calibration updates the simulator
-parameters.
+| Result directory | Content | Generator | Config |
+| --- | --- | --- | --- |
+| `results/dissertation_plots_v1/accumulated_snr_invariance/` | Figure 3.2 and parameter register | `generate_accumulated_snr_invariance_plot.py` | `dissertation_plots_v1.json` |
+| `results/dissertation_plots_v1/figure_4_2/` | noiseless four-readout comparison | `generate_figure_4_2.py` | `figure_4_2.json` |
+| `results/dissertation_plots_v1/figure_5_1/` | single-frame Faraday SNR and camera examples | `generate_figure_5_1.py` | `figure_5_1.json` |
+| `results/dissertation_plots_v1/figure_5_2/` | usable-frame screen, dual-port map and operating band | `generate_figure_5_2.py` | `figure_5_2.json` |
+| `results/dissertation_plots_v1/figure_5_4/` | 25-frame dual-port filmstrip | `generate_figure_5_4_snr_panel.py` | `figure_5_4.json` |
+| `results/dissertation_plots_v1/full_multishot_accumulated_snr/` | four-mode evolving matched-template SNR data | `generate_full_multishot_accumulated_snr.py` | `dissertation_plots_v1.json` |
 
-## Files
+The active detector/sampling contract is `M=4`, `QE=0.60`,
+`sigma_r=3 e-` rms. The reference operating point is
+`|Delta|/2pi=1.5 GHz`, `P=1 mW`, `tau=90 us`.
 
-Configuration:
+## Evidence and audits
 
-```text
-configs/dissertation_results_v1.json
-```
+| Directory | Purpose |
+| --- | --- |
+| `results/performance_validation_v1/` | canonical gate and full provenance ledger |
+| `results/thesis_numerical_consistency_v1/` | current tables plus explicit legacy corrections |
+| `results/linear_approximation_audit/` | weak-phase and small-angle numerical checks |
+| `results/accumulated_snr_full_physics_audit/` | machine-readable comparison of clean-loss and evolving sequence assumptions |
+| `results/notebook_aligned_recovery/` | historical notebook-stage regression evidence |
 
-Generator:
+The `faraday_optimisation_v1` directory is a retained workflow/regression
+example, not the current dissertation operating-region result.
 
-```text
-scripts/generate_dissertation_results.py
-```
+## Focused regeneration
 
-Default output directory:
-
-```text
-results/faraday_optimisation_v1/
-```
-
-## How To Regenerate
-
-From the repository root, run:
+From the repository root:
 
 ```powershell
 $env:PYTHONPATH="src;."
 $env:PYTHONUTF8="1"
-python scripts\generate_dissertation_results.py --config configs\dissertation_results_v1.json
+
+python scripts\generate_accumulated_snr_invariance_plot.py --config configs\dissertation_plots_v1.json
+python scripts\generate_full_multishot_accumulated_snr.py --config configs\dissertation_plots_v1.json
+python scripts\generate_figure_4_2.py --config configs\figure_4_2.json
+python scripts\generate_figure_5_1.py --config configs\figure_5_1.json
+python scripts\generate_figure_5_2.py --config configs\figure_5_2.json
+python scripts\generate_figure_5_4_snr_panel.py --config configs\figure_5_4.json
+python scripts\audit_thesis_numerical_consistency.py --config configs\thesis_numerical_contract_v1.json
+python scripts\run_performance_validation.py --skip-prerequisites
 ```
 
-The script generates:
+For a full ordered run, use
+`python scripts\run_all_dissertation_figures.py`.
 
-- detuning sweep table;
-- probe-power sweep table;
-- exposure-time sweep table;
-- summary JSON;
-- metadata JSON;
-- simple SVG trade-off figures.
+## Output policy
 
-## How To Change Parameters
+Do not add trial crops, browser previews or alternative magnification trials to
+the maintained result tree. A new result family needs:
 
-Adjust parameters in `configs/dissertation_results_v1.json`. Important
-configurable entries include:
-
-- `kappa_F`;
-- detuning values;
-- probe-power values;
-- exposure-time values;
-- representative density scale;
-- cloud-size parameters;
-- camera parameters;
-- optimisation metric;
-- output directory;
-- result label.
-
-The script should not be edited for ordinary parameter changes. New
-experimental or calibrated results should be produced by creating a new config
-file with a new label and output directory.
-
-## Future Calibrated Results
-
-After closed-loop calibration, create a new config such as:
-
-```text
-configs/dissertation_results_calibrated_example.json
-```
-
-That calibrated config should record the updated density scale, optical-depth
-scale, camera parameters, and any experimentally fitted Faraday calibration
-parameters.
-
-Dissertation figures generated from the current Version 1 config should be
-treated as placeholders. They may be replaced after absorption / RAI calibration
-and future `kappa_F` fitting.
-
-## Metadata Policy
-
-The generated `metadata.json` states:
-
-- the result label;
-- that the outputs are Version 1 representative / uncalibrated results;
-- the configured `kappa_F`;
-- that no experimental RAI / absorption calibration has yet been applied;
-- that outputs should be regenerated after closed-loop calibration;
-- the git commit hash used when generating results;
-- the config file used;
-- the helper functions used.
-
-## Current Limitations
-
-The current result outputs are:
-
-- deterministic only;
-- not noise averaged;
-- not fitted to RAI or absorption data;
-- still based on the Version 1 phenomenological Faraday convention;
-- not based on experimentally fitted `kappa_F`;
-- not based on a microscopic Faraday model;
-- not a substitute for final calibrated dissertation figures.
-
-They are suitable as Version 1 representative outputs and as a reproducible
-starting point for later calibrated result generation.
+1. an explicit config;
+2. a deterministic generator;
+3. metadata with parameter and calibration provenance;
+4. a regression check if the result is dissertation-facing;
+5. a distinct output directory when it supersedes rather than reproduces an
+   existing contract.

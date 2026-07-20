@@ -93,6 +93,7 @@ def heating_budget(
     scattered: float,
     loss_fraction: float,
     reabsorption: float,
+    recoil_energy_multiplier: float,
 ) -> float:
     temperature = float(notebook["condensate"]["temperature_k"])
     critical_temperature = thermal["critical_temperature_k"]
@@ -104,7 +105,9 @@ def heating_budget(
         * constants["boltzmann_constant"]
         / critical_temperature**3
     )
-    deposited_energy = scattered * (1 + reabsorption) * constants["e_rec"]
+    deposited_energy = (
+        recoil_energy_multiplier * scattered * (1 + reabsorption) * constants["e_rec"]
+    )
     return float(energy_coefficient * (target_temperature**4 - temperature**4) / deposited_energy)
 
 
@@ -193,6 +196,7 @@ def budget_row(
     parameter_set: str,
     power_mw: float,
     exposure_us: float,
+    recoil_energy_multiplier: float,
 ) -> dict[str, Any]:
     detuning_ghz = 1.5
     detuning_hz = detuning_ghz * 1e9
@@ -202,8 +206,12 @@ def budget_row(
     )
     reabs = reabsorption_fraction(detuning_hz, constants)
     clean = clean_loss_budget(scattered, loss_fraction, float(notebook["multishot_recovery"]["eta_coll"]))
-    heating = heating_budget(notebook, constants, thermal, scattered, loss_fraction, 0.0)
-    heating_reabs = heating_budget(notebook, constants, thermal, scattered, loss_fraction, reabs)
+    heating = heating_budget(
+        notebook, constants, thermal, scattered, loss_fraction, 0.0, recoil_energy_multiplier
+    )
+    heating_reabs = heating_budget(
+        notebook, constants, thermal, scattered, loss_fraction, reabs, recoil_energy_multiplier
+    )
     return {
         "parameter_set": parameter_set,
         "Delta_over_2pi_GHz": detuning_ghz,
@@ -216,6 +224,7 @@ def budget_row(
         "strict_integer_clean_frames": int(np.floor(clean)),
         "strict_integer_heating_reabs_frames": int(np.floor(heating_reabs)),
         "reabsorption_fraction": reabs,
+        "recoil_energy_multiplier": recoil_energy_multiplier,
     }
 
 
@@ -268,8 +277,11 @@ def operating_point_snr_row(
         "power_mW": power_mw,
         "exposure_us": exposure_us,
         "ideal_QE1_peak_pixel_SNR": float(ideal_snr),
-        "realistic_QE0p4_read7_peak_pixel_SNR": float(pixel_snr),
-        "realistic_QE0p4_read7_resolution_element_SNR": float(signal / noise),
+        "realistic_peak_pixel_SNR": float(pixel_snr),
+        "realistic_resolution_element_SNR": float(signal / noise),
+        "camera_model": notebook["camera_recovery"].get("camera_model", "unspecified"),
+        "quantum_efficiency": float(notebook["camera_recovery"]["quantum_efficiency"]),
+        "read_noise_e_rms": read_noise,
         "NA_PSF_included_in_realistic_values": True,
     }
 
@@ -277,8 +289,14 @@ def operating_point_snr_row(
 def build_audit(contract: dict[str, Any]) -> dict[str, Any]:
     notebook_path = REPO_ROOT / contract["notebook_defaults_config"]
     notebook = load_json(notebook_path)
+    legacy_notebook_path = REPO_ROOT / contract.get(
+        "legacy_notebook_defaults_config", contract["notebook_defaults_config"]
+    )
+    legacy_notebook = load_json(legacy_notebook_path)
     constants = _basic_constants(notebook)
+    legacy_constants = _basic_constants(legacy_notebook)
     thermal = self_consistent_total_atoms(notebook, constants)
+    recoil_energy_multiplier = float(contract["heating_model"]["recoil_energy_multiplier"])
     pupil = build_pupil(notebook)["pupil"]
     blur_axis = build_blur_axis(notebook, constants)
     canonical = contract["canonical_accumulated_snr"]
@@ -301,8 +319,8 @@ def build_audit(contract: dict[str, Any]) -> dict[str, Any]:
 
     legacy_rows = [
         legacy_table_row(
-            notebook=notebook,
-            constants=constants,
+            notebook=legacy_notebook,
+            constants=legacy_constants,
             legacy=contract["legacy_table_5_1_audit"],
             detuning_ghz=float(detuning),
             snr_exposure_us=float(contract["legacy_table_5_1_audit"]["actual_snr_exposure_time_us"]),
@@ -312,8 +330,8 @@ def build_audit(contract: dict[str, Any]) -> dict[str, Any]:
     ]
     corrected_legacy_rows = [
         legacy_table_row(
-            notebook=notebook,
-            constants=constants,
+            notebook=legacy_notebook,
+            constants=legacy_constants,
             legacy=contract["legacy_table_5_1_audit"],
             detuning_ghz=float(detuning),
             snr_exposure_us=float(contract["legacy_table_5_1_audit"]["labelled_exposure_time_us"]),
@@ -330,6 +348,7 @@ def build_audit(contract: dict[str, Any]) -> dict[str, Any]:
             parameter_set="legacy_label_claim_P2_tau15",
             power_mw=2.0,
             exposure_us=15.0,
+            recoil_energy_multiplier=recoil_energy_multiplier,
         ),
         budget_row(
             notebook=notebook,
@@ -338,14 +357,16 @@ def build_audit(contract: dict[str, Any]) -> dict[str, Any]:
             parameter_set="actual_legacy_calls_P2_tau40",
             power_mw=2.0,
             exposure_us=40.0,
+            recoil_energy_multiplier=recoil_energy_multiplier,
         ),
         budget_row(
             notebook=notebook,
             constants=constants,
             thermal=thermal,
-            parameter_set="canonical_route_a_P3p5_tau40",
-            power_mw=3.5,
-            exposure_us=40.0,
+            parameter_set="canonical_route_a",
+            power_mw=float(contract["canonical_route_a"]["probe_power_mw"]),
+            exposure_us=float(contract["canonical_route_a"]["exposure_time_us"]),
+            recoil_energy_multiplier=recoil_energy_multiplier,
         ),
     ]
 
@@ -402,14 +423,16 @@ def build_audit(contract: dict[str, Any]) -> dict[str, Any]:
         },
         {
             "legacy_claim": "Route A gives 14 realistic and 30 optimistic usable frames",
-            "status": "RETAIN_WITH_COUNTING_QUALIFIER",
-            "diagnosis": "14 and 30 are rounded continuous budgets; strict accepted-frame counts are 13 and 29",
+            "status": "DEPRECATED_PREVIOUS_CANONICAL",
+            "diagnosis": "the current canonical point and two-recoil heating convention must be regenerated from the parameter contract",
         },
     ]
 
+    legacy_pupil = build_pupil(legacy_notebook)["pupil"]
+    legacy_blur_axis = build_blur_axis(legacy_notebook, legacy_constants)
     operating_point_rows = [
-        operating_point_snr_row(notebook, constants, pupil, blur_axis, 1.5, 0),
-        operating_point_snr_row(notebook, constants, pupil, blur_axis, 13.0, 1),
+        operating_point_snr_row(legacy_notebook, legacy_constants, legacy_pupil, legacy_blur_axis, 1.5, 0),
+        operating_point_snr_row(legacy_notebook, legacy_constants, legacy_pupil, legacy_blur_axis, 13.0, 1),
     ]
     corrections.append({
         "legacy_claim": "operating_point_report prints tau=40 us beside SNR values evaluated at the 100 us camera default",
@@ -460,6 +483,7 @@ def fmt(value: float, digits: int = 3) -> str:
 
 
 def write_report(path: Path, audit: dict[str, Any]) -> None:
+    contract = audit["contract"]
     canonical = audit["accumulated_snr_rows"]
     budgets = {row["parameter_set"]: row for row in audit["budget_rows"]}
     along = audit["along_cigar_rows"]
@@ -468,9 +492,13 @@ def write_report(path: Path, audit: dict[str, Any]) -> None:
     canonical_15 = next(row for row in canonical if row["Delta_over_2pi_GHz"] == 1.5)
     p2_15 = budgets["legacy_label_claim_P2_tau15"]
     p2_40 = budgets["actual_legacy_calls_P2_tau40"]
-    route = budgets["canonical_route_a_P3p5_tau40"]
+    route = budgets["canonical_route_a"]
     full_rows = sorted(audit["full_model_rows"], key=lambda row: (row["mode"], row["noise_model"]))
     operating_rows = audit["operating_point_snr_rows"]
+    camera = contract["canonical_accumulated_snr"]
+    camera_label = str(camera.get("camera_model", "configured camera"))
+    qe = float(camera["quantum_efficiency"])
+    read_noise = float(camera["read_noise_electrons_rms"])
     lines = [
         "# Thesis Numerical Consistency: Confirmation and Correction Report",
         "",
@@ -488,7 +516,10 @@ def write_report(path: Path, audit: dict[str, Any]) -> None:
         "",
         "### A. Fig. 3.2 and supporting accumulated-SNR table",
         "",
-        "- `P = 3.5 mW`; `tau = 40 us`; `QE = 0.40`; read noise `7 e- rms`.",
+        f"- `P = {contract['canonical_accumulated_snr']['probe_power_mw']:.1f} mW`; "
+        f"`tau = {contract['canonical_accumulated_snr']['exposure_time_us']:.1f} us`; "
+        f"camera `{camera_label}`; `QE = {qe:.6f}` ({camera.get('quantum_efficiency_status', 'status unspecified')}); "
+        f"read noise `{read_noise:.3g} e- rms` ({camera.get('read_noise_status', 'status unspecified')}).",
         "- Across-cigar imaging axis (`x`).",
         "- Analytical peak object-space camera pixel before NA/PSF blur; no spatial summation.",
         "- Continuous optimistic clean-loss budget at 30% condensate loss.",
@@ -509,12 +540,16 @@ def write_report(path: Path, audit: dict[str, Any]) -> None:
         "",
         "### B. Quantitative Route A multishot result",
         "",
-        "- `|Delta|/2pi = 1.5 GHz`; `P = 3.5 mW`; `tau = 40 us`; 30% condensate-loss threshold.",
+        f"- `|Delta|/2pi = 1.5 GHz`; `P = {contract['canonical_route_a']['probe_power_mw']:.1f} mW`; "
+        f"`tau = {contract['canonical_route_a']['exposure_time_us']:.1f} us`; "
+        f"`P tau = {contract['canonical_route_a']['canonical_fluence_mw_us']:.1f} mW us`; "
+        "30% condensate-loss threshold.",
         f"- Continuous clean-loss upper bound: `{route['N_max_clean_continuous']:.2f}` pulses.",
         f"- Continuous heating plus reabsorption crossing: `{route['N_stop_heating_reabs_continuous']:.2f}` pulses.",
         f"- Strict integer accepted frames: `{route['strict_integer_heating_reabs_frames']}` realistic, "
         f"`{route['strict_integer_clean_frames']}` clean-loss upper bound.",
-        "- Therefore `about 14/30` is allowed only when explicitly called a rounded continuous budget, not an integer frame count.",
+        f"- Therefore the heating-model result is `{route['N_stop_heating_reabs_continuous']:.2f}` continuous pulses or "
+        f"`{route['strict_integer_heating_reabs_frames']}` strict accepted frames; the clean-loss value remains only an optimistic bound.",
         "",
         "The current full evolving calculation uses the same power, exposure, QE, and read noise, but changes both the spatial observable and destruction model:",
         "",
@@ -555,15 +590,15 @@ def write_report(path: Path, audit: dict[str, Any]) -> None:
         "",
         "The legacy report printed `tau=40 us` but evaluated its SNR functions at the 100 us camera default. Explicit 40 us results are:",
         "",
-        "| $\\lvert\\Delta\\rvert/2\\pi$ (GHz) | Axis | Ideal QE=1 peak pixel | QE=0.4 + read, peak pixel with NA/PSF | QE=0.4 + read, resolution element |",
+        f"| $\\lvert\\Delta\\rvert/2\\pi$ (GHz) | Axis | Ideal QE=1 peak pixel | {camera_label}, peak pixel with NA/PSF | {camera_label}, resolution element |",
         "| ---: | --- | ---: | ---: | ---: |",
     ]
     for row in operating_rows:
         lines.append(
             f"| {row['Delta_over_2pi_GHz']:.1f} | {row['axis']} | "
             f"{row['ideal_QE1_peak_pixel_SNR']:.2f} | "
-            f"{row['realistic_QE0p4_read7_peak_pixel_SNR']:.2f} | "
-            f"{row['realistic_QE0p4_read7_resolution_element_SNR']:.2f} |"
+            f"{row['realistic_peak_pixel_SNR']:.2f} | "
+            f"{row['realistic_resolution_element_SNR']:.2f} |"
         )
     lines += [
         "",

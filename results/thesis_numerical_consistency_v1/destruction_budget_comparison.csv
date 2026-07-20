@@ -1,4 +1,4 @@
-parameter_set,Delta_over_2pi_GHz,power_mW,exposure_us,loss_threshold_fraction,N_max_clean_continuous,N_stop_heating_continuous,N_stop_heating_reabs_continuous,strict_integer_clean_frames,strict_integer_heating_reabs_frames,reabsorption_fraction
-legacy_label_claim_P2_tau15,1.5,2.0,15.0,0.3,138.04913248551253,66.10939552518091,64.20203941630744,138,64,0.029708652968257532
-actual_legacy_calls_P2_tau40,1.5,2.0,40.0,0.3,51.7684246820672,24.79102332194284,24.075764781115293,51,24,0.029708652968257532
-canonical_route_a_P3p5_tau40,1.5,3.5,40.0,0.3,29.581988680261396,14.166314230841392,13.757594626407487,29,13,0.029708652968257532
+parameter_set,Delta_over_2pi_GHz,power_mW,exposure_us,loss_threshold_fraction,N_max_clean_continuous,N_stop_heating_continuous,N_stop_heating_reabs_continuous,strict_integer_clean_frames,strict_integer_heating_reabs_frames,reabsorption_fraction,recoil_energy_multiplier
+legacy_label_claim_P2_tau15,1.5,2.0,15.0,0.3,138.04913248551253,33.05469776259046,32.10101970815372,138,32,0.029708652968257532,2.0
+actual_legacy_calls_P2_tau40,1.5,2.0,40.0,0.3,51.7684246820672,12.39551166097142,12.037882390557646,51,12,0.029708652968257532,2.0
+canonical_route_a,1.5,1.0,90.0,0.3,46.01634460130998,11.018224711373238,10.70033225380004,46,10,0.029708652968257532,2.0

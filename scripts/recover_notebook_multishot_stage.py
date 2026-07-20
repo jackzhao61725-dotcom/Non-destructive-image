@@ -205,6 +205,7 @@ def _notebook_run_sequence(
     loss_limit = float(multishot["loss_fraction_limit"])
     max_shots = int(multishot["max_shots"])
     eta_coll = float(multishot["eta_coll"])
+    recoil_energy_multiplier = float(multishot.get("recoil_energy_multiplier", 1.0))
     reabs = multishot["reabsorption_override"]
     reabs = reabsorption_fraction(detuning_hz, constants) if reabs is None else float(reabs)
     photons_scattered = scattered_photons_per_atom(config, constants, detuning_hz, power_mw, tau_s)
@@ -215,7 +216,7 @@ def _notebook_run_sequence(
     initial_temperature = temperature
     initial_condensate_atoms = constants["atom_number"]
     energy_coefficient = 3 * (zeta4 / zeta3) * constants["boltzmann_constant"] / tc**3
-    deposited_energy = photons_scattered * (1 + reabs) * constants["e_rec"]
+    deposited_energy = recoil_energy_multiplier * photons_scattered * (1 + reabs) * constants["e_rec"]
 
     out = {key: [] for key in ("shot", "N0", "frac", "T", "phi", "snr")}
     shot = 0
@@ -271,13 +272,14 @@ def _helper_run_sequence(
     loss_limit = float(multishot["loss_fraction_limit"])
     max_shots = int(multishot["max_shots"])
     eta_coll = float(multishot["eta_coll"])
+    recoil_energy_multiplier = float(multishot.get("recoil_energy_multiplier", 1.0))
     reabs = multishot["reabsorption_override"]
     reabs = reabsorption_fraction(detuning_hz, constants) if reabs is None else float(reabs)
     photons_scattered = scattered_photons_per_atom(config, constants, detuning_hz, power_mw, tau_s)
     zeta3, zeta4 = float(zeta(3)), float(zeta(4))
     tc = thermal["critical_temperature_k"]
     energy_coefficient = 3 * (zeta4 / zeta3) * constants["boltzmann_constant"] / tc**3
-    deposited_energy = photons_scattered * (1 + reabs) * constants["e_rec"]
+    deposited_energy = recoil_energy_multiplier * photons_scattered * (1 + reabs) * constants["e_rec"]
 
     def phase_from_n0(n0_now: float) -> float:
         state_now = tf_state_for_atoms(n0_now, constants)
@@ -320,7 +322,8 @@ def build_multishot_stage(config: dict[str, Any]) -> dict[str, Any]:
     saturation = intensity_at_atoms_notebook(config, power_mw) / constants["isat"]
     zeta3, zeta4 = float(zeta(3)), float(zeta(4))
     energy_coefficient = 3 * (zeta4 / zeta3) * constants["boltzmann_constant"] / thermal["critical_temperature_k"] ** 3
-    deposited_energy = photons_scattered * (1 + reabs) * constants["e_rec"]
+    recoil_energy_multiplier = float(multishot.get("recoil_energy_multiplier", 1.0))
+    deposited_energy = recoil_energy_multiplier * photons_scattered * (1 + reabs) * constants["e_rec"]
 
     notebook = {
         model: _notebook_run_sequence(
@@ -358,6 +361,10 @@ def build_multishot_stage(config: dict[str, Any]) -> dict[str, Any]:
             "loss_fraction_limit": float(multishot["loss_fraction_limit"]),
             "max_shots": int(multishot["max_shots"]),
             "eta_coll": float(multishot["eta_coll"]),
+            "recoil_energy_multiplier": recoil_energy_multiplier,
+            "recoil_energy_convention": multishot.get(
+                "recoil_energy_convention", "legacy implicit one-recoil notebook convention"
+            ),
             "reabsorption_fraction": reabs,
             "saturation_parameter": saturation,
             "photons_scattered_per_atom_per_shot": photons_scattered,

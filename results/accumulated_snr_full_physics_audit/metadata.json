@@ -1,13 +1,13 @@
 {
   "audit_type": "physics-first and code-to-physics traceability audit",
-  "branch": "work/accumulated-snr-invariance-plot",
+  "branch": "work/full-performance-validation",
   "calibration_status": "Version 1 uncalibrated; no experimental absorption/RAI calibration",
   "config": "configs\\dissertation_plots_v1.json",
   "existing_figure_data_modified": false,
   "figure_modified": false,
-  "git_commit": "15b833521abcd26ed53a5f143b0a9fc557cfed7b",
+  "git_commit": "bbcc8d93293634ecee7fc4c2ea13ef5571b129ff",
   "parameter_sources": [
-    "configs/notebook_v1_defaults.json",
+    "configs\\dissertation_v2_dcc3260m.json",
     "configs/dissertation_plots_v1.json",
     "results/notebook_aligned_recovery/parameter_inventory.csv",
     "results/notebook_aligned_recovery/unit_inventory.csv"

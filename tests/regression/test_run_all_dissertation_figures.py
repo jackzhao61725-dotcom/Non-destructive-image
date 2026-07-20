@@ -34,12 +34,17 @@ def test_run_all_plan_contains_only_approved_main_generators() -> None:
     assert "scripts/recover_notebook_multishot_stage.py" in scripts
     assert "scripts/recover_notebook_noisy_multishot_filmstrip.py" in scripts
     assert "scripts/generate_condensate_three_view.py" in scripts
-    assert "scripts/generate_dissertation_results.py" in scripts
+    assert "scripts/generate_dissertation_results.py" not in scripts
     assert "scripts/generate_detuning_tradeoff_plot.py" in scripts
     assert "scripts/audit_linear_approximation_validity.py" in scripts
     assert "scripts/generate_accumulated_snr_invariance_plot.py" in scripts
     assert "scripts/generate_full_multishot_accumulated_snr.py" in scripts
     assert "scripts/audit_thesis_numerical_consistency.py" in scripts
+    assert "scripts/generate_figure_4_2.py" in scripts
+    assert "scripts/generate_figure_5_1.py" in scripts
+    assert "scripts/generate_figure_5_2.py" in scripts
+    assert "scripts/generate_figure_5_4_snr_panel.py" in scripts
+    assert "scripts/run_performance_validation.py" in scripts
 
 
 def test_run_all_has_no_pending_approved_outputs() -> None:
@@ -63,4 +68,9 @@ def test_run_all_dry_run_succeeds_without_manifest(tmp_path: Path) -> None:
     assert "generate_accumulated_snr_invariance" in result.stdout
     assert "generate_full_multishot_accumulated_snr" in result.stdout
     assert "audit_thesis_numerical_consistency" in result.stdout
+    assert "generate_figure_4_2" in result.stdout
+    assert "generate_figure_5_1" in result.stdout
+    assert "generate_figure_5_2" in result.stdout
+    assert "generate_figure_5_4" in result.stdout
+    assert "canonical_performance_gate" in result.stdout
     assert not manifest.exists()

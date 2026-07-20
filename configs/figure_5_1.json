@@ -1,0 +1,69 @@
+{
+  "label": "figure_5_1_faraday_snr_and_camera_frames_v2",
+  "notebook_defaults_config": "configs/dissertation_v2_dcc3260m.json",
+  "output_directory": "results/dissertation_plots_v1/figure_5_1",
+  "scan": {
+    "detuning_ghz": 1.5,
+    "fluence_min_mw_us": 10.0,
+    "fluence_max_mw_us": 180.0,
+    "fluence_points": 171,
+    "spacing": "linear",
+    "reference_fluence_mw_us": 90.0,
+    "selected_fluence_mw_us": [30.0, 90.0, 150.0]
+  },
+  "fixed_context": {
+    "imaging_axis": 0,
+    "imaging_axis_label": "x",
+    "numerical_aperture": 0.08,
+    "camera_model": "Thorlabs DCC3260M",
+    "camera_pixel_m": 5.86e-6,
+    "effective_magnification": 4.0,
+    "quantum_efficiency": 0.6,
+    "quantum_efficiency_status": "experimentally plausible dissertation screening value; not measured",
+    "read_noise_electrons_per_pixel_per_port": 3.0,
+    "camera_bin_size": 15,
+    "central_block_half_width_pixels": 1,
+    "central_block_shape": [3, 3],
+    "kappa_F": 1.0,
+    "faraday_calibration_status": "Version 1 phenomenological placeholder; absolute Faraday SNR is uncalibrated"
+  },
+  "noise_realisation": {
+    "rng_seed": 7,
+    "interpretation": "one fixed representative draw per mode and selected fluence; random draws illustrate camera appearance and do not estimate the analytic SNR"
+  },
+  "canonical_checks": {
+    "relative_tolerance": 1e-10,
+    "absolute_tolerance": 1e-12,
+    "phase_peak_rad": 0.20294165287929014,
+    "photoelectrons_per_incident_I0_pixel": 1034.318471381998,
+    "snr": {
+      "Faraday dark-field": 6.22710517196034,
+      "Faraday dual-port": 16.06033992848492
+    },
+    "snr_interpretation": "analytic central-3x3 SNR with QE=0.60 and sigma_r=3 e- rms; the displayed random frames do not determine these values"
+  },
+  "figure": {
+    "svg_filename": "figure_5_1.svg",
+    "png_filename": "figure_5_1.png",
+    "pdf_filename": "figure_5_1.pdf",
+    "figsize_inches": [7.2, 6.4],
+    "dpi": 300,
+    "xlim_mw_us": [10.0, 180.0],
+    "ylim_snr": [0.0, 24.0],
+    "image_display": {
+      "xlim_um": [-35.0, 35.0],
+      "ylim_um": [-10.0, 10.0],
+      "dark_vmin": -0.012,
+      "dark_vmax": 0.028,
+      "dual_vmin": -0.30,
+      "dual_vmax": 0.30
+    }
+  },
+  "scope": {
+    "camera_noise": "Poisson variance plus the provisional dissertation screening value sigma_r=3 e- rms per pixel and readout",
+    "state": "same undepleted reference condensate at every fluence",
+    "multishot_evolution_included": false,
+    "recoil_energy_dependent": false,
+    "prediction_status": "screening calculation within the Version 1 forward model, not guaranteed experimental performance"
+  }
+}

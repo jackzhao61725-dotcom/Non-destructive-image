@@ -37,7 +37,7 @@ def _hash_payload(value: Any) -> dict[str, Any]:
 
 
 def build_baseline() -> dict[str, Any]:
-    notebook = json.loads(NOTEBOOK_PATH.read_text())
+    notebook = json.loads(NOTEBOOK_PATH.read_text(encoding="utf-8"))
     cells: list[dict[str, Any]] = []
     for cell_index, cell in enumerate(notebook["cells"]):
         if cell.get("cell_type") != "code" or not cell.get("outputs"):

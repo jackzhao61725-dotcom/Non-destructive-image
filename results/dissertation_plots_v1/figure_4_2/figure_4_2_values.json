@@ -1,0 +1,161 @@
+{
+  "canonical_gate": {
+    "passed": true,
+    "values": {
+      "aperture_throughput": 0.7115304533861209,
+      "centre_filtered_scattered_field_imag": 0.12631881680684415,
+      "centre_filtered_scattered_field_real": -0.010274925557004756,
+      "dgi_background_I_I0": 0.0001,
+      "dgi_peak_I_I0": 0.01595651906354294,
+      "dual_port_centre_I_H_I0": 0.6227769835980417,
+      "dual_port_centre_I_V_I0": 0.37273518286263196,
+      "dual_port_peak_S": 0.25116900542198173,
+      "faraday_dark_peak_I_I0": 0.015956443479481053,
+      "pci_background_I_I0": 0.9025,
+      "pci_peak_I_I0": 1.1585677695076864,
+      "phase_peak_rad": 0.20294165287929014,
+      "surviving_rotation_rad": 0.12665718527999423
+    }
+  },
+  "condensate": {
+    "imaging_axis": 0,
+    "imaging_axis_label": "x",
+    "peak_column_density_m2": 537596245257846.75,
+    "radii_um": [
+      1.1857996475343457,
+      24.817092623397375,
+      1.4911557799466233
+    ],
+    "transverse_plane_labels": [
+      "y",
+      "z"
+    ]
+  },
+  "grid": {
+    "field_of_view_um": 100.0,
+    "shape": [
+      1024,
+      1024
+    ],
+    "spacing_nm": 97.65625
+  },
+  "optical_input": {
+    "centre_filtered_scattered_field": {
+      "imag": 0.12631881680684415,
+      "magnitude_squared": 0.016062017574683046,
+      "real": -0.010274925557004756,
+      "source": "dgi_stage.notebook_propagated_scattered_field at the image centre"
+    },
+    "detuning_ghz": 1.5,
+    "kappa_F": 1.0,
+    "numerical_aperture": 0.08,
+    "phase_peak_rad": 0.20294165287929014,
+    "scattered_power_throughput": 0.7115304533861209,
+    "surviving_rotation_deg": 7.256922161550166,
+    "surviving_rotation_rad": 0.12665718527999423,
+    "theta_f_peak_rad": 0.20294165287929014
+  },
+  "readouts": {
+    "dark_field_faraday": {
+      "background_I_I0": 0.0,
+      "stats": {
+        "centre_value": 0.015956443479481053,
+        "max": 0.015956443479481053,
+        "mean": 8.457346602539056e-05,
+        "min": 7.278511693570265e-20,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      }
+    },
+    "dgi": {
+      "background_I_I0": 0.0001,
+      "peak_signal_change_I_I0": 0.01585651906354294,
+      "stats": {
+        "centre_value": 0.01595651906354294,
+        "max": 0.01595651906354294,
+        "mean": 0.00018381101889794308,
+        "min": 9.854763408159256e-05,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      }
+    },
+    "dual_port_faraday": {
+      "no_atom_background_H_I_I0": 0.5,
+      "no_atom_background_V_I_I0": 0.5,
+      "port_H_stats": {
+        "centre_value": 0.6227769835980417,
+        "max": 0.6227769835980417,
+        "mean": 0.5009175942873569,
+        "min": 0.4797131277063349,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      },
+      "port_V_stats": {
+        "centre_value": 0.37273518286263196,
+        "max": 0.5247082811968177,
+        "mean": 0.49904794259488955,
+        "min": 0.37273518286263196,
+        "peak_index": [
+          473,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      },
+      "port_mapping": "I_H = historical notebook I_v; I_V = historical notebook I_u",
+      "signal_definition": "S = (I_H - I_V)/(I_H + I_V)",
+      "signal_stats": {
+        "centre_value": 0.25116900542198173,
+        "max": 0.25116900542198173,
+        "mean": 0.001879360319011973,
+        "min": -0.04479708725007998,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      }
+    },
+    "pci": {
+      "background_I_I0": 0.9025,
+      "peak_signal_change_I_I0": 0.2560677695076864,
+      "stats": {
+        "centre_value": 1.1585677695076864,
+        "max": 1.1585677695076864,
+        "mean": 0.904372478370771,
+        "min": 0.8603460757846358,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      }
+    }
+  }
+}

@@ -42,6 +42,8 @@ def test_notebook_multishot_recovery_stable_parameters() -> None:
     assert params["loss_fraction_limit"] == 0.3
     assert params["max_shots"] == 400
     assert params["eta_coll"] == 1.3
+    assert params["recoil_energy_multiplier"] == 1.0
+    assert "legacy notebook-aligned" in params["recoil_energy_convention"]
     assert params["photons_scattered_per_atom_per_shot"] == pytest.approx(
         0.009274742967987243,
         rel=1e-12,

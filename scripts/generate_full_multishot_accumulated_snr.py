@@ -184,9 +184,14 @@ def _model_parameters(notebook: dict[str, Any], plots: dict[str, Any]) -> dict[s
         "exposure_s": exposure_s,
         "axis": int(cfg["imaging_axis"]),
         "loss_fraction": float(cfg["destruction_budget_fraction"]),
+        "recoil_energy_multiplier": float(cfg["recoil_energy_multiplier"]),
+        "recoil_energy_convention": str(cfg["recoil_energy_convention"]),
         "eta_coll": float(notebook["multishot_recovery"]["eta_coll"]),
         "read_noise_e": float(cfg["read_noise_electrons"]),
+        "read_noise_status": str(cfg.get("read_noise_status", "unspecified")),
         "quantum_efficiency": float(cfg["quantum_efficiency"]),
+        "quantum_efficiency_status": str(cfg.get("quantum_efficiency_status", "unspecified")),
+        "camera_model": str(cfg.get("camera_model", camera.get("camera_model", "unspecified"))),
         "photons_per_pixel": float(photons),
         "bin_size": int(camera["bin_size"]),
         "t_p": float(pci["phase_plate_transmittance"]),
@@ -228,7 +233,12 @@ def _continuous_budgets(
     target_t = tc * (1 - (1 - f) * fc0) ** (1 / 3)
     zeta3, zeta4 = float(zeta(3)), float(zeta(4))
     a_e = 3 * (zeta4 / zeta3) * float(notebook["constants"]["boltzmann_constant"]) / tc**3
-    deposited = ng * (1 + reabs) * constants["e_rec"]
+    deposited = (
+        params["recoil_energy_multiplier"]
+        * ng
+        * (1 + reabs)
+        * constants["e_rec"]
+    )
     n_heat = a_e * (target_t**4 - t0**4) / deposited
     return {
         "n_gamma": float(ng),
@@ -269,7 +279,7 @@ def _legacy_curves() -> dict[tuple[str, str], tuple[np.ndarray, np.ndarray]]:
     with path.open(encoding="utf-8", newline="") as handle:
         for row in csv.DictReader(handle):
             grouped.setdefault((row["mode"], row["noise_model"]), []).append(
-                (float(row["Delta_over_2pi_GHz"]), float(row["SNR_total"]))
+                (float(row["Delta_over_2pi_GHz"]), float(row["SNR_acc"]))
             )
     return {
         key: (np.asarray([item[0] for item in values]), np.asarray([item[1] for item in values]))
@@ -557,7 +567,13 @@ def _checks(results: dict[str, Any]) -> dict[str, Any]:
     return checks
 
 
-def _plot(path: Path, rows: list[dict[str, Any]], detunings: np.ndarray) -> None:
+def _plot(
+    path: Path,
+    png_path: Path,
+    pdf_path: Path,
+    rows: list[dict[str, Any]],
+    detunings: np.ndarray,
+) -> None:
     matplotlib.rcParams["svg.hashsalt"] = "full-multishot-accumulated-snr-v1"
     colors = {"PCI": "#1769aa", "DGI": "#3f8c4d"}
     styles = {"shot_plus_read_noise": "-", "shot_noise_only": "--"}
@@ -591,6 +607,8 @@ def _plot(path: Path, rows: list[dict[str, Any]], detunings: np.ndarray) -> None
     axes[0].legend(frameon=False, fontsize=8.5, loc="best")
     fig.tight_layout()
     fig.savefig(path, format="svg", metadata={"Date": None})
+    fig.savefig(png_path, format="png", dpi=300, metadata={"Software": "matplotlib"})
+    fig.savefig(pdf_path, format="pdf", metadata={"CreationDate": None, "ModDate": None})
     plt.close(fig)
     svg_text = path.read_text(encoding="utf-8")
     path.write_text("\n".join(line.rstrip() for line in svg_text.splitlines()) + "\n", encoding="utf-8")
@@ -627,6 +645,7 @@ def _canonical_faraday_ledger(results: dict[str, Any], output_path: Path) -> lis
             "N_max_model": "heating+reabsorption; strict integer post-pulse depletion <= 0.30",
             "quantum_efficiency": params["quantum_efficiency"],
             "read_noise_electrons_per_port": params["read_noise_e"],
+            "read_noise_status": params["read_noise_status"],
             "read_variance_e2_per_pixel": (
                 2 * params["read_noise_e"] ** 2
                 if dual_port and row["noise_model"] == "shot_plus_read_noise"
@@ -658,6 +677,8 @@ def generate(config_path: Path) -> dict[str, Path]:
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     outputs = {
         "figure": OUTPUT_DIR / "full_multishot_accumulated_snr.svg",
+        "figure_png": OUTPUT_DIR / "full_multishot_accumulated_snr.png",
+        "figure_pdf": OUTPUT_DIR / "full_multishot_accumulated_snr.pdf",
         "data": OUTPUT_DIR / "full_multishot_accumulated_snr_data.csv",
         "framewise": OUTPUT_DIR / "framewise_snr_sequences.csv",
         "comparison": OUTPUT_DIR / "model_comparison.csv",
@@ -670,7 +691,13 @@ def generate(config_path: Path) -> dict[str, Path]:
     _write_csv(outputs["comparison"], results["comparison_rows"])
     faraday_ledger = _canonical_faraday_ledger(results, outputs["faraday_ledger"])
     _write_csv(outputs["faraday_ledger"], faraday_ledger)
-    _plot(outputs["figure"], results["summary_rows"], results["detunings"])
+    _plot(
+        outputs["figure"],
+        outputs["figure_png"],
+        outputs["figure_pdf"],
+        results["summary_rows"],
+        results["detunings"],
+    )
 
     benchmark = {
         str(value): next(
@@ -710,7 +737,10 @@ def generate(config_path: Path) -> dict[str, Path]:
             }
             for key, row in benchmark.items()
         },
-        "observable": "fixed 228-pixel spatial ROI with diagonal-covariance matched-template SNR",
+        "observable": (
+            f"fixed {results['roi_metadata']['roi_pixel_count']}-pixel spatial ROI "
+            "with diagonal-covariance matched-template SNR"
+        ),
         "stopping_criterion": "integer pulse count whose post-pulse condensate depletion remains <=30%; threshold-crossing state excluded",
         "qualitative_conclusion": "The clean-loss cancellation remains a useful upper-bound scaling reference. Heating, reabsorption, depletion, integer stopping, and image formation lower the accumulated SNR and remove exact invariance; DGI with read noise still decreases at high detuning.",
     }
@@ -727,8 +757,11 @@ def generate(config_path: Path) -> dict[str, Path]:
             "exposure_time_us": results["params"]["exposure_s"] * 1e6,
             "imaging_axis": results["params"]["axis"],
             "quantum_efficiency": plots["accumulated_snr_invariance"]["quantum_efficiency"],
+            "quantum_efficiency_status": results["params"]["quantum_efficiency_status"],
+            "camera_model": results["params"]["camera_model"],
             "bin_size": results["params"]["bin_size"],
             "read_noise_e": results["params"]["read_noise_e"],
+            "read_noise_status": results["params"]["read_noise_status"],
             "condensate_depletion_threshold": results["params"]["loss_fraction"],
             "initial_atom_number": results["params"]["constants"]["atom_number"],
             "initial_peak_column_density_m2": float(
@@ -753,15 +786,22 @@ def generate(config_path: Path) -> dict[str, Path]:
             "roi_fixed_across_frames_and_detunings": True,
             "template_evolves_with_cloud": True,
             "single_port_shot_variance": "total expected photons in each ROI pixel",
-            "single_port_read_variance": "7 e- rms squared per binned camera pixel",
+            "single_port_read_variance": (
+                f"{results['params']['read_noise_e']:.6g} e- rms squared per binned camera pixel"
+            ),
             "faraday_dark_field_observable": "crossed-analyser electron counts relative to zero background",
             "faraday_dual_port_observable": "electron-count difference N_V-N_U",
             "faraday_dual_port_shot_variance": "N_U+N_V for independent Poisson ports",
-            "faraday_dual_port_read_variance": "2*(7 e-)^2 for two independent readouts",
+            "faraday_dual_port_read_variance": (
+                f"2*({results['params']['read_noise_e']:.6g} e-)^2 for two independent readouts"
+            ),
             "reference_image_noise": "not included, matching the notebook convention of a known reference background",
         },
         "physics_model": {
             "heating": "T_next=(T^4+dE/A_E)^(1/4)",
+            "recoil_energy_multiplier": results["params"]["recoil_energy_multiplier"],
+            "recoil_energy_convention": results["params"]["recoil_energy_convention"],
+            "deposited_energy": "dE=recoil_energy_multiplier*N_gamma*(1+reabsorption)*E_rec",
             "reabsorption": "initial-density angle-averaged notebook fraction, held fixed within each sequence",
             "condensate": "N0=N_total*(1-(T/Tc)^3)",
             "state_update": "Thomas-Fermi state regenerated from evolving N0",

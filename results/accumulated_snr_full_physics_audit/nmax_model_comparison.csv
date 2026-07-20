@@ -1,10 +1,10 @@
 detuning_ghz,model,continuous_threshold_pulses,integer_pulses_not_exceeding_budget,threshold
-0.75,clean_loss_exponential_continuous,7.3976977761399425,7,30% condensate depletion
-0.75,linear_probability_multiplicative,7.2178915945898146,7,30% condensate depletion
-0.75,heating_plus_reabsorption_continuous,3.2014962853752933,3,30% condensate depletion
-1.5,clean_loss_exponential_continuous,29.581988680261396,29,30% condensate depletion
-1.5,linear_probability_multiplicative,29.40329065708388,29,30% condensate depletion
-1.5,heating_plus_reabsorption_continuous,13.757594626407487,13,30% condensate depletion
-3.0,clean_loss_exponential_continuous,118.3191522967472,118,30% condensate depletion
-3.0,linear_probability_multiplicative,118.14072508928356,118,30% condensate depletion
-3.0,heating_plus_reabsorption_continuous,56.23145531836396,56,30% condensate depletion
+0.75,clean_loss_exponential_continuous,11.507447639343274,11,30% condensate depletion
+0.75,linear_probability_multiplicative,11.328174337601483,11,30% condensate depletion
+0.75,heating_plus_reabsorption_continuous,2.490034872087701,2,30% condensate depletion
+1.5,clean_loss_exponential_continuous,46.01634460130998,46,30% condensate depletion
+1.5,linear_probability_multiplicative,45.83777584832676,45,30% condensate depletion
+1.5,heating_plus_reabsorption_continuous,10.70033225380004,10,30% condensate depletion
+3.0,clean_loss_exponential_continuous,184.05193244917675,184,30% condensate depletion
+3.0,linear_probability_multiplicative,183.87353732118217,183,30% condensate depletion
+3.0,heating_plus_reabsorption_continuous,43.73555681762162,43,30% condensate depletion

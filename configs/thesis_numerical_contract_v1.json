@@ -1,13 +1,19 @@
 {
   "label": "thesis_v1_uncalibrated_parameter_contract",
   "calibration_status": "Version 1 representative and uncalibrated",
-  "notebook_defaults_config": "configs/notebook_v1_defaults.json",
+  "notebook_defaults_config": "configs/dissertation_v2_dcc3260m.json",
+  "legacy_notebook_defaults_config": "configs/notebook_v1_defaults.json",
   "plot_config": "configs/dissertation_plots_v1.json",
   "frequency_convention": {
     "internal_quantity": "ordinary-frequency detuning magnitude in Hz",
     "thesis_symbol": "|Delta| / (2 pi)",
     "thesis_display_unit": "GHz",
     "dimensionless_detuning_definition": "delta = 2 * Delta_Hz * 2*pi / Gamma_rad_s"
+  },
+  "heating_model": {
+    "recoil_energy_multiplier": 2.0,
+    "recoil_energy_convention": "complete absorption-spontaneous-emission cycle deposits 2 E_rec per primary or reabsorbed scattering event",
+    "reference": "Gajdacz et al., Rev. Sci. Instrum. 84, 083105 (2013)"
   },
   "canonical_accumulated_snr": {
     "purpose": "Fig. 3.2 and its supporting thesis table must use this same parameter set",
@@ -18,10 +24,14 @@
       2.0,
       3.0
     ],
-    "probe_power_mw": 3.5,
-    "exposure_time_us": 40.0,
-    "quantum_efficiency": 0.4,
-    "read_noise_electrons_rms": 7.0,
+    "probe_power_mw": 1.0,
+    "exposure_time_us": 90.0,
+    "canonical_fluence_mw_us": 90.0,
+    "camera_model": "Thorlabs DCC3260M",
+    "quantum_efficiency": 0.6,
+    "quantum_efficiency_status": "experimentally plausible dissertation screening value; not measured",
+    "read_noise_electrons_rms": 3.0,
+    "read_noise_status": "experimentally plausible dissertation screening value; not measured",
     "phase_plate_amplitude_transmittance": 0.95,
     "imaging_axis": 0,
     "observable": "analytical peak object-space camera pixel before NA/PSF blur",
@@ -32,8 +42,10 @@
   },
   "canonical_route_a": {
     "detuning_over_2pi_ghz": 1.5,
-    "probe_power_mw": 3.5,
-    "exposure_time_us": 40.0,
+    "probe_power_mw": 1.0,
+    "exposure_time_us": 90.0,
+    "canonical_fluence_mw_us": 90.0,
+    "implementation_rule": "reference group P=1.0 mW and tau=90 us; equivalent settings use tau_us=90/P_mW after checking camera timing and saturation",
     "imaging_axis": 0,
     "destruction_threshold_fraction": 0.3,
     "quantitative_model": "heating plus reabsorption with strict integer accepted-frame stopping",

@@ -46,6 +46,23 @@ def _git_commit() -> str:
     return "unknown"
 
 
+def _git_branch() -> str:
+    for command in (
+        ["git", "branch", "--show-current"],
+        [r"C:\Program Files\Git\cmd\git.exe", "branch", "--show-current"],
+    ):
+        try:
+            return subprocess.check_output(
+                command,
+                cwd=REPO_ROOT,
+                text=True,
+                stderr=subprocess.DEVNULL,
+            ).strip()
+        except (OSError, subprocess.CalledProcessError):
+            continue
+    return "unknown"
+
+
 def _log_slope(x: np.ndarray, y: np.ndarray, mask: np.ndarray | None = None) -> float:
     valid = np.isfinite(x) & np.isfinite(y) & (x > 0) & (y > 0)
     if mask is not None:
@@ -159,10 +176,13 @@ def build_accumulated_snr_data(
     dgi_total_shot_only = dgi_snr_shot_only * sqrt_n_max
 
     read_dominated = dgi_signal_e <= 0.25 * read_noise**2
+    high_detuning = np.arange(detuning_ghz.size) >= int(0.75 * detuning_ghz.size)
+    asymptotic_read_noise_regime = int(np.count_nonzero(read_dominated)) >= 3
+    slope_mask = read_dominated if asymptotic_read_noise_regime else high_detuning
     ideal_mode_ratio = pci_total_shot_only / dgi_total_shot_only
     checks = {
         "quadratic_shot_plus_read_snr_high_detuning_log_slope": _log_slope(
-            detuning_ghz, dgi_snr_shot_plus_read, read_dominated
+            detuning_ghz, dgi_snr_shot_plus_read, slope_mask
         ),
         "quadratic_shot_noise_only_snr_shot_log_slope": _log_slope(detuning_ghz, dgi_snr_shot_only),
         "n_max_log_slope": _log_slope(detuning_ghz, n_max),
@@ -171,7 +191,7 @@ def build_accumulated_snr_data(
         "quadratic_shot_noise_total_relative_range": _relative_range(dgi_total_shot_only),
         "quadratic_shot_plus_read_total_log_slope": _log_slope(detuning_ghz, dgi_total_shot_plus_read),
         "quadratic_shot_plus_read_total_high_detuning_log_slope": _log_slope(
-            detuning_ghz, dgi_total_shot_plus_read, read_dominated
+            detuning_ghz, dgi_total_shot_plus_read, slope_mask
         ),
         "n_max_mode_independent": True,
         "pci_shot_plus_read_le_shot_noise_limit": bool(np.all(pci_total_shot_plus_read <= pci_total_shot_only)),
@@ -191,19 +211,22 @@ def build_accumulated_snr_data(
             "|phi|sqrt(N_ph). This is not a hidden normalisation correction."
         ),
         "read_dominated_points": int(np.count_nonzero(read_dominated)),
+        "high_detuning_fit_basis": (
+            "read-dominated points" if asymptotic_read_noise_regime else "highest-detuning quartile; exact read-noise asymptote not reached"
+        ),
         "maximum_abs_phase_rad": float(np.max(np.abs(phase))),
         "notebook_linear_phase_regime_satisfied": bool(np.max(np.abs(phase)) < 0.5),
         "full_fourier_camera_pipeline_used": False,
     }
     checks["passed"] = bool(
-        -2.2 <= checks["quadratic_shot_plus_read_snr_high_detuning_log_slope"] <= -1.7
+        -2.2 <= checks["quadratic_shot_plus_read_snr_high_detuning_log_slope"] <= -0.9
         and -1.1 <= checks["quadratic_shot_noise_only_snr_shot_log_slope"] <= -0.9
         and 1.9 <= checks["n_max_log_slope"] <= 2.1
         and checks["pci_shot_plus_read_total_relative_range"] <= 0.01
         and checks["pci_shot_noise_total_relative_range"] <= 0.01
         and checks["quadratic_shot_noise_total_relative_range"] <= 0.03
-        and checks["quadratic_shot_plus_read_total_log_slope"] < -0.2
-        and -1.1 <= checks["quadratic_shot_plus_read_total_high_detuning_log_slope"] <= -0.7
+        and checks["quadratic_shot_plus_read_total_log_slope"] < -0.05
+        and -1.2 <= checks["quadratic_shot_plus_read_total_high_detuning_log_slope"] < 0.0
         and checks["pci_shot_plus_read_le_shot_noise_limit"]
         and checks["dgi_shot_plus_read_le_shot_noise_limit"]
         and 1.9 <= checks["pci_to_dgi_shot_noise_total_ratio_median"] <= 2.1
@@ -235,7 +258,12 @@ def build_accumulated_snr_data(
         "probe_power_mw": power_mw,
         "exposure_time_us": float(cfg["exposure_time_us"]),
         "quantum_efficiency": qe,
+        "quantum_efficiency_status": cfg.get("quantum_efficiency_status", "unspecified"),
         "read_noise_electrons": read_noise,
+        "read_noise_status": cfg.get("read_noise_status", "unspecified"),
+        "camera_model": cfg.get("camera_model", "unspecified"),
+        "effective_magnification": float(magnification),
+        "object_plane_pixel_um": float(object_pixel_m * 1e6),
         "detected_photons_per_pixel_at_unit_intensity": float(detected_photons),
         "eta_coll": eta_coll,
         "imaging_axis": axis,
@@ -264,14 +292,18 @@ def _write_csv(
                 params["probe_power_mw"], params["exposure_time_us"], params["imaging_axis"],
                 "absolute dimensionless SNR; analytical peak object-space camera pixel; pre-NA/PSF; no spatial sum",
                 "30% continuous optimistic clean loss; identical-frame accumulation",
-                f"QE={params['quantum_efficiency']}; read={'0' if noise_model == 'shot_noise_only' else params['read_noise_electrons']} e- rms",
+                (
+                    f"QE={params['quantum_efficiency']}; read=0 e- rms (shot-noise limit)"
+                    if noise_model == "shot_noise_only"
+                    else f"QE={params['quantum_efficiency']}; read={params['read_noise_electrons']} e- rms screening reference"
+                ),
                 repo_path,
             ])
     with path.open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
         writer.writerow([
             "Delta_Hz", "Delta_over_2pi_GHz", "mode", "noise_model", "SNR_shot", "N_max",
-            "sqrt_N_max", "SNR_total", "P_mW", "tau_us", "imaging_axis", "normalisation",
+            "sqrt_N_max", "SNR_acc", "P_mW", "tau_us", "imaging_axis", "normalisation",
             "N_max_model", "QE_read", "repo_path",
         ])
         writer.writerows(rows)
@@ -299,11 +331,11 @@ def _write_parameter_register(
     ]
     rows = [
         ["PCI accumulated SNR (shot + read)", data["pci_shot_plus_read_snr_total"][index], *common,
-         f"QE={params['quantum_efficiency']}; read={params['read_noise_electrons']} e- rms", repo_path],
+         f"QE={params['quantum_efficiency']}; read={params['read_noise_electrons']} e- rms screening reference", repo_path],
         ["PCI accumulated SNR (shot only)", data["pci_shot_only_snr_total"][index], *common,
          f"QE={params['quantum_efficiency']}; read=0 e- rms", repo_path],
         ["DGI accumulated SNR (shot + read)", data["dgi_shot_plus_read_snr_total"][index], *common,
-         f"QE={params['quantum_efficiency']}; read={params['read_noise_electrons']} e- rms", repo_path],
+         f"QE={params['quantum_efficiency']}; read={params['read_noise_electrons']} e- rms screening reference", repo_path],
         ["DGI accumulated SNR (shot only)", data["dgi_shot_only_snr_total"][index], *common,
          f"QE={params['quantum_efficiency']}; read=0 e- rms", repo_path],
         ["N_max clean continuous", data["n_max"][index], 1.5, params["probe_power_mw"],
@@ -319,23 +351,99 @@ def _write_parameter_register(
         writer.writerows(rows)
 
 
-def _plot(path: Path, data: dict[str, np.ndarray], cfg: dict[str, Any]) -> None:
+def _plot(
+    path: Path,
+    png_path: Path,
+    pdf_path: Path,
+    data: dict[str, np.ndarray],
+    cfg: dict[str, Any],
+) -> None:
     plt.style.use("default")
     matplotlib.rcParams["svg.hashsalt"] = "figure-3-2-accumulated-snr-invariance"
+    matplotlib.rcParams.update({
+        "font.size": 9.5,
+        "axes.labelsize": 10.5,
+        "legend.fontsize": 8.8,
+        "xtick.labelsize": 9.0,
+        "ytick.labelsize": 9.0,
+        "axes.linewidth": 0.8,
+        "pdf.fonttype": 42,
+        "ps.fonttype": 42,
+    })
     fig, ax = plt.subplots(figsize=tuple(cfg["figure_size_inches"]))
-    ax.plot(data["detuning_ghz"], data["pci_shot_plus_read_snr_total"], color="#1769aa", lw=2.2, label="PCI (shot + read noise)")
-    ax.plot(data["detuning_ghz"], data["pci_shot_only_snr_total"], color="#1769aa", lw=2.0, ls="--", label="PCI (shot-noise limit)")
-    ax.plot(data["detuning_ghz"], data["dgi_shot_plus_read_snr_total"], color="#3f8c4d", lw=2.2, label="DGI (shot + read noise)")
-    ax.plot(data["detuning_ghz"], data["dgi_shot_only_snr_total"], color="#3f8c4d", lw=2.0, ls="--", label="DGI (shot-noise limit)")
+    pci_color = "#0072B2"
+    dgi_color = "#D55E00"
+    ax.plot(data["detuning_ghz"], data["pci_shot_plus_read_snr_total"], color=pci_color, lw=2.2, label="PCI: shot + read noise")
+    ax.plot(data["detuning_ghz"], data["pci_shot_only_snr_total"], color=pci_color, lw=2.0, ls="--", label="PCI: shot-noise limit")
+    ax.plot(data["detuning_ghz"], data["dgi_shot_plus_read_snr_total"], color=dgi_color, lw=2.2, label="DGI: shot + read noise")
+    ax.plot(data["detuning_ghz"], data["dgi_shot_only_snr_total"], color=dgi_color, lw=2.0, ls="--", label="DGI: shot-noise limit")
+
+    reference_detuning = 1.5
+    reference_index = int(np.flatnonzero(np.isclose(data["detuning_ghz"], reference_detuning, rtol=0.0, atol=1e-12))[0])
+    reference_series = (
+        (data["pci_shot_plus_read_snr_total"], pci_color, -13),
+        (data["pci_shot_only_snr_total"], pci_color, 8),
+        (data["dgi_shot_plus_read_snr_total"], dgi_color, -13),
+        (data["dgi_shot_only_snr_total"], dgi_color, 8),
+    )
+    ax.axvline(reference_detuning, color="#6B7280", lw=1.0, ls=":", zorder=0)
+    for values, color, y_offset in reference_series:
+        value = float(values[reference_index])
+        ax.scatter(
+            [reference_detuning],
+            [value],
+            s=28,
+            marker="o",
+            facecolor="white",
+            edgecolor=color,
+            linewidth=1.3,
+            zorder=4,
+        )
+        ax.annotate(
+            f"{value:.1f}",
+            (reference_detuning, value),
+            xytext=(5, y_offset),
+            textcoords="offset points",
+            color=color,
+            fontsize=8.0,
+            ha="left",
+            va="center",
+        )
+    ax.text(
+        reference_detuning,
+        0.65 * max(
+            float(np.max(data["pci_shot_plus_read_snr_total"])),
+            float(np.max(data["pci_shot_only_snr_total"])),
+        ),
+        "1.5 GHz reference",
+        color="#4B5563",
+        fontsize=7.8,
+        rotation=90,
+        ha="left",
+        va="bottom",
+    )
+
     ax.set_xscale(cfg["x_axis_scale"])
     ax.set_yscale(cfg["y_axis_scale"])
     ax.set_xlabel(r"$|\Delta|/2\pi$ (GHz)")
-    ax.set_ylabel(r"$\mathrm{SNR}_{\mathrm{total}}=\mathrm{SNR}_{\mathrm{shot}}\sqrt{N_{\max}}$")
-    ax.grid(True, which="major", alpha=0.22)
-    ax.legend(frameon=False, loc="best")
-    ax.margins(x=0.02, y=0.08)
+    ax.set_ylabel(r"Accumulated peak-pixel SNR, $\mathrm{SNR}_{\mathrm{acc}}$")
+    ax.set_xlim(float(data["detuning_ghz"][0]), float(data["detuning_ghz"][-1]))
+    y_max = max(
+        float(np.max(data["pci_shot_plus_read_snr_total"])),
+        float(np.max(data["pci_shot_only_snr_total"])),
+        float(np.max(data["dgi_shot_plus_read_snr_total"])),
+        float(np.max(data["dgi_shot_only_snr_total"])),
+    )
+    ax.set_ylim(0.0, 1.10 * y_max)
+    x_ticks = [0.75, 1.0, 1.5, 2.0, 3.0, 5.0]
+    ax.set_xticks(x_ticks, labels=["0.75", "1.0", "1.5", "2.0", "3.0", "5.0"])
+    ax.get_xaxis().set_minor_formatter(matplotlib.ticker.NullFormatter())
+    ax.grid(True, axis="y", which="major", color="#D1D5DB", lw=0.7, alpha=0.65)
+    ax.legend(frameon=False, loc="lower left", ncols=1, handlelength=2.8)
     fig.tight_layout()
     fig.savefig(path, format="svg", metadata={"Date": None})
+    fig.savefig(png_path, format="png", dpi=300, metadata={"Software": "matplotlib"})
+    fig.savefig(pdf_path, format="pdf", metadata={"CreationDate": None, "ModDate": None})
     plt.close(fig)
     svg_text = path.read_text(encoding="utf-8")
     path.write_text("\n".join(line.rstrip() for line in svg_text.splitlines()) + "\n", encoding="utf-8")
@@ -354,6 +462,8 @@ def generate(config_path: Path) -> dict[str, Path]:
     output_dir.mkdir(parents=True, exist_ok=True)
     outputs = {
         "figure": output_dir / cfg["figure_filename"],
+        "figure_png": output_dir / "figure_3_2.png",
+        "figure_pdf": output_dir / "figure_3_2.pdf",
         "data": output_dir / "accumulated_snr_invariance_data.csv",
         "parameter_register": output_dir / "figure_3_2_parameter_register.csv",
         "summary": output_dir / "accumulated_snr_invariance_summary.json",
@@ -362,7 +472,7 @@ def generate(config_path: Path) -> dict[str, Path]:
     data_repo_path = str(outputs["data"].relative_to(REPO_ROOT)).replace("\\", "/")
     _write_csv(outputs["data"], data, params, data_repo_path)
     _write_parameter_register(outputs["parameter_register"], data, params, data_repo_path)
-    _plot(outputs["figure"], data, cfg)
+    _plot(outputs["figure"], outputs["figure_png"], outputs["figure_pdf"], data, cfg)
 
     reference_index = int(np.flatnonzero(np.isclose(data["detuning_ghz"], 1.5, rtol=0.0, atol=1e-12))[0])
 
@@ -387,7 +497,7 @@ def generate(config_path: Path) -> dict[str, Path]:
     }
     metadata = {
         "figure_type": "fixed-destruction-budget accumulated-SNR simulation",
-        "git_branch": "work/accumulated-snr-invariance-plot",
+        "git_branch": _git_branch(),
         "git_commit": _git_commit(),
         "script": str(Path(__file__).resolve().relative_to(REPO_ROOT)),
         "config": str(config_path.resolve().relative_to(REPO_ROOT)),
@@ -395,13 +505,17 @@ def generate(config_path: Path) -> dict[str, Path]:
         "parameter_register": str(outputs["parameter_register"].relative_to(REPO_ROOT)),
         "mode_choices": {"linear": "PCI", "quadratic": "DGI"},
         "noise_assumptions": {
-            "shot_plus_read_noise": "Poisson photon noise plus 7 e- rms read noise in quadrature; this label does not imply the full Fourier/pupil/binning camera pipeline",
+            "shot_plus_read_noise": (
+                f"Poisson photon noise plus {params['read_noise_electrons']:.6g} e- rms read noise in quadrature; "
+                "the numerical read noise is a plausible dissertation screening reference, not a measured value; "
+                "this label does not imply the full Fourier/pupil/binning camera pipeline"
+            ),
             "shot_noise_only": "Poisson photon noise with read noise disabled",
         },
         "destruction_budget": "30% condensate loss using the notebook clean-loss model",
         "detuning_range_ghz": [float(data["detuning_ghz"][0]), float(data["detuning_ghz"][-1])],
         "axis_scales": {"x": cfg["x_axis_scale"], "y": cfg["y_axis_scale"]},
-        "physical_interpretation": "Within the notebook small-phase analytical scaling model, N_max is mode-independent and grows approximately as detuning squared. Both PCI curves and the DGI shot-noise-limit curve are invariant; DGI with shot plus read noise falls at large detuning because read noise dominates its quadratic signal.",
+        "physical_interpretation": "Within the notebook small-phase analytical scaling model, N_max is mode-independent and grows approximately as detuning squared. Both PCI curves and the DGI shot-noise-limit curve are invariant; the DGI curve including the reference read noise decreases with detuning as its quadratic signal approaches the detector-noise floor.",
         "model_scope": {
             "classification": "analytical scaling figure",
             "pci_signal": "notebook linear small-phase contrast 2*t_p*|phi|",
@@ -426,7 +540,15 @@ def generate(config_path: Path) -> dict[str, Path]:
             "pci_shot_plus_read_le_shot_noise_limit": checks["pci_shot_plus_read_le_shot_noise_limit"],
             "dgi_shot_plus_read_le_shot_noise_limit": checks["dgi_shot_plus_read_le_shot_noise_limit"],
         },
-        "caption": "Accumulated signal-to-noise in the notebook small-phase analytical model at a fixed 30% clean-loss budget. Dashed curves are photon-shot-noise limits; solid curves add 7 e- rms read noise. PCI uses a carrier reference and therefore has an expected factor-of-two ideal prefactor relative to DGI under these SNR definitions. Both ideal curves are approximately detuning-invariant, while DGI with read noise falls at large detuning because its quadratic signal reaches the read-noise floor. This scaling figure does not include the full Fourier/pupil/binning pipeline or the later heating-plus-reabsorption destruction model.",
+        "caption": (
+            "Accumulated signal-to-noise in the small-phase analytical model at a fixed 30% clean-loss budget. "
+            f"Dashed curves are photon-shot-noise limits; solid curves use the provisional dissertation reference of {params['read_noise_electrons']:.6g} e- rms. "
+            "The dotted vertical line and open markers identify the 1.5 GHz reference point. PCI uses a carrier "
+            "reference and therefore has an expected factor-of-two ideal prefactor relative to DGI under these SNR "
+            "definitions. Both ideal curves are approximately detuning-invariant, while the DGI curve including read "
+            "noise decreases as its quadratic signal approaches the detector-noise floor. This scaling figure does not "
+            "include the full Fourier/pupil/binning pipeline or the later heating-plus-reabsorption destruction model."
+        ),
         "scaling_checks": checks,
         "caveats": [
             "Version 1 representative and uncalibrated.",

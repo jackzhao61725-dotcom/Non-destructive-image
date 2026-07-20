@@ -1,131 +1,108 @@
-# Non-destructive Imaging Simulator for Ultracold 166Er Condensates
+# Non-destructive imaging of an ultracold 166Er condensate
 
-A notebook-aligned, calibration-aware simulation framework for continuous
-non-destructive imaging of an ultracold `166Er` Bose-Einstein condensate. The
-repository connects condensate physics, dispersive light-atom interaction,
-coherent imaging, camera noise, repeated measurement, and
-information-versus-destruction analysis in one reproducible workflow.
+This repository contains the reproducible forward model used to screen
+non-destructive imaging conditions for an ultracold `166Er` condensate. It
+connects a reference Thomas-Fermi state to scalar and Faraday image formation,
+finite-aperture propagation, camera detection and repeated-exposure evolution.
 
-The project is intended to answer a practical MSc research question:
+The model supports the dissertation and experimental commissioning. It is not
+yet an experimentally calibrated prediction.
 
-> How much useful information can PCI, DGI, or Faraday imaging extract from a
-> condensate before photon scattering, heating, reabsorption, and detector
-> noise make continued observation destructive or uninformative?
+## Current status
 
-## Scientific Status
+The Dissertation v2 snapshot is maintained through the tested package in
+`src/non_destructive_image/`, together with explicit configs, generators and
+stored result metadata. The original notebook remains a historical
+computational reference.
 
-The original notebook
-`1 calculations revised 2  multishot  6  extended.ipynb` is the historical
-computational reference for Version 1 notebook-aligned behaviour. It is not a
-final calibrated theory and it is not treated as experimental ground truth.
+Implemented readouts:
 
-The maintained implementation is the regression-tested package in
-`src/non_destructive_image/`, together with explicit configs, recovery scripts,
-tests, and stored baselines. The migration preserved the notebook equations and
-FFT conventions; it did not introduce a new microscopic model.
+- phase-contrast imaging (PCI);
+- dark-ground imaging (DGI);
+- dark-field Faraday imaging;
+- dual-port Faraday imaging.
 
-Current status:
+Current scientific boundaries:
 
-- the Version 1 Atomic, Light-Atom, Imaging, Camera, and deterministic
-  Multi-shot layers are migrated and tested;
-- PCI, DGI, dark-field Faraday, and dual-port Faraday orchestration are present;
-- camera binning, Poisson photon noise, and Gaussian read noise are available;
-- deterministic one-variable Faraday analysis helpers are available;
-- notebook-aligned recovery outputs and numerical consistency audits are
-  reproducible;
-- absorption/RAI preprocessing helpers exist for future calibration;
-- no experimental calibration has yet been applied;
-- `kappa_F = 1.0` remains a phenomenological Version 1 placeholder.
+- `kappa_F = 1` is an uncalibrated structural placeholder;
+- the contact-interaction Thomas-Fermi state omits dipolar mean-field effects;
+- the 401 nm light-atom treatment is an effective two-level approximation to an
+  open transition;
+- the repeated-exposure model assumes rethermalisation and a fixed
+  initial-density reabsorption fraction;
+- detector, aperture and magnification values remain screening inputs until
+  measured on the apparatus.
 
-The detailed model, equations, assumptions, verified values, and limitations
-are collected in
-[`docs/simulation_based_physics_report.md`](docs/simulation_based_physics_report.md).
+## Active screening contract
 
-The `dissertation-v1-clean` branch is the compact dissertation working surface.
-It retains the simulator, tests, baselines, canonical recovery workflows,
-validated results, and thesis-facing documentation while omitting superseded
-milestone records and generated bundle archives. The full development history
-remains available through Git and `main`.
+The authoritative parameter record is
+[`docs/simulation_reference_parameters.md`](docs/simulation_reference_parameters.md).
 
-## Architecture
+| Quantity | Active value | Status |
+| --- | ---: | --- |
+| Initial condensate population | `2.5e4` | reference input |
+| Reference detuning | `|Delta|/2pi = 1.5 GHz` | scan reference |
+| Reference power / exposure | `1.0 mW / 90 us` | one division of the fluence |
+| Reference fluence | `90 mW us` | screening reference |
+| Numerical aperture | `0.080` | provisional |
+| Magnification | `4` | provisional |
+| Physical camera pixel | `5.86 um` | DCC3260M hardware value |
+| Object-plane pixel | `1.465 um` | provisional `M=4` sampling |
+| Quantum efficiency | `0.60` | provisional |
+| Read noise | `3 e- rms` per pixel and readout | provisional |
+| Recoil-energy convention | `2 E_rec` per scattering cycle | model choice |
+| Condensate-loss limit | `30%` | screening criterion |
+| Faraday coefficient | `kappa_F = 1` | uncalibrated placeholder |
+
+The historical notebook defaults remain in
+`configs/notebook_v1_defaults.json`. They must not be mixed with the active
+screening contract in `configs/dissertation_v2_dcc3260m.json`.
+
+## Canonical performance gate
+
+At the reference point, the heating-plus-initial-density-reabsorption model
+accepts 10 strict frames. The post-sequence condensate loss is `0.28060`; the
+next pulse would raise it to `0.30829` and is excluded.
+
+The current accumulated matched-template SNR values use the same 228-pixel
+object-space ROI and the evolving 10-frame sequence:
+
+| Readout | Shot noise only | Shot + read noise |
+| --- | ---: | ---: |
+| PCI | 104.10 | 103.67 |
+| DGI | 54.36 | 34.30 |
+| Faraday dark-field | 55.78 | 34.71 |
+| Faraday dual-port | 107.48 | 106.56 |
+
+These values are estimator-specific screening results. In particular, they are
+not interchangeable with the single-frame central-`3x3` SNR used in the
+Chapter 5 image-quality figures. The Faraday rows are not calibrated absolute
+predictions.
+
+Machine-readable evidence is stored in
+`results/performance_validation_v1/`, with the contract in
+`configs/performance_validation_v1.json`.
+
+## Repository map
 
 ```text
-Explicit configs / future calibration files
-                    |
-                    v
-Atomic Model -> Light-Atom Interaction -> Imaging -> Camera
-                                                    |
-                                                    v
-                                              Multi-shot
-                                                    |
-                                                    v
-                                      Analysis / Calibration
+src/non_destructive_image/    maintained physical and imaging helpers
+configs/                      active and historical parameter contracts
+scripts/                      generators, audits and validation entry points
+tests/                        unit and regression tests
+regression/                   stored notebook-derived numerical baselines
+results/                      maintained generated data and dissertation figures
+docs/                         active model, provenance and laboratory documents
+notebook_sections/            exported historical notebook sections
 ```
 
-| Layer | Main module | Scope |
-| --- | --- | --- |
-| Atomic Model | `atomic_model.py`, `profiles.py` | Thomas-Fermi state, radii, densities, recoil scales, projected profiles. |
-| Light-Atom | `light_atom.py` | Detuning, scalar phase, residual OD, scattering, phenomenological Faraday rotation, reabsorption. |
-| Imaging | `fourier.py`, `imaging.py` | Notebook FFT/pupil convention; PCI, DGI, dark-field and dual-port Faraday fields. |
-| Camera | `camera.py` | Deterministic binning/count scaling and explicit-RNG Poisson plus read noise. |
-| Multi-shot | `multishot.py` | Clean-loss or heating sequence bookkeeping and RMS SNR accumulation. |
-| Analysis | `analysis.py` | One-point Faraday proxies, one-dimensional sweeps, and summaries. |
-| Calibration | `calibration.py` | Absorption OD preprocessing and cloud observables; no fitting yet. |
+Start with:
 
-## Canonical Version 1 Parameters
-
-The notebook-aligned source is `configs/notebook_v1_defaults.json`. Important
-defaults include:
-
-| Quantity | Version 1 value |
-| --- | ---: |
-| Species / transition | `166Er`, 401 nm |
-| Natural linewidth | `Gamma/2pi = 29.5 MHz` |
-| Condensate atom number | `N0 = 2.5e4` |
-| Scattering length | `72 a0` |
-| Trap frequencies `(x,y,z)` | `(293, 14, 233) Hz` |
-| Initial cloud temperature | `200 nK` |
-| Probe diameter | `24 mm` |
-| Existing-arm numerical aperture | `0.080` |
-| Camera quantum efficiency | `0.40` |
-| Camera read noise | `7 e- rms/pixel` |
-| PCI phase plate | amplitude `0.95`, phase `pi/2` |
-| DGI stop | `OD = 4` |
-| Faraday calibration factor | `kappa_F = 1.0` placeholder |
-
-These are historical Version 1 inputs, not fitted laboratory constants.
-
-## Verified Reference Results
-
-The following numbers are retained because their parameter definitions are
-explicit and regression-tested.
-
-At `|Delta|/2pi = 1.5 GHz` along the across-cigar `x` imaging axis:
-
-- dimensionless detuning: `delta = 101.6949`;
-- peak scalar phase: `0.2029417 rad`;
-- peak phenomenological Faraday rotation: `0.2029417 rad` only because
-  `kappa_F = 1.0`;
-- continuous clean-loss 30% budget at `P=3.5 mW`, `tau=40 us`: `29.582`
-  pulses;
-- heating-plus-reabsorption continuous crossing: `13.758` pulses;
-- strict accepted full-model frames: `13`.
-
-Two SNR result families must not be mixed:
-
-| Result family at 1.5 GHz | PCI shot only | PCI shot + read | DGI shot only | DGI shot + read |
-| --- | ---: | ---: | ---: | ---: |
-| Idealised Fig. 3.2: analytical peak pixel, clean loss, identical frames | `72.30` | `70.54` | `36.09` | `24.83` |
-| Evolving full model: fixed matched ROI, 13 heating-aware frames | `120.33` | `117.79` | `62.82` | `21.92` |
-
-The first row is a scaling demonstration before NA/PSF and without spatial
-summation. The second row uses Fourier propagation, camera binning, a fixed
-228-pixel ROI, frame-dependent Thomas-Fermi states, heating, reabsorption, and
-RMS accumulation. Their absolute values are not directly comparable.
-
-Legacy values `171.7` and `52/25/24 at 15 us` are deprecated because notebook
-defaults mixed exposure times or labels. See
-[`docs/thesis_numerical_consistency_correction_report.md`](docs/thesis_numerical_consistency_correction_report.md).
+- [documentation index](docs/README.md);
+- [active parameter contract](docs/simulation_reference_parameters.md);
+- [figure and data index](docs/figure_index.md);
+- [experimental measurement plan](docs/experimental_measurement_plan.md);
+- [reproducibility guide](docs/reproducibility.md).
 
 ## Installation
 
@@ -151,124 +128,64 @@ export PYTHONPATH="src:."
 export PYTHONUTF8=1
 ```
 
-## Validation
+## Validation and reproduction
+
+Run the test suite:
 
 ```powershell
 pytest -q
-python scripts\validate_notebook_sections.py
 ```
 
-The tests cover helper behaviour, notebook-derived scalar outputs, PCI/DGI and
-Faraday array baselines, camera noise reproducibility, multishot bookkeeping,
-figure/result generators, linear-approximation checks, and thesis numerical
-consistency.
+Check the maintained canonical outputs without regenerating them:
 
-## Reproduce Results
+```powershell
+python scripts\run_performance_validation.py --skip-prerequisites
+```
 
-Run all approved notebook-aligned and dissertation-facing generators:
+Regenerate the approved result set and write
+`results/reproducibility_manifest.json`:
 
 ```powershell
 python scripts\run_all_dissertation_figures.py
 ```
 
-This writes `results/reproducibility_manifest.json` and includes the numerical
-consistency audit. Key focused commands are:
+Use `--dry-run` to inspect the generation plan first.
 
-```powershell
-python scripts\generate_accumulated_snr_invariance_plot.py --config configs\dissertation_plots_v1.json
-python scripts\generate_full_multishot_accumulated_snr.py --config configs\dissertation_plots_v1.json
-python scripts\audit_thesis_numerical_consistency.py --config configs\thesis_numerical_contract_v1.json
-python scripts\generate_dissertation_results.py --config configs\dissertation_results_v1.json
-```
+## Provenance rules
 
-The representative Faraday optimisation outputs use a separate placeholder
-config (`configs/dissertation_results_v1.json`). They are useful for workflow
-testing but are not canonical notebook-cloud predictions.
-
-## Numerical Provenance Contract
-
-Every thesis-facing number must identify its parameter set. A generated
-conclusion should record, at minimum:
+Every dissertation-facing numerical result must identify:
 
 ```text
 quantity | value | |Delta|/2pi | P | tau | imaging axis |
-normalisation | N_max model | QE/read | repository path
+normalisation | estimator/ROI | sequence model | QE/read | config | output
 ```
 
-Additional mandatory distinctions:
+The following distinctions are mandatory:
 
-- `per pixel`, `per resolution element`, and `matched ROI` are different
+- single-frame `SNR_3x3` and accumulated matched-template SNR are different
   observables;
-- `continuous threshold`, `strict accepted frames`, and sequence-array length
-  are different counts;
-- `clean loss` is an optimistic analytical bound;
-- `heating plus reabsorption` is the current quantitative repeated-imaging
-  model;
-- exact complex fields are used for images; weak-phase and small-angle formulas
-  are interpretive scalings;
-- every output must state its calibration status.
+- continuous clean-loss budgets and strict accepted-frame counts are different
+  quantities;
+- random camera frames illustrate the noise model, while reported SNR values
+  are calculated from the expected counts and analytic variance;
+- `kappa_F=1` Faraday values are structural comparisons, not calibrated
+  erbium predictions.
 
-The machine-readable contract is
-`configs/thesis_numerical_contract_v1.json`.
+## Experimental hand-off
 
-## Repository Map
+Commissioning should first measure the quantities that currently enter as
+provisional inputs: optical path and polarisation behaviour, magnification and
+effective aperture, camera offset/gain/read noise, delivered power and pulse
+timing, the effective Faraday response and the net disturbance of repeated
+imaging. The detailed task order and acceptance criteria are recorded in
+`docs/experimental_measurement_plan.md`.
 
-```text
-src/non_destructive_image/    maintained simulator helpers
-tests/                        unit and regression tests
-notebook_sections/            exported historical notebook sections
-scripts/                      recovery, validation, audit, and result generators
-configs/                      explicit notebook, plot, result, and thesis contracts
-regression/                   stored numerical baselines
-results/                      generated numerical and dissertation outputs
-docs/                         physics, architecture, calibration, and thesis notes
-deliverables/                 bundle instructions; generated zip is ignored
-```
+Measured values used to set model parameters constitute calibration. A
+held-out operating condition is required before agreement can be described as
+experimental validation.
 
-Start with `docs/README.md` for the documentation index and
-`docs/reproducibility.md` for the output workflow.
-
-## Current Scientific Boundaries
-
-The repository does not yet provide:
-
-- experimentally fitted atom number, density, magnification, gain, or noise;
-- a calibrated Er vector-polarisability model or fitted `kappa_F`;
-- a microscopic multi-level Faraday calculation;
-- correlated probe noise, reference-image noise, drift, or pixel covariance;
-- density-updated reabsorption throughout every sequence;
-- a full likelihood or Fisher-information estimator;
-- calibrated multi-parameter optimisation;
-- droplet, supersolid, mixture, or external GPE state providers.
-
-Accordingly, current outputs are Version 1 representative and uncalibrated.
-They support model comparison, implementation validation, and dissertation
-methodology, but not a final experimental operating-point claim.
-
-## Future Development
-
-Priority order:
-
-1. **Experimental calibration.** Ingest absorption/RAI data; fit atom number,
-   widths, magnification, camera response, and optical-depth scale; validate on
-   held-out images.
-2. **Faraday calibration.** Replace the placeholder `kappa_F` with a documented
-   Er vector-polarisability calculation and/or experimental fit, with
-   uncertainty.
-3. **Measurement realism.** Add reference-frame noise, technical intensity and
-   polarisation noise, drift, covariance, and density-updated reabsorption.
-4. **Information metric.** Move from scalar signal proxies to a calibrated
-   likelihood or Fisher-information objective under a fixed destruction budget.
-5. **Optimisation.** Add constrained multi-parameter searches only after the
-   objective and calibration are fixed.
-6. **Beyond Thomas-Fermi.** Add phenomenological droplets/supersolids, external
-   density maps, and later component-resolved mixtures as additive state
-   providers.
-7. **Publication.** Select a license, pin a release environment, archive a
-   validated snapshot, and add the Zenodo DOI to `CITATION.cff`.
-
-## Citation And License
+## Citation and licence
 
 `CITATION.cff` and `.zenodo.json` are present. A Zenodo DOI has not yet been
-issued. No repository license file is currently present, so reuse rights must
-not be assumed until a license is selected.
+issued. No repository licence file is currently present, so reuse rights must
+not be assumed until a licence is selected.
