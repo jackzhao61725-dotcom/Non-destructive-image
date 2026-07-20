@@ -19,6 +19,11 @@ NOTEBOOK_CONFIG = "configs/notebook_v1_defaults.json"
 FARADAY_RESULTS_CONFIG = "configs/dissertation_results_v1.json"
 DETUNING_PLOT_CONFIG = "configs/dissertation_plots_v1.json"
 THESIS_NUMERICAL_CONFIG = "configs/thesis_numerical_contract_v1.json"
+FIGURE_4_2_CONFIG = "configs/figure_4_2.json"
+FIGURE_5_1_CONFIG = "configs/figure_5_1.json"
+FIGURE_5_2_CONFIG = "configs/figure_5_2.json"
+FIGURE_5_4_CONFIG = "configs/figure_5_4.json"
+PERFORMANCE_CONFIG = "configs/performance_validation_v1.json"
 
 
 @dataclass(frozen=True)
@@ -155,19 +160,6 @@ RUN_STEPS: tuple[RunStep, ...] = (
         result_type="notebook-aligned model extension",
     ),
     RunStep(
-        name="generate_faraday_optimisation_results",
-        script="scripts/generate_dissertation_results.py",
-        args=("--config", FARADAY_RESULTS_CONFIG),
-        configs=(FARADAY_RESULTS_CONFIG,),
-        expected_outputs=(
-            "results/faraday_optimisation_v1/detuning_tradeoff.svg",
-            "results/faraday_optimisation_v1/intensity_tradeoff.svg",
-            "results/faraday_optimisation_v1/exposure_time_tradeoff.svg",
-            "results/faraday_optimisation_v1/metadata.json",
-        ),
-        result_type="representative V1 plot",
-    ),
-    RunStep(
         name="generate_detuning_tradeoff_plot",
         script="scripts/generate_detuning_tradeoff_plot.py",
         args=("--config", DETUNING_PLOT_CONFIG),
@@ -213,6 +205,7 @@ RUN_STEPS: tuple[RunStep, ...] = (
             "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr.svg",
             "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr_data.csv",
             "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr_summary.json",
+            "results/dissertation_plots_v1/full_multishot_accumulated_snr/faraday_canonical_reference_at_1p5GHz.csv",
             "results/dissertation_plots_v1/full_multishot_accumulated_snr/metadata.json",
         ),
         result_type="evolving heating-aware accumulated-SNR analysis",
@@ -229,6 +222,67 @@ RUN_STEPS: tuple[RunStep, ...] = (
             "results/thesis_numerical_consistency_v1/metadata.json",
         ),
         result_type="thesis numerical consistency audit",
+    ),
+    RunStep(
+        name="generate_figure_4_2",
+        script="scripts/generate_figure_4_2.py",
+        args=("--config", FIGURE_4_2_CONFIG),
+        configs=(FIGURE_4_2_CONFIG,),
+        expected_outputs=(
+            "results/dissertation_plots_v1/figure_4_2/figure_4_2.svg",
+            "results/dissertation_plots_v1/figure_4_2/figure_4_2_values.json",
+            "results/dissertation_plots_v1/figure_4_2/metadata.json",
+        ),
+        result_type="dissertation figure",
+    ),
+    RunStep(
+        name="generate_figure_5_1",
+        script="scripts/generate_figure_5_1.py",
+        args=("--config", FIGURE_5_1_CONFIG),
+        configs=(FIGURE_5_1_CONFIG,),
+        expected_outputs=(
+            "results/dissertation_plots_v1/figure_5_1/figure_5_1.svg",
+            "results/dissertation_plots_v1/figure_5_1/figure_5_1_data.csv",
+            "results/dissertation_plots_v1/figure_5_1/metadata.json",
+        ),
+        result_type="dissertation figure",
+    ),
+    RunStep(
+        name="generate_figure_5_2",
+        script="scripts/generate_figure_5_2.py",
+        args=("--config", FIGURE_5_2_CONFIG),
+        configs=(FIGURE_5_2_CONFIG,),
+        expected_outputs=(
+            "results/dissertation_plots_v1/figure_5_2/figure_5_2_dual_port_heatmap.svg",
+            "results/dissertation_plots_v1/figure_5_2/figure_5_2_operating_band.svg",
+            "results/dissertation_plots_v1/figure_5_2/figure_5_2_data.csv",
+            "results/dissertation_plots_v1/figure_5_2/metadata.json",
+        ),
+        result_type="dissertation figure and screening scan",
+    ),
+    RunStep(
+        name="generate_figure_5_4",
+        script="scripts/generate_figure_5_4_snr_panel.py",
+        args=("--config", FIGURE_5_4_CONFIG),
+        configs=(FIGURE_5_4_CONFIG, FIGURE_5_2_CONFIG),
+        expected_outputs=(
+            "results/dissertation_plots_v1/figure_5_4/figure_5_4.svg",
+            "results/dissertation_plots_v1/figure_5_4/figure_5_4_frame_data.csv",
+            "results/dissertation_plots_v1/figure_5_4/metadata.json",
+        ),
+        result_type="dissertation figure",
+    ),
+    RunStep(
+        name="canonical_performance_gate",
+        script="scripts/run_performance_validation.py",
+        args=("--config", PERFORMANCE_CONFIG, "--skip-prerequisites"),
+        configs=(PERFORMANCE_CONFIG, DETUNING_PLOT_CONFIG),
+        expected_outputs=(
+            "results/performance_validation_v1/canonical_gate.csv",
+            "results/performance_validation_v1/canonical_gate.json",
+            "docs/performance_validation_v1_report.md",
+        ),
+        result_type="canonical numerical gate",
     ),
 )
 

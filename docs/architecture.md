@@ -1,153 +1,87 @@
-# Architecture Overview
+# Repository architecture
 
-This document summarises the repository architecture after completion of the
-Version 1 migrated simulator core.
+The maintained workflow separates the physical model, configuration, generated
+evidence and experimental inputs. The original notebook is retained as a
+historical computational reference; new dissertation results are generated from
+the tested helper package and explicit configs.
 
-It is documentation only. It does not define new physics, rename APIs, or move
-code.
-
-## Scientific Authority
-
-The original notebook remains the authoritative scientific implementation:
+## Data flow
 
 ```text
-1 calculations revised 2  multishot  6  extended.ipynb
+reference condensate and apparatus parameters
+                    |
+                    v
+Thomas-Fermi state and projected column density
+                    |
+                    v
+scalar phase / phenomenological Faraday rotation / scattering
+                    |
+                    v
+finite-aperture PCI, DGI or Faraday image formation
+                    |
+                    v
+camera sampling, photoelectron counts and noise variance
+                    |
+                    v
+single-frame estimator or repeated-exposure state evolution
+                    |
+                    v
+figures, CSV data, metadata and canonical gate
 ```
 
-The helper package in `src/non_destructive_image/` is a conservative support
-layer. It preserves notebook-equivalent behaviour for migrated core operations
-and is regression-tested against stored notebook outputs and numerical imaging
-baselines.
+## Maintained package
 
-Version 1 migration did not introduce a physics redesign.
+| Module | Responsibility |
+| --- | --- |
+| `atomic_model.py`, `profiles.py` | reference Thomas-Fermi state, radii, densities and projected profiles |
+| `light_atom.py` | detuning, scalar phase, residual absorption estimate, scattering, reabsorption and `theta_F=kappa_F phi` |
+| `fourier.py`, `imaging.py` | finite circular pupil and PCI/DGI/dark-field/dual-port fields |
+| `camera.py` | object-plane binning, photon scale, Poisson noise and Gaussian read noise |
+| `multishot.py` | clean-loss and heating-aware sequence bookkeeping |
+| `analysis.py` | lightweight operating-point and one-dimensional sweep helpers |
+| `calibration.py` | absorption-image preprocessing utilities for future measured inputs |
 
-## Logical Layers
+The package does not contain a microscopic erbium Faraday calculation or an
+experimental state-reconstruction pipeline.
+
+## Configuration roles
+
+- `configs/notebook_v1_defaults.json` preserves historical notebook-aligned
+  values for regression.
+- `configs/dissertation_v2_dcc3260m.json` is the active provisional apparatus
+  and detector contract.
+- `configs/dissertation_plots_v1.json` defines the shared screening and
+  accumulated-SNR scans.
+- `configs/figure_*.json` define individual dissertation figures.
+- `configs/thesis_numerical_contract_v1.json` records reporting and legacy
+  correction rules.
+- `configs/performance_validation_v1.json` freezes the current canonical gate.
+
+A figure generator may refer to a historical config only when the output is
+explicitly labelled as notebook-aligned. Active screening outputs must use the
+current dissertation config.
+
+## Evidence layers
 
 ```text
-Atomic Model
-  |
-  v
-Light-Atom Interaction
-  |
-  v
-Imaging
-  |
-  v
-Camera / Stochastic Camera Noise
-  |
-  v
-Deterministic Multi-shot Core
-  |
-  v
-Deterministic Faraday Optimisation
-  |
-  v
-Notebook-local Analysis / Plotting / Multi-parameter Optimisation
+tests/ + regression/              numerical behaviour and notebook baselines
+results/notebook_aligned_recovery historical stage-by-stage recovery
+results/dissertation_plots_v1     current dissertation figures and data
+results/performance_validation_v1 canonical provenance gate
+docs/                             active interpretation and lab hand-off
 ```
 
-The reusable Version 1 core is helperized through the Multi-shot layer. A small
-deterministic Faraday optimisation layer now sits above that core for
-single-variable analysis. Plotting, noisy frame-sequence presentation,
-multi-parameter optimisation, and broader narrative analysis remain
-notebook-local.
+Random camera frames are presentation outputs generated from the same expected
+counts and variance model. They do not replace analytic SNR calculation.
 
-## Helper Package Responsibilities
+## Extension rules
 
-| Module | Public helpers | Responsibility |
-|---|---|---|
-| `atomic_model.py` | `ThomasFermiState`, `build_thomas_fermi_state`, `recoil_quantities` | Thomas-Fermi state construction and recoil quantities. |
-| `profiles.py` | `thomas_fermi_profile_2d` | Reusable 2D Thomas-Fermi profile expression. |
-| `light_atom.py` | `dimensionless_detuning`, `scalar_phase_shift`, `residual_optical_depth`, `intensity_at_atoms`, `scattered_photons_per_atom`, `faraday_rotation_angle`, `reabsorption_fraction` | Optical interaction quantities derived from notebook-equivalent formulas. |
-| `fourier.py` | `propagate_scattered_field` | Notebook FFT/pupil propagation operation. |
-| `imaging.py` | `simulate_fourier_image`, `simulate_pci_image`, `simulate_dgi_image`, `simulate_faraday_image` | Shared Fourier imaging core and PCI/DGI/Faraday orchestration helpers. |
-| `camera.py` | `bin_to_camera_pixels`, `add_camera_noise`, `normalize_camera_counts`, `simulate_camera_image`, `simulate_noisy_camera_image` | Deterministic camera binning/normalisation and stochastic camera-noise orchestration with explicit RNG handling. |
-| `multishot.py` | `simulate_multishot_sequence`, `accumulate_snr` | Deterministic multi-shot sequence bookkeeping, heating / clean-loss updates, and RMS accumulated-SNR convention. |
-| `analysis.py` | `evaluate_faraday_operating_point`, `sweep_faraday_detuning`, `sweep_faraday_intensity`, `sweep_faraday_exposure_time`, `summarise_faraday_sweep` | Deterministic Faraday operating-point analysis, one-dimensional sweeps, and lightweight result summaries. |
-
-## Current Data Flow
-
-```text
-Physical parameters and notebook constants
-  |
-  v
-Atomic state and Thomas-Fermi profile
-  |
-  v
-Phase, scattering, Faraday rotation, and reabsorption quantities
-  |
-  v
-PCI / DGI / Faraday image formation
-  |
-  v
-Deterministic or stochastic camera image
-  |
-  v
-Deterministic multi-shot sequence bookkeeping
-  |
-  v
-Single-variable Faraday optimisation summaries
-```
-
-The migrated helper stack avoids notebook globals. Inputs are explicit, and
-future calibration or optimisation layers should call the helpers rather than
-changing lower-level formulas.
-
-## Version 1 Closure
-
-The Version 1 migrated core is closed for MSc project/report use:
-
-- Atomic Model helper layer is implemented and tested.
-- Light-Atom Interaction helper layer is implemented and tested.
-- Shared Fourier imaging core is implemented and tested.
-- PCI orchestration helper is implemented and tested.
-- DGI orchestration helper is implemented and tested.
-- Faraday orchestration helper is implemented and tested.
-- Deterministic camera pipeline is implemented and tested.
-- Stochastic camera noise helper is implemented and tested with explicit RNG.
-- Deterministic multi-shot sequence core is implemented and tested.
-- Deterministic single-variable Faraday optimisation layer is implemented and
-  tested.
-
-Current validation status:
-
-```text
-pytest -q: 66 passed
-notebook section validation: passed
-```
-
-## Remaining Notebook-Local Work
-
-The following workflows are intentionally outside the closed Version 1 core:
-
-- noisy frame rendering and filmstrips;
-- Faraday dual-port frame sequence;
-- two-dimensional / three-dimensional optimisation sweeps;
-- stochastic noise averaging for optimisation;
-- operating maps;
-- plotting and figure generation;
-- automated optimisation logic;
-- experimental RAI calibration;
-- broader narrative analysis in `notebook_sections/10_analysis.py`.
-
-These can be migrated later, but they should not be mixed into the current
-Version 1 core closure.
-
-## Architecture Rules For Future Work
-
-1. Keep the original notebook as the scientific authority unless a future
-   milestone explicitly replaces a section after validation.
-2. Do not rename or change frozen public helpers during report integration.
-3. Keep `kappa_F` explicit in Faraday-related work until a separate
-   calibration milestone changes the model.
-4. Keep calibration and optimisation layers above the migrated core.
-5. Add new state models, RAI calibration, and beyond-Thomas-Fermi extensions
-   additively rather than replacing the Thomas-Fermi Version 1 path.
-6. Keep deterministic optimisation summaries separate from plotting and
-   stochastic averaging until those layers are explicitly migrated.
-
-## Related Documents
-
-- `docs/migration_status.md`
-- `docs/version_1_migrated_core_summary.md`
-- `docs/faraday_optimisation_layer_summary.md`
-- `docs/extension_roadmap.md`
+1. Keep every new parameter in a config, not as a hidden script default.
+2. Give every dissertation-facing output a metadata record and regression test.
+3. Regenerate dependent outputs when sampling, detector or disturbance
+   contracts change.
+4. Keep `kappa_F` explicit until paired experimental data determine it.
+5. Treat measured calibration inputs and held-out validation data as separate
+   datasets.
+6. Add new condensate state providers without changing the retained
+   Thomas-Fermi regression path.

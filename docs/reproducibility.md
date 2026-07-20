@@ -1,22 +1,11 @@
 # Reproducibility
 
-## Scope
-
-This repository is prepared as a reproducible Version 1 simulation and
-dissertation-output workflow. The goal is to make the current notebook-aligned
-figures, representative plots, and validation checks rerunnable before a future
-archived Zenodo release.
-
-This does not create a GitHub release, does not trigger Zenodo deposition, and
-does not claim an experimental calibration.
-
 ## Environment
-
-Windows PowerShell:
 
 ```powershell
 python -m venv .venv
 .venv\Scripts\activate
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 $env:PYTHONPATH="src;."
 $env:PYTHONUTF8="1"
@@ -24,134 +13,97 @@ $env:PYTHONUTF8="1"
 
 ## Validation
 
-Run:
+Run the full test suite:
 
 ```powershell
 pytest -q
-python scripts\validate_notebook_sections.py
 ```
 
-The notebook-section validator checks that unmigrated exported notebook
-sections remain in sync and that migrated sections are syntactically valid.
+Run the canonical gate against the maintained generated data:
 
-## One-Command Output Reproduction
+```powershell
+python scripts\run_performance_validation.py --skip-prerequisites
+```
 
-Run:
+The gate verifies the four accumulated matched-template SNR pairs, strict
+10-frame stopping, the 228-pixel common ROI and the uncalibrated Faraday
+boundary.
+
+## One-command regeneration
+
+Inspect the ordered plan:
+
+```powershell
+python scripts\run_all_dissertation_figures.py --dry-run
+```
+
+Regenerate all approved historical recovery outputs, current dissertation
+figures, numerical audits and the canonical gate:
 
 ```powershell
 python scripts\run_all_dissertation_figures.py
 ```
 
-The script runs approved output-generation scripts in a controlled order and
-writes:
+The script writes `results/reproducibility_manifest.json`, containing the
+Python environment, Git commit, commands, configs and expected outputs.
 
-```text
-results/reproducibility_manifest.json
+The complete run includes the expensive Figure 5.2 detuning-fluence screen.
+Allow several minutes.
+
+## Active configs
+
+| Role | Config |
+| --- | --- |
+| historical notebook regression | `configs/notebook_v1_defaults.json` |
+| active optical/detector/sequence reference | `configs/dissertation_v2_dcc3260m.json` |
+| shared screening and accumulated-SNR scans | `configs/dissertation_plots_v1.json` |
+| figures | `configs/figure_4_2.json`, `figure_5_1.json`, `figure_5_2.json`, `figure_5_4.json` |
+| thesis numerical audit | `configs/thesis_numerical_contract_v1.json` |
+| canonical gate | `configs/performance_validation_v1.json` |
+
+## Dependency order
+
+The accumulated-SNR scaling table is generated before the full multishot
+comparison because the latter imports the former as an explicitly labelled
+clean-loss reference. The active CSV column is `SNR_acc`.
+
+Figure 5.4 uses the same physical and image-quality contract as Figure 5.2.
+Changing magnification, QE, read noise, numerical aperture, `kappa_F` or the
+disturbance model therefore requires regeneration of the dependent Chapter 5
+outputs and the canonical gate.
+
+## Focused commands
+
+```powershell
+python scripts\generate_accumulated_snr_invariance_plot.py --config configs\dissertation_plots_v1.json
+python scripts\generate_full_multishot_accumulated_snr.py --config configs\dissertation_plots_v1.json
+python scripts\generate_figure_4_2.py --config configs\figure_4_2.json
+python scripts\generate_figure_5_1.py --config configs\figure_5_1.json
+python scripts\generate_figure_5_2.py --config configs\figure_5_2.json
+python scripts\generate_figure_5_4_snr_panel.py --config configs\figure_5_4.json
+python scripts\audit_thesis_numerical_consistency.py --config configs\thesis_numerical_contract_v1.json
 ```
 
-The manifest records:
+## Provenance requirements
 
-- UTC timestamp;
-- git commit hash;
-- Python executable and version;
-- scripts run;
-- configs used;
-- expected output files;
-- pending figure workflows not yet merged into `main`.
+Every retained output must record:
 
-## Included Generators
+- source config paths;
+- detuning, power, exposure and imaging axis;
+- optical sampling and detector parameters;
+- signal normalisation and estimator/ROI;
+- sequence and stopping model;
+- random seed when a stochastic frame is rendered;
+- calibration status;
+- output path and Git commit.
 
-The current `run_all` entry point includes:
+Generated camera images are stochastic illustrations. Reported SNR is computed
+from expected counts and the analytic noise variance.
 
-- notebook-section validation;
-- condensate recovery;
-- scalar phase recovery;
-- PCI recovery;
-- DGI recovery;
-- Faraday recovery;
-- deterministic camera recovery;
-- stochastic camera recovery;
-- deterministic multishot recovery;
-- noisy PCI multishot filmstrip recovery;
-- condensate three-view projection;
-- representative Faraday optimisation result generation;
-- detuning trade-off physics plot generation;
-- finite-phase / finite-Faraday-rotation linear-approximation audit;
-- idealised accumulated-SNR scaling generation with its parameter register;
-- full evolving matched-ROI accumulated-SNR generation;
-- thesis numerical consistency audit and corrected-number tables.
+## Scientific boundary
 
-## Parameter Provenance
-
-No figure without parameter provenance.
-
-Every figure or plot should record:
-
-- config files used;
-- physical parameters;
-- optical parameters;
-- camera/noise parameters where relevant;
-- sweep parameters where relevant;
-- units;
-- normalisation rules;
-- calibration status.
-
-Notebook-aligned recovery outputs use:
-
-```text
-configs/notebook_v1_defaults.json
-```
-
-Representative Faraday optimisation outputs use:
-
-```text
-configs/dissertation_results_v1.json
-```
-
-The dissertation detuning trade-off plot uses:
-
-```text
-configs/dissertation_plots_v1.json
-```
-
-The linear-approximation audit uses the notebook defaults and records whether
-the dissertation plot config is present:
-
-```text
-configs/notebook_v1_defaults.json
-configs/dissertation_plots_v1.json
-```
-
-The thesis-facing accumulated-SNR results and numerical correction audit use:
-
-```text
-configs/notebook_v1_defaults.json
-configs/dissertation_plots_v1.json
-configs/thesis_numerical_contract_v1.json
-```
-
-Every generated numerical conclusion should record quantity, value,
-`|Delta|/2pi`, power, exposure, imaging axis, normalisation, `N_max` model,
-QE/read-noise convention, and repository path.
-
-## Current Scientific Boundary
-
-The current outputs are Version 1 representative / uncalibrated results.
-
-Important limitations:
-
-- `kappa_F = 1.0` remains a phenomenological placeholder;
-- no experimental RAI / absorption calibration has been applied;
-- no `kappa_F` fitting has been implemented;
-- no final calibrated operating-point prediction is claimed;
-- future calibrated outputs should use explicit calibration config files.
-
-## Before Zenodo Archival
-
-Before creating a GitHub release for Zenodo:
-
-1. run full validation;
-2. run `scripts\run_all_dissertation_figures.py`;
-3. inspect `results/reproducibility_manifest.json`;
-4. verify README, `CITATION.cff`, `.zenodo.json`, and license status;
-5. choose and add a license if public reuse is intended.
+The current result set is internally reproducible but experimentally
+uncalibrated. In particular, `kappa_F=1` does not make the Faraday values
+calibrated predictions. Commissioning data should first replace provisional
+inputs; validation requires comparison with separate data not used for that
+replacement.

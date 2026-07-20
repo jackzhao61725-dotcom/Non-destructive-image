@@ -1,12 +1,13 @@
 # Non-destructive Image Code Bundle
 
-This directory contains the generated code bundle for the current repository
-state.
+This directory documents the reproducible code-bundle workflow. Generated zip
+archives are local or release artifacts and are not tracked on the clean
+dissertation branch.
 
 ## Contents
 
-`non_destructive_image_code_bundle.zip` is a portable archive of the project
-source needed to inspect, validate, and continue the notebook refactor. It
+`non_destructive_image_code_bundle.zip` is a reproducible portable archive of
+the project source needed to inspect, validate, and continue the simulator. It
 contains:
 
 - `README.md`
@@ -32,8 +33,9 @@ documentation needed to regenerate them.
 
 ## Scientific Source Of Truth
 
-The original notebook remains the authoritative scientific implementation for
-physics equations, numerical behavior, parameters, and figures.
+The original notebook remains the historical Version 1 computational reference
+for notebook-aligned equations, parameters, and figures. It is not calibrated
+experimental truth or a final microscopic theory.
 
 The `src/non_destructive_image/` helper package is a refactored support layer
 that extracts repeated notebook formulas and utility operations into small,

@@ -1,0 +1,41 @@
+{
+  "label": "figure_4_2_canonical_single_frame_v1",
+  "notebook_defaults_config": "configs/notebook_v1_defaults.json",
+  "output_directory": "results/dissertation_plots_v1/figure_4_2",
+  "figure": {
+    "svg_filename": "figure_4_2.svg",
+    "png_filename": "figure_4_2.png",
+    "pdf_filename": "figure_4_2.pdf",
+    "figsize_inches": [6.8, 3.7],
+    "dpi": 300,
+    "crop_y_um": [-35.0, 35.0],
+    "crop_z_um": [-8.0, 8.0]
+  },
+  "canonical_context": {
+    "detuning_ghz": 1.5,
+    "imaging_axis": 0,
+    "imaging_axis_label": "x",
+    "numerical_aperture": 0.08,
+    "route_a_probe_power_mw_context_only": 1.0,
+    "route_a_exposure_time_us_context_only": 90.0,
+    "route_a_fluence_mw_us_context_only": 90.0,
+    "power_exposure_note": "The plotted quantities are noiseless intensities normalised to I0 and the dual-port normalised difference S, so probe power and exposure do not set the displayed values."
+  },
+  "canonical_checks": {
+    "relative_tolerance": 1e-10,
+    "absolute_tolerance": 1e-12,
+    "phase_peak_rad": 0.20294165287929014,
+    "aperture_throughput": 0.7115304533861209,
+    "pci_background_I_I0": 0.9025,
+    "pci_peak_I_I0": 1.1585677695076864,
+    "dgi_background_I_I0": 0.0001,
+    "dgi_peak_I_I0": 0.01595651906354294,
+    "faraday_dark_peak_I_I0": 0.015956443479481053,
+    "dual_port_peak_S": 0.25116900542198173,
+    "dual_port_centre_I_H_I0": 0.6227769835980417,
+    "dual_port_centre_I_V_I0": 0.37273518286263196,
+    "surviving_rotation_rad": 0.12665718527999423,
+    "centre_filtered_scattered_field_real": -0.010274925557004756,
+    "centre_filtered_scattered_field_imag": 0.12631881680684415
+  }
+}

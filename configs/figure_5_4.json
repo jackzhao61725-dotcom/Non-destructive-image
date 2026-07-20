@@ -1,0 +1,48 @@
+{
+  "label": "figure_5_4_dual_port_multiframe_filmstrip_v2",
+  "figure_5_2_config": "configs/figure_5_2.json",
+  "output_directory": "results/dissertation_plots_v1/figure_5_4",
+  "detuning_ghz": 1.5,
+  "selected_fluence_mw_us": [30.0, 50.0, 90.0, 150.0],
+  "row_labels": {
+    "30": "A",
+    "50": "high-N band",
+    "90": "B",
+    "150": "C"
+  },
+  "sequence": {
+    "displayed_frames": 25,
+    "rng_seed": 7,
+    "minimum_snr": 9.0,
+    "maximum_post_exposure_condensate_loss": 0.30,
+    "status_encoding": "orange marks image-quality failure only, red marks depletion failure only, and alternating red-orange diagonal stripes mark simultaneous failure of both criteria"
+  },
+  "image_display": {
+    "xlim_um": [-35.0, 35.0],
+    "ylim_um": [-10.0, 10.0],
+    "vmin": -0.30,
+    "vmax": 0.30,
+    "cmap": "coolwarm",
+    "rotate_degrees_counterclockwise": 90,
+    "status_band_pixels": 3,
+    "separator_pixels": 1,
+    "status_colours": {
+      "quality_limited": "#E69F00",
+      "depletion_limited": "#C44E52",
+      "both_limits": ["#C44E52", "#E69F00"]
+    }
+  },
+  "figure": {
+    "output_stem": "figure_5_4",
+    "figsize_inches": [7.2, 4.65],
+    "dpi": 300,
+    "formats": ["png", "pdf", "svg"],
+    "labelled_frame_numbers": [1, 5, 10, 15, 20, 25]
+  },
+  "scope": {
+    "observable": "noisy dual-port normalised difference S",
+    "state_model": "Version 1 heating plus initial-density reabsorption with 2 E_rec per scattering cycle",
+    "continuation": "all 25 frames are rendered from the continued model state; frames beyond either screening limit are shown but are not counted as usable",
+    "purpose": "show how the single-frame quality and sequence-length results of Figures 5.1-5.3 appear in complete multiframe camera sequences"
+  }
+}

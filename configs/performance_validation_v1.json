@@ -1,0 +1,58 @@
+{
+  "label": "canonical_performance_gate_v1",
+  "scope": "canonical dissertation performance gate",
+  "source_config": "configs/dissertation_plots_v1.json",
+  "notebook_defaults_config": "configs/dissertation_v2_dcc3260m.json",
+  "output_directory": "results/performance_validation_v1",
+  "report_path": "docs/performance_validation_v1_report.md",
+  "canonical_gate": {
+    "relative_tolerance": 1e-12,
+    "absolute_tolerance": 1e-12,
+    "initial_atom_number": 25000,
+    "peak_x_column_density_m2": 537596245257846.75,
+    "saturation_intensity_W_m2": 597.9627307559916,
+    "detuning_ghz": 1.5,
+    "probe_power_mw": 1,
+    "exposure_time_us": 90,
+    "canonical_fluence_mw_us": 90,
+    "imaging_axis": "x",
+    "camera_model": "Thorlabs DCC3260M",
+    "quantum_efficiency": 0.6,
+    "quantum_efficiency_status": "experimentally plausible dissertation screening value; not measured",
+    "read_noise_electrons_per_port_pixel": 3,
+    "read_noise_status": "experimentally plausible dissertation screening value; not measured",
+    "matched_roi_pixels": 228,
+    "sequence_model": "heating + initial-density reabsorption with 2 E_rec per scattering event",
+    "recoil_energy_multiplier": 2,
+    "stopping_rule": "strict integer; threshold-crossing pulse excluded",
+    "accepted_frames": 10,
+    "post_sequence_loss": 0.2806023117605313,
+    "next_pulse_loss": 0.30829044050175103,
+    "kappa_F": 1,
+    "faraday_calibration_status": "Version 1 uncalibrated sensitivity/structural comparison; kappa_F=1 placeholder",
+    "expected_accumulated_matched_roi_snr": {
+      "PCI": {
+        "shot_noise_only": 104.09823597313456,
+        "shot_plus_read_noise": 103.668651367624
+      },
+      "DGI": {
+        "shot_noise_only": 54.36195677654784,
+        "shot_plus_read_noise": 34.30325710456135
+      },
+      "Faraday dark-field": {
+        "shot_noise_only": 55.77833731293387,
+        "shot_plus_read_noise": 34.70877083139104
+      },
+      "Faraday dual-port": {
+        "shot_noise_only": 107.48197734510573,
+        "shot_plus_read_noise": 106.555526352218
+      }
+    }
+  },
+  "protected_paths": [
+    "src/",
+    "notebook_sections/",
+    "regression/baseline/",
+    "1 calculations revised 2  multishot  6  extended.ipynb"
+  ]
+}

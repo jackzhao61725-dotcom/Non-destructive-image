@@ -13,7 +13,7 @@ The canonical thesis-facing parameter contract is `configs/thesis_numerical_cont
 
 ### A. Fig. 3.2 and supporting accumulated-SNR table
 
-- `P = 3.5 mW`; `tau = 40 us`; `QE = 0.40`; read noise `7 e- rms`.
+- `P = 1.0 mW`; `tau = 90.0 us`; camera `Thorlabs DCC3260M`; `QE = 0.600000` (experimentally plausible dissertation screening value; not measured); read noise `3 e- rms` (experimentally plausible dissertation screening value; not measured).
 - Across-cigar imaging axis (`x`).
 - Analytical peak object-space camera pixel before NA/PSF blur; no spatial summation.
 - Continuous optimistic clean-loss budget at 30% condensate loss.
@@ -21,30 +21,30 @@ The canonical thesis-facing parameter contract is `configs/thesis_numerical_cont
 
 | $\lvert\Delta\rvert/2\pi$ (GHz) | PCI SNR/frame, shot only | PCI SNR/frame, shot+read | $N_{max}$ clean | Total, shot only | Total, shot+read |
 | ---: | ---: | ---: | ---: | ---: | ---: |
-| 0.75 | 26.58 | 25.93 | 7.40 | 72.29 | 70.53 |
-| 1.00 | 19.94 | 19.45 | 13.15 | 72.30 | 70.53 |
-| 1.50 | 13.29 | 12.97 | 29.58 | 72.30 | 70.54 |
-| 2.00 | 9.97 | 9.73 | 52.59 | 72.30 | 70.54 |
-| 3.00 | 6.65 | 6.48 | 118.32 | 72.30 | 70.54 |
+| 0.75 | 26.10 | 25.97 | 11.51 | 88.54 | 88.11 |
+| 1.00 | 19.58 | 19.48 | 20.45 | 88.54 | 88.12 |
+| 1.50 | 13.05 | 12.99 | 46.02 | 88.55 | 88.13 |
+| 2.00 | 9.79 | 9.74 | 81.80 | 88.55 | 88.13 |
+| 3.00 | 6.53 | 6.50 | 184.05 | 88.55 | 88.13 |
 
 These rows are the only values that should accompany the current idealised Fig. 3.2.
 
 ### B. Quantitative Route A multishot result
 
-- `|Delta|/2pi = 1.5 GHz`; `P = 3.5 mW`; `tau = 40 us`; 30% condensate-loss threshold.
-- Continuous clean-loss upper bound: `29.58` pulses.
-- Continuous heating plus reabsorption crossing: `13.76` pulses.
-- Strict integer accepted frames: `13` realistic, `29` clean-loss upper bound.
-- Therefore `about 14/30` is allowed only when explicitly called a rounded continuous budget, not an integer frame count.
+- `|Delta|/2pi = 1.5 GHz`; `P = 1.0 mW`; `tau = 90.0 us`; `P tau = 90.0 mW us`; 30% condensate-loss threshold.
+- Continuous clean-loss upper bound: `46.02` pulses.
+- Continuous heating plus reabsorption crossing: `10.70` pulses.
+- Strict integer accepted frames: `10` realistic, `46` clean-loss upper bound.
+- Therefore the heating-model result is `10.70` continuous pulses or `10` strict accepted frames; the clean-loss value remains only an optimistic bound.
 
 The current full evolving calculation uses the same power, exposure, QE, and read noise, but changes both the spatial observable and destruction model:
 
 | Mode | Noise model | Spatial observable | Strict frames | Full accumulated SNR |
 | --- | --- | --- | ---: | ---: |
-| DGI | shot_noise_only | fixed-ROI matched filter | 13 | 62.82 |
-| DGI | shot_plus_read_noise | fixed-ROI matched filter | 13 | 21.92 |
-| PCI | shot_noise_only | fixed-ROI matched filter | 13 | 120.33 |
-| PCI | shot_plus_read_noise | fixed-ROI matched filter | 13 | 117.79 |
+| DGI | shot_noise_only | fixed-ROI matched filter | 10 | 54.36 |
+| DGI | shot_plus_read_noise | fixed-ROI matched filter | 10 | 34.30 |
+| PCI | shot_noise_only | fixed-ROI matched filter | 10 | 104.10 |
+| PCI | shot_plus_read_noise | fixed-ROI matched filter | 10 | 103.67 |
 
 These full-model values support the quantitative evolving-sequence discussion. They are not numerically interchangeable with the peak-pixel Fig. 3.2 curves; the different spatial observable must be stated.
 
@@ -54,15 +54,15 @@ These full-model values support the quantitative evolving-sequence discussion. T
 
 - Legacy mixed result at 1.5 GHz: `171.71` (the printed `171.7`).
 - Same legacy ideal model with 40 us used consistently: `108.60`.
-- Canonical Fig. 3.2 result: `72.30` shot only and `70.54` with read noise.
+- Canonical Fig. 3.2 result: `88.55` shot only and `88.13` with read noise.
 - Both legacy and canonical analytical quantities are per peak object-space pixel, not per resolution element.
 - Power is not the source of the ideal accumulated-SNR difference because its dependence cancels against the clean-loss budget.
 
 ### The 52/25/24 budget statement
 
-At the parameters actually used by the calls (`P=2 mW`, `tau=40 us`): clean `51.77`, heating `24.79`, heating+reabsorption `24.08`.
+At the parameters actually used by the calls (`P=2 mW`, `tau=40 us`): clean `51.77`, heating `12.40`, heating+reabsorption `12.04`.
 
-At the parameters stated by the old label (`P=2 mW`, `tau=15 us`): clean `138.05`, heating `66.11`, heating+reabsorption `64.20`.
+At the parameters stated by the old label (`P=2 mW`, `tau=15 us`): clean `138.05`, heating `33.05`, heating+reabsorption `32.10`.
 
 Hence `52/25/24 at 15 us` is invalid. Either change the label to 40 us or use the corrected 15 us values.
 
@@ -70,7 +70,7 @@ Hence `52/25/24 at 15 us` is invalid. Either change the label to 40 us or use th
 
 The legacy report printed `tau=40 us` but evaluated its SNR functions at the 100 us camera default. Explicit 40 us results are:
 
-| $\lvert\Delta\rvert/2\pi$ (GHz) | Axis | Ideal QE=1 peak pixel | QE=0.4 + read, peak pixel with NA/PSF | QE=0.4 + read, resolution element |
+| $\lvert\Delta\rvert/2\pi$ (GHz) | Axis | Ideal QE=1 peak pixel | Thorlabs DCC3260M, peak pixel with NA/PSF | Thorlabs DCC3260M, resolution element |
 | ---: | --- | ---: | ---: | ---: |
 | 1.5 | x | 15.09 | 5.78 | 11.69 |
 | 13.0 | y | 36.45 | 6.01 | 8.53 |

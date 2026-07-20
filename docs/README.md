@@ -1,62 +1,52 @@
-# Documentation Index
+# Documentation index
 
-This directory contains the project documentation for the Version 1 migrated
-simulator core, deterministic Faraday optimisation layer, calibration-readiness
-work, and dissertation outputs.
+This directory contains the active documentation for the dissertation forward
+model and its experimental hand-off. Date-stamped transition notes and abandoned
+simulation branches have been removed from the active surface; their history
+remains available through Git or the 20 July 2026 cleanup archive.
 
-## Core Architecture And Migration Status
+## Start here
 
-- `simulation_based_physics_report.md` - consolidated physical model,
-  equations, parameter sets, validated numerical results, limitations, and
-  future scientific roadmap.
-- `architecture.md`
-- `migration_status.md`
-- `version_1_migrated_core_summary.md`
-- `baseline_specification.md`
+- [Simulation reference parameters](simulation_reference_parameters.md) —
+  current provisional optical, detector and sequence contract.
+- [Figure index](figure_index.md) — figure-to-script-to-config provenance.
+- [Experimental measurement plan](experimental_measurement_plan.md) —
+  laboratory tasks, priorities, recorded data and acceptance criteria.
+- [Reproducibility](reproducibility.md) — validation and regeneration commands.
+- [Repository cleanup report](repository_cleanup_2026_07_20.md) — archived
+  material, contract changes and validation evidence for this transition.
 
-## Imaging And Faraday Model
+## Model
 
-- `physics_model.md`
-- `faraday_model.md`
-- `faraday_orchestration_milestone_report.md` is archived under
-  `docs/archive/` as process history.
+- [Architecture](architecture.md) — maintained layers and data flow.
+- [Physics model](physics_model.md) — Version 1 equations and approximations.
+- [Faraday model](faraday_model.md) — polarisation readouts and the
+  uncalibrated `kappa_F` boundary.
+- [Baseline specification](baseline_specification.md) — historical numerical
+  baselines retained for regression.
+- [Colab validation](colab_validation.md) — portable validation notes.
 
-## Optimisation And Results
+## Results and audits
 
-- `optimisation_readiness.md`
-- `faraday_optimisation_interpretation.md`
-- `faraday_optimisation_layer_summary.md`
-- `dissertation_plot_strategy.md`
-- `linear_approximation_validity_audit.md`
-- `thesis_numerical_consistency_correction_report.md`
-- `full_multishot_accumulated_snr_analysis.md`
-- `results_readme.md`
-- `figure_index.md`
+- [Results guide](results_readme.md) — active result directories and focused
+  regeneration commands.
+- [Canonical performance gate](performance_validation_v1_report.md) — current
+  10-frame, 228-pixel matched-ROI evidence.
+- [Thesis numerical consistency audit](thesis_numerical_consistency_correction_report.md)
+  — retained legacy corrections and current contract checks.
+- [Linear-approximation audit](linear_approximation_validity_audit.md) —
+  validity of weak-phase and small-rotation interpretations.
 
-## Calibration And Closed-Loop Framework
+## Figure conventions
 
-- `absorption_calibration_readiness.md`
-- `closed_loop_calibration_architecture.md`
-- `extension_roadmap.md`
+- [Figure language](figure_language_conventions.md)
+- [Quantity labels](figure_quantity_label_conventions.md)
 
-## Dissertation-Facing Material
+## Publication
 
-- `msc_dissertation_structure.md`
-- `figure_language_conventions.md`
-- `reproducibility.md`
-- `zenodo_release_checklist.md`
+- [Zenodo release checklist](zenodo_release_checklist.md)
 
-The stable dissertation snapshot branch also contains:
-
-- `dissertation_v1_snapshot_manifest.md`
-
-## Archived Process Documents
-
-Development-time milestone reports, audits, and process reviews are kept under:
-
-```text
-docs/archive/
-```
-
-These files are retained for history but are not part of the clean working
-surface.
+All current Faraday outputs remain structural or screening comparisons while
+`kappa_F=1` is uncalibrated. Provisional detector and optical values must be
+replaced by apparatus measurements before an experimentally calibrated result
+is claimed.

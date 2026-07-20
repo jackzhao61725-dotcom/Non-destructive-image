@@ -118,6 +118,8 @@ def _parameters(notebook: dict[str, Any], plot: dict[str, Any]) -> dict[str, Any
         "probe_diameter_m": probe_diameter,
         "axis": int(cfg["imaging_axis"]),
         "loss_fraction": float(cfg["destruction_budget_fraction"]),
+        "recoil_energy_multiplier": float(cfg["recoil_energy_multiplier"]),
+        "recoil_energy_convention": str(cfg["recoil_energy_convention"]),
         "eta_coll": float(notebook["multishot_recovery"]["eta_coll"]),
         "read_noise_e": float(cfg["read_noise_electrons"]),
         "t_p": float(cfg["phase_plate_amplitude_transmittance"]),
@@ -171,7 +173,12 @@ def _point_physics(detuning_hz: float, notebook: dict[str, Any], params: dict[st
     fc0 = 1 - (t0 / tc) ** 3
     target_t = tc * (1 - (1 - f) * fc0) ** (1 / 3)
     energy_coefficient = 3 * (zeta4 / zeta3) * float(notebook["constants"]["boltzmann_constant"]) / tc**3
-    deposited_energy = ng_helper * (1 + reabs) * constants["e_rec"]
+    deposited_energy = (
+        params["recoil_energy_multiplier"]
+        * ng_helper
+        * (1 + reabs)
+        * constants["e_rec"]
+    )
     n_heating_cont = energy_coefficient * (target_t**4 - t0**4) / deposited_energy
 
     nphot = params["detected_photons_per_pixel"]
@@ -238,7 +245,12 @@ def _explicit_pci_accumulation(
     zeta3, zeta4 = float(zeta(3)), float(zeta(4))
     energy_coefficient = 3 * (zeta4 / zeta3) * float(notebook["constants"]["boltzmann_constant"]) / tc**3
     reabs = point["reabsorption_fraction"]
-    deposited = point["scattered_photons_per_atom"] * (1 + reabs) * constants["e_rec"]
+    deposited = (
+        params["recoil_energy_multiplier"]
+        * point["scattered_photons_per_atom"]
+        * (1 + reabs)
+        * constants["e_rec"]
+    )
     snr_values: list[float] = []
     for shot in range(allowed):
         if model == "clean_loss":
@@ -279,7 +291,7 @@ def _explicit_pci_accumulation(
     }
 
 
-def _definition_rows() -> list[dict[str, Any]]:
+def _definition_rows(read_noise_e: float) -> list[dict[str, Any]]:
     return [
         {"quantity": "SNR_shot", "definition": "signal expectation divided by single-frame noise standard deviation", "units": "dimensionless", "scope": "per pixel per image in this figure", "time_dependence": "changes if density, phase, photon scale, or noise changes"},
         {"quantity": "SNR_total", "definition": "sqrt(sum_i SNR_i^2) for independent optimally combined frames", "units": "dimensionless", "scope": "accumulated sequence", "time_dependence": "cumulative"},
@@ -287,7 +299,7 @@ def _definition_rows() -> list[dict[str, Any]]:
         {"quantity": "destruction budget", "definition": "allowed fractional reduction of condensate atom number; configured as 0.30", "units": "fraction", "scope": "cloud", "time_dependence": "threshold"},
         {"quantity": "loss fraction", "definition": "1 - N0(frame)/N0(initial)", "units": "fraction", "scope": "condensate cloud", "time_dependence": "frame-dependent"},
         {"quantity": "scattered photons per atom per frame", "definition": "Gamma/2 * s/(1+s+delta^2) * tau", "units": "photons atom^-1 frame^-1", "scope": "per atom per pulse", "time_dependence": "constant in current fixed-probe model"},
-        {"quantity": "heating contribution", "definition": "N_gamma*(1+reabsorption)*E_rec", "units": "J atom^-1 frame^-1", "scope": "per atom per pulse", "time_dependence": "constant because current reabsorption uses initial density"},
+        {"quantity": "heating contribution", "definition": "recoil_energy_multiplier*N_gamma*(1+reabsorption)*E_rec", "units": "J atom^-1 frame^-1", "scope": "per atom per pulse", "time_dependence": "constant because current reabsorption uses initial density"},
         {"quantity": "reabsorption contribution", "definition": "mean_i[1-exp(-OD_i)] multiplying recoil deposition", "units": "fraction", "scope": "angle-averaged cloud scalar", "time_dependence": "held constant in current sequence"},
         {"quantity": "atom-number depletion", "definition": "clean-loss N0=N0_initial exp(-eta N_gamma frame)", "units": "atoms", "scope": "condensate in clean-loss model", "time_dependence": "frame-dependent"},
         {"quantity": "condensate depletion", "definition": "heating model N0=N_total[1-(T/Tc)^3]", "units": "atoms", "scope": "condensate", "time_dependence": "frame-dependent"},
@@ -295,7 +307,7 @@ def _definition_rows() -> list[dict[str, Any]]:
         {"quantity": "PCI signal amplitude", "definition": "figure uses 2*t_p*|phi| detected-photon contrast", "units": "electrons per pixel", "scope": "analytical peak pixel", "time_dependence": "falls as condensate depletes"},
         {"quantity": "DGI signal amplitude", "definition": "figure uses 4*sin^2(phi/2) detected photons", "units": "electrons per pixel", "scope": "ideal opaque-stop analytical peak pixel", "time_dependence": "falls quadratically with phase"},
         {"quantity": "noise variance", "definition": "photon-shot variance plus read-noise variance", "units": "electrons^2 pixel^-1 frame^-1", "scope": "per pixel per image", "time_dependence": "signal/background dependent"},
-        {"quantity": "read-noise contribution", "definition": "sigma_read^2 with sigma_read=7 e- rms", "units": "electrons^2 pixel^-1 frame^-1", "scope": "one binned camera pixel read", "time_dependence": "constant and independent in model"},
+        {"quantity": "read-noise contribution", "definition": f"sigma_read^2 with sigma_read={read_noise_e:.6g} e- rms", "units": "electrons^2 pixel^-1 frame^-1", "scope": "one binned camera pixel read", "time_dependence": "constant and independent in model"},
         {"quantity": "photon-shot-noise contribution", "definition": "Poisson variance equal to expected detected count", "units": "electrons^2 pixel^-1 frame^-1", "scope": "per pixel per image", "time_dependence": "depends on total detected intensity"},
     ]
 
@@ -449,7 +461,7 @@ def run_audit(config_path: Path) -> dict[str, Path]:
         "script": str(Path(__file__).resolve().relative_to(REPO_ROOT)),
         "config": str(config_path.relative_to(REPO_ROOT)),
         "parameter_sources": [
-            "configs/notebook_v1_defaults.json",
+            str(notebook_path.relative_to(REPO_ROOT)),
             "configs/dissertation_plots_v1.json",
             "results/notebook_aligned_recovery/parameter_inventory.csv",
             "results/notebook_aligned_recovery/unit_inventory.csv",
@@ -470,7 +482,7 @@ def run_audit(config_path: Path) -> dict[str, Path]:
         "summary": OUTPUT_DIR / "accumulated_snr_full_audit_summary.json",
         "metadata": OUTPUT_DIR / "metadata.json",
     }
-    _write_csv(outputs["physics_definition_table"], _definition_rows())
+    _write_csv(outputs["physics_definition_table"], _definition_rows(float(params["read_noise_e"])))
     _write_csv(outputs["nmax_model_comparison"], nmax_rows)
     _write_csv(outputs["snr_model_comparison"], snr_rows)
     _write_csv(outputs["code_physics_traceability"], _traceability_rows())

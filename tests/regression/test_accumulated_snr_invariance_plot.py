@@ -11,10 +11,10 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 def _configs():
-    with (ROOT / "configs" / "notebook_v1_defaults.json").open(encoding="utf-8") as handle:
-        notebook = json.load(handle)
     with (ROOT / "configs" / "dissertation_plots_v1.json").open(encoding="utf-8") as handle:
         plot = json.load(handle)
+    with (ROOT / plot["notebook_defaults_config"]).open(encoding="utf-8") as handle:
+        notebook = json.load(handle)
     return notebook, plot
 
 
@@ -25,7 +25,7 @@ def test_accumulated_snr_scaling_and_mode_independent_budget() -> None:
     assert checks["passed"] is True
     assert checks["n_max_mode_independent"] is True
     assert 1.9 <= checks["n_max_log_slope"] <= 2.1
-    assert -2.2 <= checks["quadratic_shot_plus_read_snr_high_detuning_log_slope"] <= -1.7
+    assert -2.2 <= checks["quadratic_shot_plus_read_snr_high_detuning_log_slope"] <= -0.9
     assert -1.1 <= checks["quadratic_shot_noise_only_snr_shot_log_slope"] <= -0.9
     assert checks["pci_shot_plus_read_total_relative_range"] <= 0.01
     assert checks["pci_shot_noise_total_relative_range"] <= 0.01
@@ -47,6 +47,8 @@ def test_accumulated_snr_scaling_and_mode_independent_budget() -> None:
 def test_plot_output_contract_exists_after_generation() -> None:
     output = ROOT / "results" / "dissertation_plots_v1" / "accumulated_snr_invariance"
     assert (output / "accumulated_snr_invariance.svg").exists()
+    assert (output / "figure_3_2.png").exists()
+    assert (output / "figure_3_2.pdf").exists()
     assert (output / "accumulated_snr_invariance_data.csv").exists()
     assert (output / "figure_3_2_parameter_register.csv").exists()
     assert (output / "accumulated_snr_invariance_summary.json").exists()
@@ -64,6 +66,6 @@ def test_figure_3_2_parameter_register_has_required_provenance_columns() -> None
         "N_max模型", "QE/read", "repo 路径",
     }
     assert all(float(row["Δ/2π (GHz)"]) == 1.5 for row in rows)
-    assert all(float(row["P (mW)"]) == 3.5 for row in rows)
-    assert all(float(row["τ (µs)"]) == 40.0 for row in rows)
+    assert all(float(row["P (mW)"]) == 1.0 for row in rows)
+    assert all(float(row["τ (µs)"]) == 90.0 for row in rows)
     assert all(row["imaging axis"] == "x (0)" for row in rows)

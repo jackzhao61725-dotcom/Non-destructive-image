@@ -5,8 +5,8 @@
   },
   "corrections": [
     {
-      "canonical_fig3p2_shot_only": 72.30014129652054,
-      "canonical_fig3p2_shot_plus_read": 70.5369764315994,
+      "canonical_fig3p2_shot_only": 88.54914813185823,
+      "canonical_fig3p2_shot_plus_read": 88.12534048234888,
       "diagnosis": "single-frame SNR used 100 us while N_max used 40 us",
       "legacy_claim": "Table 5.1 accumulated SNR = 171.7 at a 40 us operating point",
       "legacy_value": 171.71274352026902,
@@ -21,9 +21,9 @@
       "status": "DEPRECATED_MISLABELLED_PARAMETERS"
     },
     {
-      "diagnosis": "14 and 30 are rounded continuous budgets; strict accepted-frame counts are 13 and 29",
+      "diagnosis": "the current canonical point and two-recoil heating convention must be regenerated from the parameter contract",
       "legacy_claim": "Route A gives 14 realistic and 30 optimistic usable frames",
-      "status": "RETAIN_WITH_COUNTING_QUALIFIER"
+      "status": "DEPRECATED_PREVIOUS_CANONICAL"
     },
     {
       "corrected_values_source": "operating_point_snr_rows",

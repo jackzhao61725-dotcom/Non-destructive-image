@@ -1,50 +1,57 @@
-# Figure Index
+# Figure and data index
 
-This index lists approved dissertation-facing figures, plots, and numerical
-audit outputs available on `main` at the time the reproducibility layer was
-prepared.
+This index lists the maintained dissertation-facing outputs. Each generator
+writes numerical data and metadata alongside the rendered figure.
 
-## Notebook-Aligned Recovery Figures
+## Active figures
 
-| Figure | Generating script | Config | Type | Calibration status | Metadata | Use |
-| --- | --- | --- | --- | --- | --- | --- |
-| `results/notebook_aligned_recovery/condensate_stage/condensate_density_stage.svg` | `scripts/recover_notebook_condensate_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1 | `results/notebook_aligned_recovery/condensate_stage/metadata.json` | main text |
-| `results/notebook_aligned_recovery/phase_stage/scalar_phase_stage.svg` | `scripts/recover_notebook_phase_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1 | `results/notebook_aligned_recovery/phase_stage/metadata.json` | main text |
-| `results/notebook_aligned_recovery/pci_stage/pci_image_stage.svg` | `scripts/recover_notebook_pci_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1 | `results/notebook_aligned_recovery/pci_stage/metadata.json` | main text or appendix |
-| `results/notebook_aligned_recovery/dgi_stage/dgi_image_stage.svg` | `scripts/recover_notebook_dgi_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1 | `results/notebook_aligned_recovery/dgi_stage/metadata.json` | main text or appendix |
-| `results/notebook_aligned_recovery/faraday_stage/faraday_dark_field_stage.svg` | `scripts/recover_notebook_faraday_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1, `kappa_F = 1.0` | `results/notebook_aligned_recovery/faraday_stage/metadata.json` | main text |
-| `results/notebook_aligned_recovery/faraday_stage/faraday_dual_port_signal_stage.svg` | `scripts/recover_notebook_faraday_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1, `kappa_F = 1.0` | `results/notebook_aligned_recovery/faraday_stage/metadata.json` | main text |
-| `results/notebook_aligned_recovery/camera_stage/camera_deterministic_stage.svg` | `scripts/recover_notebook_camera_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1 | `results/notebook_aligned_recovery/camera_stage/metadata.json` | methods or appendix |
-| `results/notebook_aligned_recovery/noisy_camera_stage/noisy_camera_stage.svg` | `scripts/recover_notebook_noisy_camera_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1, explicit RNG | `results/notebook_aligned_recovery/noisy_camera_stage/metadata.json` | methods or appendix |
-| `results/notebook_aligned_recovery/multishot_stage/multishot_sequence_stage.svg` | `scripts/recover_notebook_multishot_stage.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1 | `results/notebook_aligned_recovery/multishot_stage/metadata.json` | main text |
-| `results/notebook_aligned_recovery/noisy_multishot_filmstrip/noisy_multishot_pci_filmstrip.svg` | `scripts/recover_notebook_noisy_multishot_filmstrip.py` | `configs/notebook_v1_defaults.json` | notebook-aligned recovery | uncalibrated V1, explicit RNG | `results/notebook_aligned_recovery/noisy_multishot_filmstrip/metadata.json` | appendix unless visually approved |
+| Output | Generator | Config | Quantity and scope |
+| --- | --- | --- | --- |
+| `results/dissertation_plots_v1/accumulated_snr_invariance/figure_3_2.{png,pdf}` | `scripts/generate_accumulated_snr_invariance_plot.py` | `configs/dissertation_plots_v1.json` | analytical peak-pixel accumulated SNR under the continuous clean-loss budget |
+| `results/dissertation_plots_v1/figure_4_2/figure_4_2.{png,pdf,svg}` | `scripts/generate_figure_4_2.py` | `configs/figure_4_2.json` | noiseless finite-aperture PCI, DGI, dark-field Faraday and dual-port outputs |
+| `results/dissertation_plots_v1/figure_5_1/figure_5_1.{png,pdf,svg}` | `scripts/generate_figure_5_1.py` | `configs/figure_5_1.json` | single-frame `SNR_3x3` fluence scan and representative noisy Faraday frames |
+| `results/dissertation_plots_v1/figure_5_2/figure_5_2_dual_port_heatmap.{png,pdf,svg}` | `scripts/generate_figure_5_2.py` | `configs/figure_5_2.json` | strict usable dual-port frame count over detuning and fluence |
+| `results/dissertation_plots_v1/figure_5_2/figure_5_2_operating_band.{png,pdf,svg}` | `scripts/generate_figure_5_2.py` | `configs/figure_5_2.json` | fixed-1.5-GHz operating-band comparison |
+| `results/dissertation_plots_v1/figure_5_4/figure_5_4.{png,pdf,svg}` | `scripts/generate_figure_5_4_snr_panel.py` | `configs/figure_5_4.json` | 25-frame dual-port sequences at 30, 50, 90 and 150 mW us |
+| `results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr.{png,pdf,svg}` | `scripts/generate_full_multishot_accumulated_snr.py` | `configs/dissertation_plots_v1.json` | four-mode evolving matched-template accumulated SNR |
 
-## Model Extension Figures
+The `figure_5_2` directory also contains a combined overview figure and the
+complete scan CSV/JSON. Which rendered panel receives the final dissertation
+figure number is a writing decision; the numerical source remains one scan.
 
-| Figure | Generating script | Config | Type | Calibration status | Metadata | Use |
-| --- | --- | --- | --- | --- | --- | --- |
-| `results/notebook_aligned_recovery/condensate_three_view/condensate_three_view.svg` | `scripts/generate_condensate_three_view.py` | `configs/notebook_v1_defaults.json` | notebook-aligned condensate-model extension | uncalibrated V1 | `results/notebook_aligned_recovery/condensate_three_view/metadata.json` | appendix |
+## Supporting physics plot
 
-## Representative V1 Plots
+| Output | Generator | Config | Scope |
+| --- | --- | --- | --- |
+| `results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff.svg` | `scripts/generate_detuning_tradeoff_plot.py` | `configs/dissertation_plots_v1.json` | normalised dispersive-signal and scattering trends |
 
-| Figure | Generating script | Config | Type | Calibration status | Metadata | Use |
-| --- | --- | --- | --- | --- | --- | --- |
-| `results/faraday_optimisation_v1/detuning_tradeoff.svg` | `scripts/generate_dissertation_results.py` | `configs/dissertation_results_v1.json` | representative V1 plot | uncalibrated, `kappa_F = 1.0` | `results/faraday_optimisation_v1/metadata.json` | appendix or workflow demonstration |
-| `results/faraday_optimisation_v1/intensity_tradeoff.svg` | `scripts/generate_dissertation_results.py` | `configs/dissertation_results_v1.json` | representative V1 plot | uncalibrated, `kappa_F = 1.0` | `results/faraday_optimisation_v1/metadata.json` | appendix or workflow demonstration |
-| `results/faraday_optimisation_v1/exposure_time_tradeoff.svg` | `scripts/generate_dissertation_results.py` | `configs/dissertation_results_v1.json` | representative V1 plot | uncalibrated, `kappa_F = 1.0` | `results/faraday_optimisation_v1/metadata.json` | appendix or workflow demonstration |
-| `results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff.svg` | `scripts/generate_detuning_tradeoff_plot.py` | `configs/dissertation_plots_v1.json` | dissertation physics plot | uncalibrated V1, exact notebook-equivalent light-atom formulas | `results/dissertation_plots_v1/detuning_tradeoff/metadata.json` | main text candidate |
-| `results/dissertation_plots_v1/accumulated_snr_invariance/accumulated_snr_invariance.svg` | `scripts/generate_accumulated_snr_invariance_plot.py` | `configs/dissertation_plots_v1.json` | idealised clean-loss analytical scaling plot | uncalibrated V1, continuous optimistic clean-loss budget | `results/dissertation_plots_v1/accumulated_snr_invariance/metadata.json` | theory section or appendix |
-| `results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr.svg` | `scripts/generate_full_multishot_accumulated_snr.py` | `configs/dissertation_plots_v1.json` | evolving heating/reabsorption multishot comparison | uncalibrated V1, integer condensate-depletion stopping | `results/dissertation_plots_v1/full_multishot_accumulated_snr/metadata.json` | main text candidate |
+## Historical notebook-aligned figures
 
-## Numerical Audit Outputs
+The directories below are retained as regression and interpretation evidence,
+not as current detector predictions:
 
-| Output | Generating script | Config | Type | Calibration status | Metadata | Use |
-| --- | --- | --- | --- | --- | --- | --- |
-| `docs/linear_approximation_validity_audit.md` | `scripts/audit_linear_approximation_validity.py` | `configs/notebook_v1_defaults.json` | numerical validity audit | uncalibrated V1 audit, no recalibration | `results/linear_approximation_audit/metadata.json` | methods/discussion support |
-| `results/linear_approximation_audit/linear_approximation_summary.json` | `scripts/audit_linear_approximation_validity.py` | `configs/notebook_v1_defaults.json` | machine-readable audit summary | uncalibrated V1 audit, no recalibration | `results/linear_approximation_audit/metadata.json` | reproducibility support |
+- `results/notebook_aligned_recovery/condensate_stage/`;
+- `results/notebook_aligned_recovery/phase_stage/`;
+- `results/notebook_aligned_recovery/pci_stage/`;
+- `results/notebook_aligned_recovery/dgi_stage/`;
+- `results/notebook_aligned_recovery/faraday_stage/`;
+- `results/notebook_aligned_recovery/camera_stage/`;
+- `results/notebook_aligned_recovery/multishot_stage/`.
 
-## Provenance Rule
+They use `configs/notebook_v1_defaults.json`.
 
-No figure without parameter provenance. Every approved figure or plot should
-have metadata documenting config files, parameters, units, normalisation, and
-calibration status.
+## Audit outputs
+
+| Output | Generator |
+| --- | --- |
+| `results/performance_validation_v1/` | `scripts/run_performance_validation.py` |
+| `results/thesis_numerical_consistency_v1/` | `scripts/audit_thesis_numerical_consistency.py` |
+| `results/linear_approximation_audit/` | `scripts/audit_linear_approximation_validity.py` |
+| `results/accumulated_snr_full_physics_audit/` | `scripts/audit_accumulated_snr_physics_and_code.py` |
+
+## Provenance rule
+
+No dissertation figure is complete without its config, numerical data and
+metadata. Captions must distinguish provisional optical/detector inputs from
+measured parameters, and every `kappa_F=1` Faraday result must remain labelled
+uncalibrated.
