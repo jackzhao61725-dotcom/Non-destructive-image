@@ -1,8 +1,43 @@
 __pycache__/
 *.py[cod]
+*.egg-info/
 .ipynb_checkpoints/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.tox/
+.nox/
+.venv/
+build/
+dist/
+*.whl
+
+# Coverage and test reports
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+
+# Editors and operating systems
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Runtime and task-local outputs
+*.log
 tmp/
+.scratch/
+.codex_review/
+output/
+outputs/
 deliverables/*.zip

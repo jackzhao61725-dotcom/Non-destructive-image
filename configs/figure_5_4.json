@@ -1,27 +1,39 @@
 {
-  "label": "figure_5_4_dual_port_multiframe_filmstrip_v2",
+  "label": "figure_5_4_dual_port_multiframe_filmstrip_orca_fusion_m10_v4",
   "figure_5_2_config": "configs/figure_5_2.json",
-  "output_directory": "results/dissertation_plots_v1/figure_5_4",
+  "output_directory": "results/dissertation_plots_v2_orca_fusion/figure_5_4",
+  "lifecycle": {
+    "status": "frozen_version_1_screening_output",
+    "current_oxford_prediction": false,
+    "canonical_regeneration_allowed": false,
+    "regeneration_blocked_pending": "docs/multiframe_heating_model_optimisation.md"
+  },
   "detuning_ghz": 1.5,
-  "selected_fluence_mw_us": [30.0, 50.0, 90.0, 150.0],
+  "selected_fluence_mw_us": [90.0, 150.0, 300.0],
   "row_labels": {
-    "30": "A",
-    "50": "high-N band",
-    "90": "B",
-    "150": "C"
+    "90": "A",
+    "150": "B",
+    "300": "C"
   },
   "sequence": {
-    "displayed_frames": 25,
+    "displayed_frames": 15,
     "rng_seed": 7,
-    "minimum_snr": 9.0,
+    "minimum_snr": 8.0,
     "maximum_post_exposure_condensate_loss": 0.30,
     "status_encoding": "orange marks image-quality failure only, red marks depletion failure only, and alternating red-orange diagonal stripes mark simultaneous failure of both criteria"
+  },
+  "canonical_checks": {
+    "sequence_counts": {
+      "90": {"depletion": 10, "usable": 3},
+      "150": {"depletion": 6, "usable": 6},
+      "300": {"depletion": 3, "usable": 3}
+    }
   },
   "image_display": {
     "xlim_um": [-35.0, 35.0],
     "ylim_um": [-10.0, 10.0],
-    "vmin": -0.30,
-    "vmax": 0.30,
+    "vmin": -0.24,
+    "vmax": 0.24,
     "cmap": "coolwarm",
     "rotate_degrees_counterclockwise": 90,
     "status_band_pixels": 3,
@@ -34,15 +46,18 @@
   },
   "figure": {
     "output_stem": "figure_5_4",
-    "figsize_inches": [7.2, 4.65],
+    "figsize_inches": [7.2, 3.9],
     "dpi": 300,
     "formats": ["png", "pdf", "svg"],
-    "labelled_frame_numbers": [1, 5, 10, 15, 20, 25]
+    "labelled_frame_numbers": [1, 5, 10, 15]
   },
   "scope": {
     "observable": "noisy dual-port normalised difference S",
+    "atomic_response": "ideal 166Er kappa_F=-45/91",
+    "optics": "effective NA=0.130 pupil",
+    "detector": "ORCA-Fusion Ultra quiet scenario with 0.7 e- rms read noise per pixel and port",
     "state_model": "Version 1 heating plus initial-density reabsorption with 2 E_rec per scattering cycle",
-    "continuation": "all 25 frames are rendered from the continued model state; frames beyond either screening limit are shown but are not counted as usable",
+    "continuation": "all 15 frames are rendered from the continued model state; frames beyond either screening limit are shown but are not counted as usable",
     "purpose": "show how the single-frame quality and sequence-length results of Figures 5.1-5.3 appear in complete multiframe camera sequences"
   }
 }

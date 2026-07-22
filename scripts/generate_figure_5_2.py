@@ -19,7 +19,7 @@ from matplotlib.patches import Patch
 import numpy as np
 from scipy.special import zeta
 
-from non_destructive_image import bin_to_camera_pixels, simulate_faraday_image
+from non_destructive_image import resample_to_camera_pixels, simulate_faraday_image
 from scripts.recover_notebook_condensate_stage import load_config
 from scripts.recover_notebook_multishot_stage import (
     _basic_constants,
@@ -87,6 +87,42 @@ def _git_value(*args: str) -> str:
         except (OSError, subprocess.CalledProcessError):
             continue
     return "unknown"
+
+
+def _captions(config: dict[str, Any]) -> dict[str, str]:
+    criteria = config["frame_criteria"]
+    figure = config["figure"]
+    half_width = int(criteria["central_block_half_width_pixels"])
+    block_side = 2 * half_width + 1
+    minimum_snr = float(criteria["minimum_snr"])
+    maximum_loss_percent = 100.0 * float(
+        criteria["maximum_post_exposure_condensate_loss"]
+    )
+    high_n_percent = 100.0 * float(figure["high_n_relative_fraction"])
+    reference_detuning = float(config["canonical_checks"]["reference_detuning_ghz"])
+    operating_detuning = float(figure["operating_band_detuning_ghz"])
+    conditions = ", ".join(
+        f"{chr(ord('A') + index)} (F={float(value):g} mW us)"
+        for index, value in enumerate(config["scan"]["required_fluence_mw_us"])
+    )
+    return {
+        "dual_port_heatmap": (
+            "Number N_use of consecutive usable DPFI frames across the simulated "
+            "absolute-detuning and F=P tau plane. Each accepted frame has pre-exposure "
+            f"SNR_{block_side}x{block_side} >= {minimum_snr:g} and post-exposure "
+            f"condensate depletion no greater than {maximum_loss_percent:g}%. The black "
+            f"contour encloses points retaining at least {high_n_percent:g}% of the row "
+            "maximum; it is a relative screening region, not an uncertainty interval. "
+            f"The labelled conditions are {conditions}, all at {reference_detuning:g} GHz."
+        ),
+        "fixed_detuning_cross_section": (
+            f"DPFI sequence length at |Delta|/2pi={operating_detuning:g} GHz. The dashed "
+            "curve shows the depletion-limited count N_dep and the solid curve shows "
+            f"N_use after the SNR_{block_side}x{block_side} >= {minimum_snr:g} requirement. "
+            "The grey area represents frames rejected by image quality, and the highlighted "
+            "interval is the relative near-maximum screening region."
+        ),
+    }
 
 
 def _scan_axes(config: dict[str, Any]) -> tuple[np.ndarray, np.ndarray]:
@@ -166,7 +202,11 @@ def _response_table(
     coordinate_a, coordinate_b = np.meshgrid(grid_axis, grid_axis)
     imaging_axis = int(scan["imaging_axis"])
     plane = [index for index in range(3) if index != imaging_axis]
-    bin_size = int(model["camera_recovery"]["bin_size"])
+    input_spacing_m = field_of_view_m / ngrid
+    object_pixel_m = float(model["camera_recovery"]["object_plane_pixel_m"])
+    camera_shape = tuple(
+        int(value) for value in model["camera_recovery"]["camera_output_shape"]
+    )
     half_width = int(criteria["central_block_half_width_pixels"])
     initial_condensate_atoms = float(constants["atom_number"])
 
@@ -192,13 +232,27 @@ def _response_table(
                 constants,
             )
             faraday = simulate_faraday_image(
-                float(scan["kappa_F"]) * phase_peak * profile,
+                float(model["faraday_recovery"]["kappa_F"]) * phase_peak * profile,
                 pupil,
             )
-            dark = bin_to_camera_pixels(faraday["dark_field_intensity"], bin_size)
-            # Dissertation convention: H is the historical notebook v port and V is u.
-            port_h = bin_to_camera_pixels(faraday["dual_port_v_intensity"], bin_size)
-            port_v = bin_to_camera_pixels(faraday["dual_port_u_intensity"], bin_size)
+            dark = resample_to_camera_pixels(
+                faraday["dark_field_intensity"],
+                input_spacing_m,
+                object_pixel_m,
+                camera_shape,
+            )
+            port_h = resample_to_camera_pixels(
+                faraday["analyser_h_intensity"],
+                input_spacing_m,
+                object_pixel_m,
+                camera_shape,
+            )
+            port_v = resample_to_camera_pixels(
+                faraday["analyser_v_intensity"],
+                input_spacing_m,
+                object_pixel_m,
+                camera_shape,
+            )
             dark_block = _central_block(np.asarray(dark, dtype=float), half_width)
             h_block = _central_block(np.asarray(port_h, dtype=float), half_width)
             v_block = _central_block(np.asarray(port_v, dtype=float), half_width)
@@ -374,6 +428,7 @@ def build_scan(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     model = load_config(model_path)
     constants = _basic_constants(model)
     thermal = self_consistent_total_atoms(model, constants)
+    numerical_aperture = float(build_pupil(model)["numerical_aperture"])
     detuning, fluence = _scan_axes(config)
     interpolation = config["response_interpolation"]
     fraction_axis = np.linspace(
@@ -431,25 +486,30 @@ def build_scan(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
                         "next_pulse_loss": f"{result['next_pulse_loss']:.12g}",
                         "n_gamma": f"{result['n_gamma']:.12g}",
                         "reabsorption_fraction": f"{result['reabsorption_fraction']:.12g}",
+                        "kappa_F": f"{float(model['faraday_recovery']['kappa_F']):.12g}",
+                        "numerical_aperture": f"{numerical_aperture:.12g}",
+                        "read_noise_electrons_per_pixel_per_port": f"{float(model['camera_recovery']['read_noise_electrons']):.12g}",
                     }
                 )
 
-    reference_key = (1.5, 90.0)
+    reference_key = (
+        float(config["canonical_checks"]["reference_detuning_ghz"]),
+        float(config["canonical_checks"]["reference_fluence_mw_us"]),
+    )
     if reference_key not in details:
-        raise RuntimeError("Figure 5.2 scan does not contain the 1.5 GHz, 90 mW us reference")
+        raise RuntimeError("Figure 5.2 scan does not contain the configured reference point")
     reference = details[reference_key]
-    if reference["depletion_limited_frames"] != 10:
-        raise RuntimeError("Figure 5.2 canonical depletion count is not 10 frames")
-    expected_initial = {
-        "Faraday dark-field": 6.22710517196034,
-        "Faraday dual-port": 16.06033992848492,
-    }
+    expected_depletion = int(config["canonical_checks"]["depletion_limited_frames"])
+    if reference["depletion_limited_frames"] != expected_depletion:
+        raise RuntimeError("Figure 5.2 canonical depletion count drifted")
+    expected_initial = config["canonical_checks"]["initial_snr"]
     for mode, expected in expected_initial.items():
         if not np.isclose(reference["initial_snr"][mode], expected, rtol=5e-5, atol=1e-8):
             raise RuntimeError(
                 f"Figure 5.2 initial {mode} SNR does not reproduce Figure 5.1"
             )
 
+    selected_detuning = float(config["canonical_checks"]["reference_detuning_ghz"])
     summary = {
         "canonical_gate": {"passed": True, "reference": reference},
         "scan": {
@@ -466,10 +526,10 @@ def build_scan(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
         },
         "criteria": config["frame_criteria"],
         "selected_conditions": {
-            label: details[(1.5, fluence_value)]
+            label: details[(selected_detuning, fluence_value)]
             for label, fluence_value in zip(
                 ("A", "B", "C"),
-                (30.0, 90.0, 150.0),
+                [float(value) for value in config["scan"]["required_fluence_mw_us"]],
                 strict=True,
             )
         },
@@ -500,6 +560,7 @@ def _frame_colormap(maximum_frames: int) -> tuple[ListedColormap, BoundaryNorm]:
 
 def _plot(data: dict[str, Any], config: dict[str, Any], paths: dict[str, Path]) -> None:
     figure = config["figure"]
+    reference_detuning = float(config["canonical_checks"]["reference_detuning_ghz"])
     detuning = np.asarray(data["detuning_ghz"], dtype=float)
     fluence = np.asarray(data["fluence_mw_us"], dtype=float)
     maximum_frames = int(figure["maximum_displayed_frames"])
@@ -557,16 +618,22 @@ def _plot(data: dict[str, Any], config: dict[str, Any], paths: dict[str, Path]) 
         )
         hatch.set_edgecolor("0.32")
         hatch.set_linewidth(0.0)
-        axis.axhline(1.5, color="white", linewidth=0.9, linestyle=":", alpha=0.95)
+        axis.axhline(
+            reference_detuning,
+            color="white",
+            linewidth=0.9,
+            linestyle=":",
+            alpha=0.95,
+        )
         for label, marker, fluence_value in zip(
             ("A", "B", "C"),
             ("o", "s", "^"),
-            (30.0, 90.0, 150.0),
+            [float(value) for value in config["scan"]["required_fluence_mw_us"]],
             strict=True,
         ):
             axis.plot(
                 fluence_value,
-                1.5,
+                reference_detuning,
                 marker=marker,
                 markersize=4.7,
                 markerfacecolor="white",
@@ -577,7 +644,7 @@ def _plot(data: dict[str, Any], config: dict[str, Any], paths: dict[str, Path]) 
             )
             axis.annotate(
                 label,
-                (fluence_value, 1.5),
+                (fluence_value, reference_detuning),
                 xytext=(0, 6),
                 textcoords="offset points",
                 ha="center",
@@ -589,16 +656,20 @@ def _plot(data: dict[str, Any], config: dict[str, Any], paths: dict[str, Path]) 
             )
         axis.set_title(MODE_TITLES[mode], loc="left", pad=5)
         axis.set_xlabel(r"Fluence coordinate $F=P\tau$ (mW $\mu$s)")
-        axis.set_xlim(float(fluence[0]), float(fluence[-1]))
+        fluence_step = float(np.median(np.diff(fluence)))
+        axis.set_xlim(
+            float(fluence[0] - fluence_step / 2),
+            float(fluence[-1] + fluence_step / 2),
+        )
         axis.set_ylim(float(detuning[0]), float(detuning[-1]))
-        axis.set_xticks([30, 60, 90, 120, 150, 180])
+        axis.set_xticks([90, 120, 150, 200, 250, 300])
         axis.set_yticks([0.75, 1.0, 1.5, 2.0, 2.5, 3.0])
     axes[0].set_ylabel(r"Absolute detuning $|\Delta|/2\pi$ (GHz)")
     if image is None:
         raise RuntimeError("Figure 5.2 produced no map")
     colourbar = fig.colorbar(image, ax=axes, fraction=0.035, pad=0.025)
     colourbar.set_label("Usable frames")
-    colourbar.set_ticks([0, 5, 10, 15, 20])
+    colourbar.set_ticks(np.arange(0, maximum_frames + 1, 1))
     legend = [
         Patch(
             facecolor="none",
@@ -629,6 +700,7 @@ def _plot_dual_port_heatmap(
     paths: dict[str, Path],
 ) -> None:
     figure = config["figure"]
+    reference_detuning = float(config["canonical_checks"]["reference_detuning_ghz"])
     mode = "Faraday dual-port"
     detuning = np.asarray(data["detuning_ghz"], dtype=float)
     fluence = np.asarray(data["fluence_mw_us"], dtype=float)
@@ -672,7 +744,7 @@ def _plot_dual_port_heatmap(
         rasterized=False,
     )
 
-    # A white underlay keeps the high-N boundary visible across the full colour scale.
+    # A white underlay keeps the near-maximum boundary visible across the colour scale.
     axis.contour(
         fluence,
         detuning,
@@ -689,16 +761,22 @@ def _plot_dual_port_heatmap(
         colors="black",
         linewidths=1.15,
     )
-    axis.axhline(1.5, color="white", linewidth=1.0, linestyle=":", alpha=0.95)
+    axis.axhline(
+        reference_detuning,
+        color="white",
+        linewidth=1.0,
+        linestyle=":",
+        alpha=0.95,
+    )
     for label, marker, fluence_value in zip(
         ("A", "B", "C"),
         ("o", "s", "^"),
-        (30.0, 90.0, 150.0),
+        [float(value) for value in config["scan"]["required_fluence_mw_us"]],
         strict=True,
     ):
         axis.plot(
             fluence_value,
-            1.5,
+            reference_detuning,
             marker=marker,
             markersize=5.2,
             markerfacecolor="white",
@@ -709,7 +787,7 @@ def _plot_dual_port_heatmap(
         )
         axis.annotate(
             label,
-            (fluence_value, 1.5),
+            (fluence_value, reference_detuning),
             xytext=(0, 7),
             textcoords="offset points",
             ha="center",
@@ -721,13 +799,17 @@ def _plot_dual_port_heatmap(
 
     axis.set_xlabel(r"Fluence coordinate $F=P\tau$ (mW $\mu$s)")
     axis.set_ylabel(r"Absolute detuning $|\Delta|/2\pi$ (GHz)")
-    axis.set_xlim(float(fluence[0]), float(fluence[-1]))
+    fluence_step = float(np.median(np.diff(fluence)))
+    axis.set_xlim(
+        float(fluence[0] - fluence_step / 2),
+        float(fluence[-1] + fluence_step / 2),
+    )
     axis.set_ylim(float(detuning[0]), float(detuning[-1]))
-    axis.set_xticks([30, 60, 90, 120, 150, 180])
+    axis.set_xticks([90, 120, 150, 200, 250, 300])
     axis.set_yticks([0.75, 1.0, 1.5, 2.0, 2.5, 3.0])
     colourbar = fig.colorbar(image, ax=axis, fraction=0.045, pad=0.025)
     colourbar.set_label("Usable frames")
-    colourbar.set_ticks([0, 5, 10, 15, 20])
+    colourbar.set_ticks(np.arange(0, int(np.max(values)) + 1, 1))
 
     handles = [
         Line2D(
@@ -735,7 +817,7 @@ def _plot_dual_port_heatmap(
             [0],
             color="black",
             linewidth=1.4,
-            label=rf"high-$N$ band ($\geq {100 * relative_fraction:.0f}\%$ of maximum at each detuning)",
+            label=rf"near-maximum region ($\geq {100 * relative_fraction:.0f}\%$ of row maximum)",
         )
     ]
     axis.legend(
@@ -777,7 +859,7 @@ def _plot_operating_band(
     high_threshold = int(np.ceil(relative_fraction * np.max(usable)))
     high_mask = usable >= high_threshold
     if not np.any(high_mask):
-        raise RuntimeError("Operating-band cross-section contains no high-N interval")
+        raise RuntimeError("Operating-band cross-section contains no near-maximum interval")
     step = float(np.median(np.diff(x)))
     band_left = float(x[high_mask][0] - step / 2)
     band_right = float(x[high_mask][-1] + step / 2)
@@ -814,7 +896,7 @@ def _plot_operating_band(
         color="#F2C14E",
         alpha=0.24,
         linewidth=0,
-        label=rf"high-$N$ band ($N_{{\rm use}}\geq{high_threshold}$)",
+        label=rf"near-maximum region ($N_{{\rm use}}\geq{high_threshold}$)",
     )
     axis.plot(
         x,
@@ -829,12 +911,16 @@ def _plot_operating_band(
         usable,
         color="#2B7A73",
         linewidth=2.1,
-        label=rf"usable frames ($\mathrm{{SNR}}_{{3\times3}}\geq{float(config['frame_criteria']['minimum_snr']):g}$)",
+        label=(
+            rf"usable frames ($\mathrm{{SNR}}_{{{2 * int(config['frame_criteria']['central_block_half_width_pixels']) + 1}"
+            rf"\times{2 * int(config['frame_criteria']['central_block_half_width_pixels']) + 1}}}"
+            rf"\geq{float(config['frame_criteria']['minimum_snr']):g}$)"
+        ),
     )
     for label, marker, fluence_value in zip(
         ("A", "B", "C"),
         ("o", "s", "^"),
-        (30.0, 90.0, 150.0),
+        [float(value) for value in config["scan"]["required_fluence_mw_us"]],
         strict=True,
     ):
         index = int(np.flatnonzero(np.isclose(x, fluence_value, atol=1e-12, rtol=0))[0])
@@ -861,9 +947,9 @@ def _plot_operating_band(
             fontweight="bold",
         )
 
-    axis.set_xlim(float(x[0]) - 2, float(x[-1]))
-    axis.set_ylim(0, max(35, int(np.max(depletion)) + 2))
-    axis.set_xticks([30, 60, 90, 120, 150, 180])
+    axis.set_xlim(float(x[0]) - 2.5, float(x[-1]) + 2.5)
+    axis.set_ylim(0, max(12, int(np.max(depletion)) + 2))
+    axis.set_xticks([90, 120, 150, 200, 250, 300])
     axis.set_xlabel(r"Fluence coordinate $F=P\tau$ (mW $\mu$s)")
     axis.set_ylabel("Consecutive frames")
     axis.grid(axis="y", color="0.9", linewidth=0.6)
@@ -884,13 +970,32 @@ def _plot_operating_band(
     plt.close(fig)
 
 
+def _output_destination(config: dict[str, Any], output_dir: Path | None) -> Path:
+    canonical = (REPO_ROOT / config["output_directory"]).resolve()
+    destination = output_dir or canonical
+    if not destination.is_absolute():
+        destination = REPO_ROOT / destination
+    destination = destination.resolve()
+    lifecycle = config.get("lifecycle", {})
+    if (
+        not lifecycle.get("canonical_regeneration_allowed", True)
+        and destination == canonical
+    ):
+        raise RuntimeError(
+            "canonical Figure 5.2 is frozen pending the approved heating "
+            "replacement; provide --output-dir for a non-canonical historical "
+            "reproduction"
+        )
+    return destination
+
+
 def generate(
     config_path: Path = DEFAULT_CONFIG,
     output_dir: Path | None = None,
 ) -> dict[str, Path]:
     config_path = config_path if config_path.is_absolute() else REPO_ROOT / config_path
     config = _load_json(config_path)
-    destination = output_dir or REPO_ROOT / config["output_directory"]
+    destination = _output_destination(config, output_dir)
     destination.mkdir(parents=True, exist_ok=True)
     paths = {
         "svg": destination / config["figure"]["svg_filename"],
@@ -942,6 +1047,7 @@ def generate(
             "model_config": config["model_config"],
             "git_branch": _git_value("branch", "--show-current"),
             "git_commit": _git_value("rev-parse", "HEAD"),
+            "result_status": config["lifecycle"],
             "outputs": {
                 key: str(path.relative_to(REPO_ROOT))
                 if path.is_relative_to(REPO_ROOT)
@@ -951,6 +1057,7 @@ def generate(
             "criteria": summary["criteria"],
             "range_rationale": summary["range_rationale"],
             "scope": summary["scope"],
+            "captions": _captions(config),
         },
     )
     return paths

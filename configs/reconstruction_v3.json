@@ -1,0 +1,104 @@
+{
+  "label": "reconstruction_v3_foundation",
+  "scope": {
+    "purpose": "physics-informed reconstruction from raw DPFI or DFFI camera counts without requiring a TF morphology",
+    "status": "shape-flexible synthetic development contract; experimental calibration and validation remain pending",
+    "absolute_faraday_scale": "conditional on kappa_F until experimentally calibrated"
+  },
+  "object_models": {
+    "smooth_reference": {
+      "name": "smooth_projected_tf_free_radii",
+      "parameters": [
+        "column_density_peak_m2",
+        "y0_um",
+        "z0_um",
+        "radius_y_um",
+        "radius_z_um"
+      ],
+      "interpretation": "low-dimensional reference and diagnostic model; not a contact-only claim for the real dipolar condensate"
+    },
+    "shape_flexible_baseline": {
+      "name": "nonnegative_bilinear_finite_support",
+      "coefficient_scale_m2": 5.0e14,
+      "coefficient_upper": 10.0,
+      "knot_grid": "fixed before fitting and no finer than the supported optical information",
+      "regularisation": {
+        "type": "physically_scaled_thin_plate_curvature",
+        "weight_unit": "um^2",
+        "density_scale_m2": 5.0e14,
+        "boundary_policy": "fixed_zero_ghost_knots",
+        "axis_weights": [1.0, 1.0, 1.0],
+        "interpretation": "the same physical curvature prior is comparable across knot spacings; the regularisation density scale is independent of optimiser scaling"
+      },
+      "interpretation": "resolved asymmetric and multi-peak density without imposing a TF envelope"
+    }
+  },
+  "parameter_bounds": {
+    "column_density_peak_m2": [1.0e13, 5.0e15],
+    "y0_um": [-10.0, 10.0],
+    "z0_um": [-8.0, 8.0],
+    "radius_y_um": [5.0, 60.0],
+    "radius_z_um": [0.25, 15.0],
+    "provenance": "broad provisional physical ranges independent of synthetic truth; replace with apparatus and data-family ranges before real-data reporting"
+  },
+  "fit": {
+    "irls_iterations": 2,
+    "maximum_multistarts": 4,
+    "maximum_function_evaluations": 60,
+    "xtol": 1.0e-8,
+    "ftol": 1.0e-8,
+    "gtol": 1.0e-8,
+    "production_channels": {
+      "dual_port": ["H_raw_electrons", "V_raw_electrons"],
+      "dark_field": ["crossed_analyser_raw_electrons"]
+    }
+  },
+  "synthetic_morphology_benchmark": {
+    "truth_source": "analytic maps generated independently of the bilinear fitting basis",
+    "feature_classes": [
+      "smooth",
+      "asymmetry",
+      "modulation",
+      "fragmentation",
+      "local_defect"
+    ],
+    "initialisation": {
+      "dual_port": "raw-count nonnegative linearisation at zero density",
+      "dark_field": "square-root intensity moments followed by projection of a smooth seed onto the flexible basis"
+    },
+    "primary_metrics": [
+      "supported_band_relative_l2_error",
+      "integrated_density_relative_error",
+      "centroid_error",
+      "rms_size_relative_error"
+    ],
+    "interpretation": "controlled reconstruction stress tests, not equilibrium predictions for 166Er"
+  },
+  "ensemble_selection_contract": {
+    "noise_draws": "generate once and reuse identical morphology, realization and seed keys for every candidate",
+    "calibration_gate": {
+      "minimum_success_fraction": 0.95,
+      "minimum_full_rank_fraction": 0.95
+    },
+    "selection_metric": "median supported-band relative L2 error",
+    "near_equivalent_relative_tolerance": 0.02,
+    "near_equivalent_tie_break": "fewest fitted coefficients, then error, then label",
+    "held_out_rule": "freeze the selected candidate and reject any morphology name used during calibration"
+  },
+  "required_calibration_contract": [
+    "camera electron conversion or gain",
+    "read noise per pixel and readout",
+    "magnification and pixel scale",
+    "pupil or measured optical transfer function",
+    "dual-port registration and relative throughput",
+    "Faraday response coefficient for absolute density"
+  ],
+  "known_boundaries": [
+    "dark-field intensity does not measure rotation sign",
+    "kappa_F and density amplitude are structurally degenerate without calibration",
+    "local Jacobian errors are diagnostics rather than final confidence intervals",
+    "IRLS remains to be benchmarked against a mixed Poisson-Gaussian likelihood",
+    "matched-model synthetic recovery is not experimental validation",
+    "regularisation cannot restore spatial frequencies removed by the aperture"
+  ]
+}

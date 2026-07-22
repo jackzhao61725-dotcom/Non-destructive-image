@@ -1,3 +1,0 @@
-stage,quantity,units,sample_scope,max_abs,central_abs,p50_abs,p90_abs,p95_abs,p99_abs,nonzero_pixel_count
-canonical_phase_stage,scalar_phase_phi,rad,nonzero cloud pixels,0.202941652879,0.202941652879,0.0707259222981,0.172458264156,0.188189388924,0.200081601413,12231
-canonical_faraday_stage,faraday_rotation_theta_F,rad,nonzero cloud pixels,0.202941652879,0.202941652879,0.0707259222981,0.172458264156,0.188189388924,0.200081601413,12231

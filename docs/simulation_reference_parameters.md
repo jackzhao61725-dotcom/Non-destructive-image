@@ -1,7 +1,12 @@
 # Simulation reference parameters
 
-Last updated: 20 July 2026
-Status: active dissertation screening contract
+Last updated: 22 July 2026
+Status: active optical/detector contract and implemented Version 1 sequence record
+
+Update trigger: a change to the reference condensate, atomic response,
+detector, sampling, aperture, operating point or disturbance model. Dependent
+configs, figures and regression tests must be updated in the same numerical
+change.
 
 ## Decision
 
@@ -15,6 +20,21 @@ Chapter 5 will vary only the principal experimental design variables:
 
 The remaining condensate, optical and detector quantities are held fixed in the main screening calculation. They will be replaced by measured values after commissioning, after which the same scripts will regenerate the figures. Broad scans of every uncertain input are deliberately excluded because they would obscure the central signal-versus-disturbance comparison.
 
+The active detector, sampling and Faraday-response contract is implemented in
+`configs/dissertation_v3_orca_fusion.json` and the dependent Figure 4.2-5.4
+configs. It uses signed `kappa_F=-45/91`, effective `NA=0.130` and the
+manufacturer-typical ORCA-Fusion Ultra quiet value `sigma_r=0.7 e- rms`. The
+sealed reconstruction outputs retain `NA=0.080`, `kappa_F=1` and
+`sigma_r=1.4 e- rms` as a historical operator and are not current performance
+predictions.
+
+The `N0=2.5e4`, `T=200 nK` state below is the compact Oxford condensate-core
+surrogate used by the optical screening calculation. It is not the initial
+thermodynamic state of the approved multiframe replacement. That replacement
+uses direct Oxford 300 ms `(N0,Nth,T)` triplets and is specified in
+`multiframe_heating_model_optimisation.md`; it has not yet replaced the stored
+Version 1 Figures 5.2 and 5.4.
+
 ## Reference configuration
 
 ### Condensate and atomic inputs
@@ -23,7 +43,7 @@ The remaining condensate, optical and detector quantities are held fixed in the 
 | --- | ---: | --- |
 | Species | `166Er` | fixed |
 | Transition wavelength | `401 nm` | literature/atomic input |
-| Natural linewidth | `Gamma/2pi = 29.5 MHz` | literature input used by the maintained model |
+| Natural linewidth | `Gamma/2pi = 29.5 MHz` | maintained numerical input; its modern primary source must be identified before dissertation use |
 | Initial condensate population | `2.5e4` | reference condensate input |
 | Initial temperature | `200 nK` | reference condensate input |
 | Trap frequencies `(x,y,z)` | `(293, 14, 233) Hz` | reference condensate input |
@@ -35,84 +55,173 @@ These quantities define the reference cloud used for the screening figures. They
 
 | Quantity | Reference value | Status |
 | --- | ---: | --- |
-| Numerical aperture | `NA = 0.080` | retained unchanged as a simulation reference; not an installed-arm measurement |
-| Magnification | `M = 4` | provisional screening value; not an installed-arm measurement |
-| DCC3260M physical pixel pitch | `5.86 um` | hardware value |
-| Object-plane pixel pitch | `1.465 um` | `5.86 um / M` |
-| Simulation camera binning | `15 x 15` high-resolution cells | represents `1.4648 um` in the object plane |
-| Binned frame size | `68 x 68` pixels | after truncating the `1024 x 1024` grid to `1020 x 1020` |
-| Quantum-efficiency factor | `QE = 0.60` | plausible screening value; not a DCC3260M measurement |
-| Camera read noise | `sigma_r = 3 e- rms` per pixel and readout | plausible screening value; not a DCC3260M measurement |
+| Effective numerical aperture | `NA = 0.130` | active optical-design input; not an installed-arm measurement |
+| Camera | Hamamatsu ORCA-Fusion C14440-20UP | selected detector |
+| Magnification | `M = 10` | design input; the code does not infer it from the legacy relay focal lengths |
+| Physical camera pixel pitch | `6.5 um` | manufacturer value |
+| Object-plane pixel pitch | `0.650 um` | `6.5 um / M` |
+| Simulation camera sampling | centred physical-pixel area integration | avoids treating the non-integer high-resolution-to-camera ratio as block binning |
+| Analysis crop | `153 x 153` pixels per port | centred coverage of the numerical field; not a directly programmed hardware ROI |
+| Quantum-efficiency factor | `QE = 0.65` | manufacturer-typical value at 400 nm, used at 401 nm |
+| Camera readout | Ultra quiet scan, 16-bit output | active low-noise operating scenario |
+| Camera read noise | `sigma_r = 0.7 e- rms` per physical pixel and readout | manufacturer-typical Ultra quiet value; requires installed-camera dark-frame verification |
+| Camera integration | reference `360.6 us`; minimum input `280 us`, `80 us` timing increment | `360.6 us` is the shortest calculated Ultra quiet setting containing the `300 us` reference optical pulse |
+| Full-resolution readout | `184.4 ms` (`5.42 fps`) | Ultra quiet catalogue timing; sub-array rate depends on vertical extent |
+| Hardware sub-array step | `4` pixels/lines | Normal Area mode through DCAM-API |
+| First-frame count scale | `735.2695759 e- / I0 pixel` at `F = 300 mW us` | derived from the optical/detector model, not a catalogue camera specification |
 | PCI phase-plate amplitude transmission | `t_p = 0.95` | retained Version 1 reference |
 | PCI retardance | `eta = pi/2` | retained Version 1 reference |
 | DGI stop optical depth | `OD_s = 4` | retained Version 1 reference |
-| Faraday response coefficient | `kappa_F = 1` | illustrative structural setting only; not a calibrated `166Er` response |
+| Atomic Faraday conversion | `kappa_F = -45/91 = -0.4945...` | signed ideal `166Er` estimate for the fully spin-polarised axial case and isolated 401-nm transition |
+| Effective apparatus response | `TBD` | requires paired RAI/Faraday calibration; includes measured optical and multilevel departures without redefining `kappa_F` |
 
-The previous `QE = 0.40` value is no longer used because it is an unnecessarily low detector reference. The previously used `7 e- rms` is a DCC3260M catalogue upper bound rather than a nominal or measured read noise and is therefore not used as the main simulation value. The revised `QE = 0.60` and `sigma_r = 3 e- rms` values are intentionally simple reference assumptions. Their purpose is to provide realistic camera images and SNR estimates before detector characterisation, not to predict the installed camera exactly.
+The detector values are declared screening inputs. The `0.7 e- rms` value is a
+manufacturer-typical Ultra quiet scenario, not a guaranteed or measured value
+for the installed camera. The `0.650 um` object-plane pixel is integrated
+directly over the numerical field and is not approximated by a rounded number
+of simulation cells. The `153 x 153` product is an analysis crop. Commissioning
+must acquire a legal four-pixel-step ROI containing both analyser ports and
+must verify either a global-reset trigger or a common-exposure interval in
+which the short optical pulse reaches every relevant row.
 
-The official CS235MU response data give a typical quantum efficiency close to 0.6 at 401 nm and motivate the provisional QE scale. The DCC3260M datasheet specifies read noise only as less than `7 e- rms`; it does not establish that `7 e- rms` is the operating value of the installed camera.
+The preceding DCC3260M values (`M=4`, `QE=0.60`, `sigma_r=3 e- rms`) remain in
+the historical v2 config. The sealed ORCA-Fusion reconstruction studies use the
+separate historical contract `NA=0.080`, `kappa_F=1` and
+`sigma_r=1.4 e- rms`. Neither historical contract is mixed with the active
+screening figures.
+
+### Faraday-response convention and frozen-output boundary
+
+The dissertation defines the total phases of the two circular components as
+`Phi_+` and `Phi_-`, and the polarisation rotation as
+
+```text
+theta_F = (Phi_+ - Phi_-) / 2,
+kappa_F = theta_F / phi.
+```
+
+For the fully spin-polarised `166Er` reference state probed along its
+quantisation axis, the isolated-transition calculation gives
+`kappa_F = -45/91`, so the reference scalar phase `phi_0 = 0.203 rad`
+corresponds to `theta_F,0 = -0.1004 rad`; its magnitude is `5.75 degrees`.
+This is an atomic-response estimate, not a measurement of the installed
+apparatus. It assumes a weak
+probe, the selected isolated 401-nm transition, the stated helicity and detuning
+convention, negligible optical pumping within one exposure and negligible
+circular dichroism. Additional excited levels, a non-axial geometry or an
+imperfectly prepared Zeeman state require a multilevel calculation or an
+effective experimental calibration.
+
+The historical notebook and sealed reconstruction operator instead set
+`kappa_F=1` before Jones propagation and
+passed the resulting `theta_F` directly to circular phases `+theta_F` and
+`-theta_F`; no later stage supplied the missing factor of one half. Stored
+reconstruction studies generated under that convention remain frozen
+method-development evidence. Their absolute Faraday amplitudes, SNRs and
+usable-frame predictions are not current `166Er` performance estimates. The
+active Figure 4.2-5.4 family has been regenerated under the signed coefficient.
+
+The maintained linewidth input also needs bibliographic closure. McClelland and
+Hanssen (2006) supports the open-transition and optical-pumping physics, not the
+linewidth value. The early direct measurement by J. J. McClelland (2006) gives
+`Gamma/2pi = 35.6 +/- 1.2 MHz`; continued use of `29.5 MHz` therefore requires
+the exact modern primary source and an explicit reason for selecting it.
 
 Manufacturer sources:
 
-- DCC3260M archived datasheet: <https://www.thorlabs.com/catalogpages/obsolete/2019/DCC3260M.pdf>
-- CS235MU product page: <https://www.thorlabs.com/item/CS235MU>
-- CS235MU raw QE data: <https://media.thorlabs.com/globalassets/family-pages/sharedassets/c/cs/cs235mu_quantum_efficiency.xlsx?v=1117122645>
+- ORCA-Fusion product page: <https://camera.hamamatsu.com/us/en/product/camera/C14440-20UP.html>
+- ORCA-Fusion technical datasheet: <https://camera.hamamatsu.com/content/dam/hamamatsu-photonics/sites/documents/99_SALES_LIBRARY/sys/SCAS0136E_C14440-20UP.pdf>
+- ORCA-Fusion instruction manual: <https://www.hamamatsu.com/content/dam/hamamatsu-photonics/sites/static/sys/en/manual/C14440-20UP_IM_En.pdf>
 
-### Reference operating point and sequence model
+### Reference operating point and implemented Version 1 sequence
 
 | Quantity | Reference value | Status |
 | --- | ---: | --- |
 | Absolute detuning | `|Delta|/2pi = 1.5 GHz` | marked reference point within the Chapter 5 scan |
+| Fluence scan | `90-300 mW us` | active Chapter 5 interval |
+| Representative fluences | `90, 150, 300 mW us` | A, B and C conditions in Figures 5.1 and 5.4 |
 | Probe power | `P = 1.0 mW` | reference division of the fluence |
-| Exposure time | `tau = 90 us` | reference division of the fluence |
-| Fluence | `F = 90 mW us` | reference operating fluence |
+| Optical probe duration | `tau = 300 us` | one division of the first-frame reference; not the general camera integration time |
+| First-frame reference | `F = 300 mW us` | high-SNR reference for Figure 5.1 and the screen |
 | Imaging direction | `x` | common comparison geometry |
-| Recoil-energy convention | `2 E_rec` per absorption-spontaneous-emission cycle | retained Version 1 sequence convention |
-| Reabsorption model | initial-density three-axis estimate, fixed within a sequence | retained Version 1 approximation |
+| Recoil-energy convention | `2 E_rec` per absorption-spontaneous-emission cycle | frozen Version 1 sequence convention |
+| Reabsorption model | initial-density three-axis estimate, fixed within a sequence | frozen Version 1 approximation |
 | Condensate-depletion threshold | `30%` | analysis definition of an accepted frame |
 | Stopping rule | strict integer; threshold-crossing pulse excluded | retained |
 
-The split between `P` and `tau` is retained so that the reference exposure can be related to hardware. Within the far-detuned, low-saturation screening model, the principal probe-strength coordinate is the fluence `F = P tau`.
+This sequence implementation infers a total atom number from the compact
+surrogate and applies an ideal saturated-gas population relation after each
+pulse. Its generated `N_dep` and `N_use` values are frozen Version 1 screening
+outputs pending the approved non-saturation replacement. They remain available
+for regression and provenance; they are not current quantitative predictions of
+an Oxford bimodal sequence.
 
-The current full heating-plus-reabsorption model gives ten strict accepted frames at this reference operating point. This frame count is unaffected by the QE and read-noise update because those detector parameters change the measured SNR, not the photon scattering or recoil heating. It remains conditional on the Version 1 disturbance model.
+The split between `P` and `tau` is retained so that the optical pulse can be
+related to hardware. Within the far-detuned, low-saturation screening model,
+the principal probe-strength coordinate is `F = P tau`. The optical pulse may
+be shorter than the camera integration only when it lies inside a verified
+common-exposure interval for both analyser ports. The `300 us` reference pulse
+therefore uses an approximately `360.6 us` camera integration under the Ultra quiet exposure
+quantisation.
+
+At `F = 300 mW us`, the active first-frame analytic central-`5x5` SNR values
+are `7.8000` for dark-field Faraday and `15.3446` for dual-port Faraday. At
+`F = 90, 150, 300 mW us`, the frozen Version 1 strict `(N_dep, N_use)` pairs are
+`(10, 3)`, `(6, 6)` and `(3, 3)`. Detector parameters change SNR and therefore
+`N_use`; they do not change photon scattering or the depletion-only `N_dep` for
+a fixed optical pulse within that implementation. All sequence counts remain
+conditional on the Version 1 disturbance model until replacement.
 
 ## Consequences for figures and numbers
 
-The current maintained outputs use `M = 4`, `QE = 0.60` and
-`sigma_r = 3 e- rms`. This contract controls:
+The detector-dependent Figure 4.2-5.4 family uses `M=10`, `QE=0.65`, signed
+`kappa_F=-45/91`, effective `NA=0.130` and the Ultra quiet
+`sigma_r=0.7 e- rms` scenario. This contract controls:
 
-- the detector-noise curves in Figure 3.2;
-- all detected-electron count scales in Section 4.4;
-- all Chapter 5 single-frame SNR maps and quoted SNR values;
-- all stochastic camera-image examples;
-- all accumulated SNR values that include camera noise.
+- the regenerated Faraday panels in Figure 4.2;
+- the Figure 5.1 scan over `F=90-300 mW us`, with A, B and C at
+  `90, 150, 300 mW us` and the first-frame reference at `F=300 mW us`;
+- the frozen Version 1 Figure 5.2 usable-frame screen and fixed-detuning
+  operating band pending heating replacement;
+- the frozen Version 1 Figure 5.4 noisy sequences at the same representative
+  fluences pending heating replacement;
+- all detected-electron count scales, stochastic frames and analytic SNR values
+  reported for this result family, subject to the sequence-status distinction
+  above.
 
-The following quantities are unchanged by this detector update:
+Changing `NA` changes the propagated scalar and Faraday fields. Changing the
+signed atomic coefficient changes the Faraday field amplitudes and the DPFI
+sign. Camera QE and read noise change detected counts and SNR. Within the frozen
+Version 1 implementation, none of these changes alters photon scattering,
+recoil heating or `N_dep` at fixed detuning and optical fluence. Absolute
+Faraday density inference still requires an effective apparatus-response
+calibration.
 
-- the scalar phase and Faraday rotation maps;
-- the finite-aperture fields and the noiseless Figure 4.2 images, because `NA = 0.080` is not changed in this update;
-- the propagated field `u` and the normalised PCI, DGI and Faraday image-plane values reported in Section 4.3;
-- photon scattering, recoil heating and the strict ten-frame sequence length;
-- the ideal transfer-function and fluence-scaling arguments of Chapter 3;
-- the statement that absolute Faraday values remain uncalibrated while `kappa_F` is unknown.
+Outputs generated with the DCC3260M/M4 detector contract, the earlier
+`M=2`, `QE=0.5851647`, `sigma_r=7 e- rms` trial contract, or the sealed
+ORCA-Fusion reconstruction contract `NA=0.080`, `kappa_F=1`,
+`sigma_r=1.4 e- rms` are historical. They must not be mixed with the current
+signed-response Figure 4.2-5.4 family.
 
-Outputs generated with `M = 2`, `QE = 0.5851647` or
-`sigma_r = 7 e- rms` are superseded and must not be mixed with the active
-dissertation figures.
+In the dissertation, `NA=0.130`, `M=10`, `QE=0.65`, Ultra quiet 16-bit output
+and `sigma_r=0.7 e- rms` are explicit simulation inputs. Only the atomic
+coefficient is analytically fixed; the effective NA, QE, read noise, timing and
+apparatus response remain commissioning quantities.
 
-In the dissertation, `NA = 0.080`, `M = 4`, `QE = 0.60` and
-`sigma_r = 3 e- rms` are therefore simulation reference values, not measured
-properties of the installed apparatus.
+## Replaceable experimental inputs
 
-## Commissioning update route
-
-The post-commissioning update should replace, at minimum:
+The configuration keeps the following quantities replaceable without changing
+the reconstruction or figure-generation code:
 
 1. the effective pupil or measured point-spread function;
 2. the object-plane magnification and pixel sampling;
 3. the effective photon-to-electron conversion, including optical transmission and camera response;
 4. the measured read noise and gain;
-5. the effective Faraday coefficient `kappa_F`;
+5. multilevel corrections to the atomic Faraday response and the independently
+   calibrated effective apparatus response;
 6. the net condensate disturbance observed across repeated exposures.
 
-After these inputs are frozen, the same configuration-driven scripts should regenerate Figures 3.2, 4.2 and the Chapter 5 figures. Agreement with data used to determine the inputs is calibration; assessment against separate operating conditions is required before calling the updated model experimentally validated.
+The same configuration-driven scripts regenerate the dependent figures when
+any of these inputs changes. Figure 4.2 is unaffected by detector-noise changes
+because it contains noiseless normalised image-plane observables, but it must be
+regenerated when `NA` or the atomic Faraday coefficient changes.

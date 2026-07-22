@@ -9,7 +9,7 @@ import pytest
 np = pytest.importorskip("numpy")
 
 
-OUTPUT_DIR = Path("results/dissertation_plots_v1/detuning_tradeoff")
+OUTPUT_DIR = Path("results/dissertation_plots_v2_orca_fusion/detuning_tradeoff")
 DATA_PATH = OUTPUT_DIR / "detuning_tradeoff_data.csv"
 SVG_PATH = OUTPUT_DIR / "detuning_tradeoff.svg"
 METADATA_PATH = OUTPUT_DIR / "metadata.json"
@@ -57,7 +57,7 @@ def test_detuning_tradeoff_metadata_records_provenance() -> None:
         metadata = json.load(handle)
 
     plot_config = metadata["config_files_used"]["plot_config"].replace("\\", "/")
-    assert plot_config == "configs/dissertation_plots_v1.json"
+    assert plot_config == "configs/dissertation_plots_v2_orca_fusion.json"
     assert "dimensionless delta" in metadata["detuning_convention"]
     assert metadata["normalisation"]["absolute_values_saved"] is True
     assert metadata["calibration_status"] == "No experimental RAI / absorption calibration has been applied."

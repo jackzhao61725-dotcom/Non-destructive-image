@@ -1,6 +1,0 @@
-Delta_over_2pi_GHz,power_mW,SNR_exposure_us,N_max_exposure_us,QE,read_noise_e_rms,spatial_observable,PCI_SNR_per_frame,N_max_clean_continuous,PCI_SNR_total
-0.75,2.0,100.0,40.0,1.0,0.0,legacy ideal analytical peak object-space camera pixel,47.71710607473677,12.945915599854674,171.68821388172884
-1.0,2.0,100.0,40.0,1.0,0.0,legacy ideal analytical peak object-space camera pixel,35.793884086333215,23.01101054709497,171.70252156026484
-1.5,2.0,100.0,40.0,1.0,0.0,legacy ideal analytical peak object-space camera pixel,23.86547333680746,51.7684246820672,171.71274352026902
-2.0,2.0,100.0,40.0,1.0,0.0,legacy ideal analytical peak object-space camera pixel,17.899862161929473,92.02880447102841,171.71632163746983
-3.0,2.0,100.0,40.0,1.0,0.0,legacy ideal analytical peak object-space camera pixel,11.933602019492211,207.05846101091737,171.7188775723807

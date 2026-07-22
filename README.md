@@ -1,191 +1,169 @@
 # Non-destructive imaging of an ultracold 166Er condensate
 
-This repository contains the reproducible forward model used to screen
-non-destructive imaging conditions for an ultracold `166Er` condensate. It
-connects a reference Thomas-Fermi state to scalar and Faraday image formation,
-finite-aperture propagation, camera detection and repeated-exposure evolution.
+- **Status:** dissertation research code and synthetic screening model
+- **Calibration boundary:** not an experimentally calibrated apparatus prediction
+- **Update trigger:** a change to the active model contract, public entry points,
+  installation procedure, retained result status or release information
 
-The model supports the dissertation and experimental commissioning. It is not
-yet an experimentally calibrated prediction.
+This repository models non-destructive imaging of an ultracold `166Er`
+condensate. It connects a declared atomic state to scalar and Faraday optical
+fields, finite-aperture propagation, camera counts, repeated-exposure screening
+and physics-informed inference of low-order condensate observables.
 
-## Current status
+Implemented readouts include phase-contrast imaging (PCI), dark-ground imaging
+(DGI), dark-field Faraday imaging (DFFI) and dual-port Faraday imaging (DPFI).
 
-The Dissertation v2 snapshot is maintained through the tested package in
-`src/non_destructive_image/`, together with explicit configs, generators and
-stored result metadata. The original notebook remains a historical
-computational reference.
+Start with the [documentation index](docs/README.md). The
+[current Codex hand-off](CODEX_HANDOFF_CURRENT.md) records branch-specific work
+and the immediate task; it is an operational document, not a scientific source.
 
-Implemented readouts:
+## Scientific scope
 
-- phase-contrast imaging (PCI);
-- dark-ground imaging (DGI);
-- dark-field Faraday imaging;
-- dual-port Faraday imaging.
+The primary inverse result is
 
-Current scientific boundaries:
+```text
+q = (A, y_c, z_c, w_major),
+```
 
-- `kappa_F = 1` is an uncalibrated structural placeholder;
-- the contact-interaction Thomas-Fermi state omits dipolar mean-field effects;
-- the 401 nm light-atom treatment is an effective two-level approximation to an
-  open transition;
-- the repeated-exposure model assumes rethermalisation and a fixed
-  initial-density reabsorption fraction;
-- detector, aperture and magnification values remain screening inputs until
-  measured on the apparatus.
+where `A` is the supported integrated response, `(y_c,z_c)` is the two-
+dimensional centroid and `w_major` is the major-axis rms width. Each component
+has an uncertainty, data-consistency interval or unsupported status. The fitted
+density field is an internal nuisance representation required by the nonlinear
+forward operator; the project does not claim super-resolved recovery of a
+unique density image.
 
-## Active screening contract
+Current scientific boundaries are:
 
-The authoritative parameter record is
-[`docs/simulation_reference_parameters.md`](docs/simulation_reference_parameters.md).
+- the approved isolated-transition, fully polarised axial estimate is the
+  signed conversion `kappa_F=-45/91`; the effective apparatus response remains
+  uncalibrated;
+- the compact `N0=2.5e4` condensate is an optical core surrogate, not the
+  thermodynamic initial state of the approved Oxford multiframe replacement;
+- effective aperture, detector and sampling values are screening inputs until
+  measured on the installed apparatus;
+- the 401 nm atom-light treatment is an effective model of an open transition;
+- sealed inverse evidence generated with `NA=0.080`, `kappa_F=1` and
+  `sigma_r=1.4 e- rms` is historical method-development evidence;
+- the stored Figures 5.2 and 5.4 and their `N_dep`/`N_use` values are frozen
+  Version 1 screening outputs pending the approved heating replacement; their
+  canonical directories are excluded from default regeneration and protected
+  against accidental overwrite.
 
-| Quantity | Active value | Status |
-| --- | ---: | --- |
-| Initial condensate population | `2.5e4` | reference input |
-| Reference detuning | `|Delta|/2pi = 1.5 GHz` | scan reference |
-| Reference power / exposure | `1.0 mW / 90 us` | one division of the fluence |
-| Reference fluence | `90 mW us` | screening reference |
-| Numerical aperture | `0.080` | provisional |
-| Magnification | `4` | provisional |
-| Physical camera pixel | `5.86 um` | DCC3260M hardware value |
-| Object-plane pixel | `1.465 um` | provisional `M=4` sampling |
-| Quantum efficiency | `0.60` | provisional |
-| Read noise | `3 e- rms` per pixel and readout | provisional |
-| Recoil-energy convention | `2 E_rec` per scattering cycle | model choice |
-| Condensate-loss limit | `30%` | screening criterion |
-| Faraday coefficient | `kappa_F = 1` | uncalibrated placeholder |
-
-The historical notebook defaults remain in
-`configs/notebook_v1_defaults.json`. They must not be mixed with the active
-screening contract in `configs/dissertation_v2_dcc3260m.json`.
-
-## Canonical performance gate
-
-At the reference point, the heating-plus-initial-density-reabsorption model
-accepts 10 strict frames. The post-sequence condensate loss is `0.28060`; the
-next pulse would raise it to `0.30829` and is excluded.
-
-The current accumulated matched-template SNR values use the same 228-pixel
-object-space ROI and the evolving 10-frame sequence:
-
-| Readout | Shot noise only | Shot + read noise |
-| --- | ---: | ---: |
-| PCI | 104.10 | 103.67 |
-| DGI | 54.36 | 34.30 |
-| Faraday dark-field | 55.78 | 34.71 |
-| Faraday dual-port | 107.48 | 106.56 |
-
-These values are estimator-specific screening results. In particular, they are
-not interchangeable with the single-frame central-`3x3` SNR used in the
-Chapter 5 image-quality figures. The Faraday rows are not calibrated absolute
-predictions.
-
-Machine-readable evidence is stored in
-`results/performance_validation_v1/`, with the contract in
-`configs/performance_validation_v1.json`.
+The active parameter authority is
+[Simulation reference parameters](docs/simulation_reference_parameters.md).
+The minimum approved multiframe replacement is specified in
+[Multiframe heating model optimisation](docs/multiframe_heating_model_optimisation.md).
+Result status and provenance are maintained in the
+[figure and data index](docs/figure_index.md).
 
 ## Repository map
 
 ```text
-src/non_destructive_image/    maintained physical and imaging helpers
-configs/                      active and historical parameter contracts
-scripts/                      generators, audits and validation entry points
-tests/                        unit and regression tests
-regression/                   stored notebook-derived numerical baselines
-results/                      maintained generated data and dissertation figures
-docs/                         active model, provenance and laboratory documents
-notebook_sections/            exported historical notebook sections
+src/non_destructive_image/                 forward model and analysis helpers
+src/non_destructive_image/reconstruction/  inverse model and observables
+configs/                                   active and historical contracts
+scripts/                                   generators, recovery and validation
+tests/                                     unit and regression tests
+results/                                   retained data and figures
+docs/                                      active model and evidence documents
+notebook_sections/                         historical notebook exports
+regression/baseline/                       maintained regression baselines
 ```
 
-Start with:
-
-- [documentation index](docs/README.md);
-- [active parameter contract](docs/simulation_reference_parameters.md);
-- [figure and data index](docs/figure_index.md);
-- [experimental measurement plan](docs/experimental_measurement_plan.md);
-- [reproducibility guide](docs/reproducibility.md).
+The [notebook export index](notebook_sections/README.md) and
+[regression-baseline contract](regression/baseline/README.md) describe the two
+historical compatibility surfaces. They do not supersede the maintained package
+or active configs.
 
 ## Installation
 
-Windows PowerShell:
+The verified Windows workflow uses a repository-local Python 3.12 environment:
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-$env:PYTHONPATH="src;."
-$env:PYTHONUTF8="1"
+$repoRoot = (Resolve-Path -LiteralPath ".").Path
+$projectPython = "$repoRoot\.venv\Scripts\python.exe"
+& $projectPython -m pip install -e '.[dev]'
+& $projectPython -m pip check
+& $projectPython -c "import non_destructive_image; print(non_destructive_image.__file__)"
 ```
 
-Linux/macOS:
+The printed package path must lie under this checkout. Do not rely on a Windows
+Store `python` alias, a global `pytest` executable or an unrelated editable
+clone. Rebuild `.venv` with a verified Python 3.12 interpreter when required.
+
+For Linux or macOS:
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-export PYTHONPATH="src:."
-export PYTHONUTF8=1
+python -m pip install -e '.[dev]'
+python -m pip check
 ```
 
-## Validation and reproduction
+Detailed environment, dependency-order and long-run instructions are maintained
+only in [Reproducibility](docs/reproducibility.md).
 
-Run the test suite:
+## Validation and regeneration
+
+Run the complete test suite:
 
 ```powershell
-pytest -q
+& $projectPython -m pytest -q
 ```
 
-Check the maintained canonical outputs without regenerating them:
+Inspect the maintained generation plan before running it:
 
 ```powershell
-python scripts\run_performance_validation.py --skip-prerequisites
+& $projectPython scripts\run_all_dissertation_figures.py --dry-run
 ```
 
-Regenerate the approved result set and write
-`results/reproducibility_manifest.json`:
+Then regenerate the approved default result set with:
 
 ```powershell
-python scripts\run_all_dissertation_figures.py
+& $projectPython scripts\run_all_dissertation_figures.py
 ```
 
-Use `--dry-run` to inspect the generation plan first.
+The command writes `results/reproducibility_manifest.json`. Frozen Figures 5.2
+and 5.4, historical notebook outputs and long reconstruction studies are
+excluded from the default run. Inspect existing sealed artifacts before
+launching an expensive regeneration.
 
-## Provenance rules
+## Evidence and provenance
 
-Every dissertation-facing numerical result must identify:
+A dissertation-facing numerical result requires an explicit config,
+deterministic generator, machine-readable data and metadata, an identified
+consumer and a regression check when it supports a claim. Calibration data and
+held-out validation data remain separate.
 
-```text
-quantity | value | |Delta|/2pi | P | tau | imaging axis |
-normalisation | estimator/ROI | sequence model | QE/read | config | output
-```
-
-The following distinctions are mandatory:
-
-- single-frame `SNR_3x3` and accumulated matched-template SNR are different
-  observables;
-- continuous clean-loss budgets and strict accepted-frame counts are different
-  quantities;
-- random camera frames illustrate the noise model, while reported SNR values
-  are calculated from the expected counts and analytic variance;
-- `kappa_F=1` Faraday values are structural comparisons, not calibrated
-  erbium predictions.
+The inverse architecture is described in
+[Reconstruction architecture](docs/reconstruction_architecture.md). The frozen
+ORCA-Fusion synthetic study, run identifiers and credibility controls are
+recorded in the
+[sealed reconstruction evidence](docs/reconstruction_orca_v4_evidence_2026_07_21.md).
+Those artifacts must not be used as quantitative evidence for the current
+signed-`kappa_F`, `NA=0.130`, Ultra quiet screening scenario.
 
 ## Experimental hand-off
 
-Commissioning should first measure the quantities that currently enter as
-provisional inputs: optical path and polarisation behaviour, magnification and
-effective aperture, camera offset/gain/read noise, delivered power and pulse
-timing, the effective Faraday response and the net disturbance of repeated
-imaging. The detailed task order and acceptance criteria are recorded in
-`docs/experimental_measurement_plan.md`.
+The laboratory plan measures the quantities that enter the simulations as
+provisional inputs: the installed optical path and polarisation response,
+magnification and spatial transfer, camera calibration, delivered pulse,
+effective Faraday response and net repeated-exposure disturbance. The task order
+and acceptance criteria are in the
+[experimental measurement plan](docs/experimental_measurement_plan.md).
 
-Measured values used to set model parameters constitute calibration. A
-held-out operating condition is required before agreement can be described as
-experimental validation.
+## Citation and release
 
-## Citation and licence
+Citation and archive metadata are intentionally deferred until the repository
+creator and release version are supplied. A Zenodo DOI has not been issued. No
+repository licence is currently present, so reuse rights must not be assumed.
 
-`CITATION.cff` and `.zenodo.json` are present. A Zenodo DOI has not yet been
-issued. No repository licence file is currently present, so reuse rights must
-not be assumed until a licence is selected.
+Before an archival public release:
+
+1. supply the creator record and intended release version;
+2. generate and review the citation and archive metadata;
+3. select and add an explicit licence;
+4. verify a clean release commit and version tag;
+5. run the tests and maintained regeneration workflow;
+6. inspect `results/reproducibility_manifest.json` and the retained-result index;
+7. archive the tag and add the DOI only after the archive service mints it.

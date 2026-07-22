@@ -15,11 +15,11 @@ OUTPUT_PATH = REPO_ROOT / "regression" / "baseline" / "imaging" / "faraday_imagi
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as handle:
-        for chunk in iter(lambda: handle.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    """Reproduce the notebook hash stored by the original Windows baseline."""
+
+    content = path.read_bytes()
+    normalised = content.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(normalised.replace(b"\n", b"\r\n")).hexdigest()
 
 
 def build_baseline_arrays() -> dict[str, Any]:

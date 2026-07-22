@@ -1,46 +1,55 @@
 {
-  "label": "figure_5_1_faraday_snr_and_camera_frames_v2",
-  "notebook_defaults_config": "configs/dissertation_v2_dcc3260m.json",
-  "output_directory": "results/dissertation_plots_v1/figure_5_1",
+  "label": "figure_5_1_faraday_snr_and_camera_frames_orca_fusion_m10_v4_na013",
+  "model_config": "configs/dissertation_v3_orca_fusion.json",
+  "output_directory": "results/dissertation_plots_v2_orca_fusion/figure_5_1",
   "scan": {
     "detuning_ghz": 1.5,
-    "fluence_min_mw_us": 10.0,
-    "fluence_max_mw_us": 180.0,
-    "fluence_points": 171,
+    "fluence_min_mw_us": 90.0,
+    "fluence_max_mw_us": 300.0,
+    "fluence_points": 211,
     "spacing": "linear",
-    "reference_fluence_mw_us": 90.0,
-    "selected_fluence_mw_us": [30.0, 90.0, 150.0]
+    "reference_fluence_mw_us": 300.0,
+    "selected_fluence_mw_us": [90.0, 150.0, 300.0]
   },
   "fixed_context": {
     "imaging_axis": 0,
     "imaging_axis_label": "x",
-    "numerical_aperture": 0.08,
-    "camera_model": "Thorlabs DCC3260M",
-    "camera_pixel_m": 5.86e-6,
-    "effective_magnification": 4.0,
-    "quantum_efficiency": 0.6,
-    "quantum_efficiency_status": "experimentally plausible dissertation screening value; not measured",
-    "read_noise_electrons_per_pixel_per_port": 3.0,
-    "camera_bin_size": 15,
-    "central_block_half_width_pixels": 1,
-    "central_block_shape": [3, 3],
-    "kappa_F": 1.0,
-    "faraday_calibration_status": "Version 1 phenomenological placeholder; absolute Faraday SNR is uncalibrated"
+    "numerical_aperture": 0.13,
+    "camera_model": "Hamamatsu ORCA-Fusion C14440-20UP",
+    "camera_pixel_m": 6.5e-6,
+    "effective_magnification": 10.0,
+    "camera_output_shape": [153, 153],
+    "sampling_method": "centred area-conserving physical-pixel integration",
+    "quantum_efficiency": 0.65,
+    "quantum_efficiency_status": "catalogue typical at 400 nm; provisional at 401 nm until measured in the installed path",
+    "readout_mode": "Ultra quiet scan",
+    "read_noise_electrons_per_pixel_per_port": 0.7,
+    "read_noise_status": "manufacturer-typical rms value for Ultra quiet scan; provisional until verified for the installed camera, ROI and trigger timing",
+    "central_block_half_width_pixels": 2,
+    "central_block_shape": [5, 5],
+    "central_block_physical_width_um": 3.25,
+    "central_block_basis": "fixed local estimator spanning 3.25 um, compared with the 1.88 um ideal Rayleigh scale at effective NA=0.130",
+    "kappa_F": -0.4945054945054945,
+    "faraday_calibration_status": "ideal atomic coefficient fixed at -45/91; apparatus-level response remains to be calibrated"
   },
   "noise_realisation": {
     "rng_seed": 7,
     "interpretation": "one fixed representative draw per mode and selected fluence; random draws illustrate camera appearance and do not estimate the analytic SNR"
   },
+  "screening_guide": {
+    "minimum_snr": 8.0,
+    "interpretation": "working camera-space screening threshold for the spatial-structure task; not a universal visibility boundary"
+  },
   "canonical_checks": {
     "relative_tolerance": 1e-10,
     "absolute_tolerance": 1e-12,
     "phase_peak_rad": 0.20294165287929014,
-    "photoelectrons_per_incident_I0_pixel": 1034.318471381998,
+    "photoelectrons_per_incident_I0_pixel": 735.2695759176155,
     "snr": {
-      "Faraday dark-field": 6.22710517196034,
-      "Faraday dual-port": 16.06033992848492
+      "Faraday dark-field": 7.800030869978132,
+      "Faraday dual-port": 15.34463436369928
     },
-    "snr_interpretation": "analytic central-3x3 SNR with QE=0.60 and sigma_r=3 e- rms; the displayed random frames do not determine these values"
+    "snr_interpretation": "analytic central-5x5 SNR with exact 0.650 um object-plane pixels, QE=0.65 and Ultra quiet sigma_r=0.7 e- rms; the displayed random frames do not determine these values"
   },
   "figure": {
     "svg_filename": "figure_5_1.svg",
@@ -48,19 +57,19 @@
     "pdf_filename": "figure_5_1.pdf",
     "figsize_inches": [7.2, 6.4],
     "dpi": 300,
-    "xlim_mw_us": [10.0, 180.0],
-    "ylim_snr": [0.0, 24.0],
+    "xlim_mw_us": [87.5, 302.5],
+    "ylim_snr": [0.0, 17.0],
     "image_display": {
       "xlim_um": [-35.0, 35.0],
       "ylim_um": [-10.0, 10.0],
       "dark_vmin": -0.012,
-      "dark_vmax": 0.028,
-      "dual_vmin": -0.30,
-      "dual_vmax": 0.30
+      "dark_vmax": 0.040,
+      "dual_vmin": -0.24,
+      "dual_vmax": 0.24
     }
   },
   "scope": {
-    "camera_noise": "Poisson variance plus the provisional dissertation screening value sigma_r=3 e- rms per pixel and readout",
+    "camera_noise": "Poisson variance plus the ORCA-Fusion Ultra quiet manufacturer-typical value sigma_r=0.7 e- rms per physical pixel and readout",
     "state": "same undepleted reference condensate at every fluence",
     "multishot_evolution_included": false,
     "recoil_energy_dependent": false,

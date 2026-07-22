@@ -7,8 +7,10 @@ np = pytest.importorskip("numpy")
 from non_destructive_image import (
     add_camera_noise,
     bin_to_camera_pixels,
+    centered_camera_shape,
     normalize_camera_counts,
     propagate_scattered_field,
+    resample_to_camera_pixels,
     simulate_fourier_image,
     thomas_fermi_profile_2d,
 )
@@ -71,6 +73,38 @@ def test_bin_to_camera_pixels_matches_notebook_reshape_mean() -> None:
     expected = image[:rows, :cols].reshape(rows // bin_size, bin_size, cols // bin_size, bin_size).mean(axis=(1, 3))
 
     np.testing.assert_allclose(bin_to_camera_pixels(image, bin_size), expected)
+
+
+def test_physical_camera_resampling_preserves_constant_image_and_centre() -> None:
+    input_spacing = 100e-6 / 1024
+    camera_spacing = 6.5e-6 / 10
+    shape = centered_camera_shape((1024, 1024), input_spacing, camera_spacing)
+
+    assert shape == (153, 153)
+    image = np.full((1024, 1024), 2.75)
+    resampled = resample_to_camera_pixels(
+        image,
+        input_spacing,
+        camera_spacing,
+        shape,
+    )
+
+    assert resampled.shape == shape
+    np.testing.assert_allclose(resampled, 2.75, rtol=0.0, atol=2e-12)
+
+
+def test_physical_camera_resampling_matches_integer_block_average() -> None:
+    image = np.arange(21 * 21, dtype=float).reshape(21, 21)
+    expected = image.reshape(7, 3, 7, 3).mean(axis=(1, 3))
+
+    actual = resample_to_camera_pixels(
+        image,
+        input_pixel_size_m=1.0,
+        camera_pixel_size_m=3.0,
+        output_shape=(7, 7),
+    )
+
+    np.testing.assert_allclose(actual, expected, rtol=0.0, atol=1e-12)
 
 
 def test_camera_noise_matches_notebook_recipe_for_seeded_rng() -> None:

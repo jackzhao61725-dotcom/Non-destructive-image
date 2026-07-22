@@ -1,6 +1,12 @@
 # Dual-port Faraday imaging：实验室测量执行计划
 
-**版本：** 2026-07-19
+**版本：** 2026-07-22
+**状态：** active optional laboratory execution plan
+**使用者：** Chapter 8 implementation planning and future laboratory commissioning
+**更新触发：** installed optical geometry、camera mode、probe delivery、analysis
+contract 或 approved calibration route 发生变化
+**退役规则：** 仅在一份 indexed successor 吸收全部未完成任务、gate 和
+metadata contract 后替换
 **用途：** 从尚未定型的光路开始，逐步完成 dual-port Faraday 成像、仪器标定、单帧测量、重复曝光测量和模型反馈。
 **适用边界：** 本文件是实验执行清单，不是 dissertation 正文。所有未测参数均保持 `TBD`，不得用 Chapter 4–5 的 simulation reference values 冒充实验值。
 
@@ -36,7 +42,8 @@
 | camera offset、read noise、gain 和 linear range | `TBD` | T8 |
 | input polarisation、port balance 与背景漂移 | `TBD` | T4、T9 |
 | reference condensate distribution | `TBD` | T11 |
-| 有效 Faraday coefficient \(\kappa_F\) | `TBD` | T13 |
+| atomic conversion \(\kappa_F\) | `-45/91` under the Chapter 3 sign and state assumptions | T13 checks applicability; it is not redefined by apparatus loss |
+| effective apparatus response \(g_F\) | `TBD` | T13 |
 | net repeated-exposure disturbance | `TBD` | T15 |
 
 ---
@@ -51,7 +58,7 @@
 | **B. Probe 与 timing** | T5–T6 | 实际 \(\Delta\)、\(P_{\mathrm{atoms}}\)、\(\tau_{\mathrm{eff}}\) 和 pulse energy 可追溯且稳定 |
 | **C. Detector 与空间响应** | T7–T9 | counts、noise、port registration 和空间采样能够定量解释 |
 | **D. Atomic baseline 与首图** | T10–T12 | 获得可重复、与 condensate 空间位置一致的 atom-dependent dual-port signal |
-| **E. 定量标定与 operating region** | T13–T14 | 得到有效 \(\kappa_F\) 和实验 single-frame SNR–fluence relation |
+| **E. 定量标定与 operating region** | T13–T14 | 得到 effective response \(g_F\) 和 observable-specific single-frame performance |
 | **F. Repeated exposure 与模型评估** | T15–T16 | 得到 net disturbance，并完成至少一组 frozen-parameter held-out comparison |
 
 > **重要：** “先得到首图”不要求提前完成所有高精度标定。T7–T9 可以先完成足以支持首图的 provisional version，随后再做精确版本；但任何进入 dissertation 的绝对数值必须来自精确版本。
@@ -270,7 +277,7 @@ C_{\Sigma}=C_H+C_V.
 
 - 不得写“same-realisation paired Faraday–RAI calibration”；
 - 使用 matched ensembles：Faraday shots 与 RAI-only shots 采用相同 preparation window；
-- 将 condensate shot-to-shot variation 明确计入 \(\kappa_F\) uncertainty；
+- 将 condensate shot-to-shot variation 明确计入 \(g_F\) uncertainty；
 - 优先评估可重复翻转/平移 mount 或其他不移动 camera 的切换方案。
 
 ### 通过标准
@@ -332,7 +339,7 @@ S=\frac{C_H-C_V}{C_H+C_V},\qquad \Delta S=S_{\mathrm{atoms}}-S_0.
 - balance angle 可重复找到；
 - no-atom background map 和技术噪声已量化；
 - background drift 在首个候选 atom ROI 内小于预期或已观测 atom-dependent signal；
-- 若背景不稳定，先处理 polarisation/path drift，不进入 \(\kappa_F\) 标定。
+- 若背景不稳定，先处理 polarisation/path drift，不进入 \(g_F\) 标定。
 
 ---
 
@@ -506,7 +513,7 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 - 同一结构在 H/V registration 后的 residual 小于需要解析的最小 condensate feature；
 - magnification 有实测 uncertainty；
-- 后续 \(\kappa_F\) fitting 使用 measured spatial response 或明确标记 remaining approximation。
+- 后续 \(g_F\) fitting 使用 measured spatial response 或明确标记 remaining approximation。
 
 ---
 
@@ -575,7 +582,8 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 - 所有 atom/reference frames 位于 calibrated linear range；
 - 两端口 detector differences 已被量化；
-- Chapter 5 的 \(3e^-\) provisional value 不再被当成 installed-camera measurement。
+- Chapter 5 的 \(0.7e^-\) manufacturer-typical screening input 不得被当成
+  installed-camera measurement。
 
 ---
 
@@ -635,7 +643,8 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 - registration transform；
 - background/reference construction；
 - atom ROI 和 background ROI；
-- central \(3\times3\) SNR estimator；
+- central \(5\times5\) SNR estimator, spanning \(3.25\,\mu\mathrm m\) in the object plane, as a commissioning and detection diagnostic only；
+- observable vector \(q=(A,y_c,z_c,w_{\mathrm{major}})\), its fixed physical support and the rule for uncertainty or unsupported components；
 - exclusion criteria；
 - configuration ID 和 code commit。
 
@@ -648,8 +657,9 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 5. 应用固定 port-gain correction；
 6. 计算 \(S\)；
 7. 减去独立 no-atom \(S_0\)；
-8. 在预先定义 ROI 内计算 signal 和 SNR；
-9. 保存 processed maps，但不覆盖 raw files。
+8. 在预先定义 ROI 内计算 commissioning signal 和 SNR；
+9. 从 raw-channel likelihood 估计预先定义的 observables，并保存 uncertainty/support status；
+10. 保存 processed maps，但不覆盖 raw files。
 
 ### 通过标准
 
@@ -699,7 +709,7 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 - corrected RAI atom number 在 accepted probe-intensity range 内稳定；
 - reference cloud distribution 足以区分 imaging disturbance 与 preparation noise；
-- \(\kappa_F\) 标定只使用预先定义的 accepted preparation range。
+- \(g_F\) 标定只使用预先定义的 accepted preparation range。
 
 ---
 
@@ -713,7 +723,7 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 - detuning 以 measured 1.5 GHz reference 为起点；
 - fluence 从实验允许的低-disturbance level 开始；
-- Chapter 5 的 \(F=30,50,90,150\ \mathrm{mW\,\mu s}\) 只用作 bracketing reference；
+- Chapter 5 的 \(F=90,150,300\ \mathrm{mW\,\mu s}\) 只用作 bracketing reference；
 - 不得在 T6 未确认 pulse area 前直接按 commanded \(P\tau\) 使用这些值。
 
 ### 每个 condition 的 acquisition block
@@ -757,11 +767,17 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 # Stage E — Quantitative calibration and operating region
 
-## T13. Determine the effective Faraday coefficient \(\kappa_F\)
+## T13. Determine the effective apparatus response \(g_F\)
 
 ### 目标
 
-确定在选定 transition、detuning、spin preparation 和 optical configuration 下，将 absorption-derived scalar phase response 映射到 measured Faraday signal 的 **effective coefficient**。该值不是 microscopic erbium calculation。
+Chapter 3 在完全极化、轴向探测和 isolated-transition 条件下，按本文的 helicity、传播方向和 H/V 端口约定给出 signed atomic conversion \(\kappa_F=-45/91\)。本任务不重新定义 \(\kappa_F\)，而是标定将该原子响应映射到 measured Faraday channels 的 effective apparatus response \(g_F\)：
+
+\[
+\theta_F^{\mathrm{eff}}=g_F\kappa_F\varphi .
+\]
+
+\(g_F\) 可包含实际 polarisation preparation、optical transmission、multilevel departure 和 detector response。各项能够独立测量时应分别报告，不能把它们写成 atomic \(\kappa_F\)。
 
 ### Route A：same-realisation paired measurement
 
@@ -782,7 +798,7 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 1. 在同一 preparation block 中随机交错 Faraday shots 和 RAI-only shots；
 2. 使用 T11 的 accepted preparation window；
 3. 比较 ensemble means 和 distributions；
-4. 将 shot-to-shot condensate variation 纳入 \(\kappa_F\) uncertainty；
+4. 将 shot-to-shot condensate variation 纳入 \(g_F\) uncertainty；
 5. 不把它称为 one-to-one paired calibration。
 
 ### Acquisition range
@@ -796,14 +812,15 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 1. 使用 RAI 得到 \(n_{\mathrm{col}}(y,z)\) 及其 uncertainty。
 2. 使用 Chapter 3 的 scalar phase relation 构造 \(\varphi(y,z)\)，并保留 RAI effective-cross-section uncertainty。
-3. 使用 T7 measured spatial response 和 T10 fixed dual-port pipeline 生成 forward-model \(S(y,z;\kappa_F)\)。
-4. 直接拟合 \(\kappa_F\) 到 measured \(S\) map；小角度关系 \(S\simeq2\theta_F\) 只作为 diagnostic，不替代 finite-aperture fitting。
+3. 固定 Chapter 3 的 \(\kappa_F\)，使用 T7 measured spatial response 和 T10 fixed dual-port pipeline 生成 forward-model \(S(y,z;g_F)\)。
+4. 直接拟合 \(g_F\) 到 measured raw channels；小角度关系 \(S\simeq2\theta_F\) 只作为 diagnostic，不替代 finite-aperture fitting。
 5. 同时检查 amplitude residual、spatial residual 和 density dependence。
-6. 对每个 shot/block 拟合后，判断 \(\kappa_F\) 是否在 accepted density/time range 内稳定。
+6. 对每个 shot/block 拟合后，判断 \(g_F\) 是否在 accepted density/time range 内稳定。
 
 ### 输出
 
-- effective \(\kappa_F\)；
+- theoretical \(\kappa_F\) 的 applicability statement；
+- fitted effective response \(g_F\)；
 - statistical 和 systematic uncertainty；
 - applicable detuning、spin state、density 和 time range；
 - spatial residual map；
@@ -812,9 +829,9 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 ### 通过标准
 
-- \(\kappa_F\) 在定义的 operating range 内无显著 density/time drift，或其 dependence 已被显式建模；
+- \(g_F\) 在定义的 operating range 内无显著 density/time drift，或其 dependence 已被显式建模；
 - residual 不表现出明显未处理的 registration/PSF/background artefact；
-- 不引用 rubidium scale factor 作为 erbium \(\kappa_F\)。
+- 不把外部装置的 calibration scale 或 fitted apparatus response 写成 erbium \(\kappa_F\)。
 
 ---
 
@@ -822,17 +839,17 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 ### 目标
 
-用实验数据确定最低能够提供所需 spatial information 的 pulse area，并检验 simulation 中 \(F=P\tau\) 作为主要 scan coordinate 的适用程度。
+用实验数据确定最低能够约束 \(A\)、centroid 和 \(w_{\mathrm{major}}\) 的 pulse area，并检验 simulation 中 \(F=P\tau\) 作为主要 scan coordinate 的适用程度。
 
 ### 初始 scan design
 
 1. 固定 measured \(|\Delta|/2\pi\approx1.5\ \mathrm{GHz}\)。
-2. 选择能够 bracket transition 的 fluence/pulse-area points。优先参考：
-   - low：约 \(30\ \mathrm{mW\,\mu s}\)；
-   - intermediate：约 \(50\ \mathrm{mW\,\mu s}\)；
-   - reference：约 \(90\ \mathrm{mW\,\mu s}\)；
-   - high：约 \(150\ \mathrm{mW\,\mu s}\)。
-3. 这些数值必须按 T6 measured pulse area 转换；若硬件范围不同，应选择新的 low/intermediate/reference/high points，而不是强行达到模拟值。
+2. 使用当前 Chapter 5 representative points
+   \(F=90,150,300\ \mathrm{mW\,\mu s}\) bracket 观察到的 transition。
+3. 这些数值必须按 T6 measured pulse area 转换；若安全 commissioning
+   需要从更低 pulse area 开始，该点只标为 pilot，不替代当前 simulation
+   reference points。若硬件范围不同，应记录新的 measured points，不强行
+   达到模拟值。
 4. 每点以约 15–20 个 accepted condensates 作为 pilot；根据 observed variance 决定正式样本量。
 5. 随机化 condition 顺序，避免把 run drift 误认为 fluence trend。
 
@@ -852,27 +869,26 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 - dark/no-atom references；
 - measured \(\Delta,P(t),E_{\mathrm{pulse}}\)；
 - \(S\) and \(\Delta S\)；
-- central \(3\times3\) SNR；
-- spatial profile/edge visibility；
+- central \(5\times5\) SNR as a commissioning diagnostic；
+- \(A\), centroid and \(w_{\mathrm{major}}\) estimates with uncertainty/support status；
 - corresponding condensate reference；
 - rejection reason。
 
 ### 分析
 
-1. 绘制 empirical single-frame \(\mathrm{SNR}_{3\times3}\) versus measured pulse area。
+1. 绘制 empirical single-frame \(\mathrm{SNR}_{5\times5}\) versus measured pulse area，作为 detection/commissioning diagnostic。
 2. 与 photon + read-noise model 和 measured technical-noise floor 比较。
-3. 显示代表性 raw/reconstructed camera images，而不是只报告 SNR 数字。
-4. 确定最低满足实际 measurement task 的 pulse area：
-   - only detect condensate；
-   - resolve centre/elongation；
-   - track boundary or shape change。
-5. 不声明 universal SNR threshold；记录本实验任务采用的 working image-quality requirement。
+3. 对每个 fluence 报告 \(A\)、centroid 和 \(w_{\mathrm{major}}\) 的 estimate、uncertainty、support fraction 和 held-out bias where available。
+4. 确定每个 observable 首次满足预先定义的 accuracy/uncertainty/support requirement 的 pulse area；不同 observables 可以有不同 boundary。
+5. representative raw H/V counts 只用于说明 measurement channels 和 residual，不以 reconstructed image appearance 作为 performance evidence。
+6. 不声明 universal SNR threshold，也不把三个 observable coefficients 合并成 image-quality score。
 
 ### 输出
 
-- experimental SNR–fluence curve；
-- representative camera frames；
-- working single-frame image-quality criterion；
+- diagnostic SNR–fluence curve；
+- observable-specific estimate/uncertainty/support curves；
+- representative raw channels and residuals；
+- working single-frame observable criteria；
 - initial experimental fluence region；
 - fixed-fluence split result。
 
@@ -884,7 +900,7 @@ M_z=\frac{\Delta z_{\mathrm{camera}}}{\Delta z_{\mathrm{object}}}.
 
 ### 目标
 
-测量 repeated Faraday pulses 对 condensate state 和 framewise image quality 的联合影响，得到实际 sequence length。首先约束 net effect，不分别拟合 heating、reabsorption 和 collisional depletion。
+测量 repeated Faraday pulses 对 condensate state 和 framewise observable support 的联合影响，得到实际 sequence length。首先约束 net effect，不分别拟合 heating、reabsorption 和 collisional depletion。
 
 ### Experimental design
 
@@ -931,8 +947,8 @@ control 用于扣除自然演化、trap loss、hold-time heating 和 preparation
 从 Faraday frames：
 
 - framewise signal；
-- framewise \(\mathrm{SNR}_{3\times3}\)；
-- profile width/centre；
+- framewise \(\mathrm{SNR}_{5\times5}\) as a diagnostic；
+- framewise \(A\), centroid and \(w_{\mathrm{major}}\) with uncertainty/support status；
 - background drift；
 - total H+V intensity；
 - port imbalance。
@@ -950,7 +966,7 @@ control 用于扣除自然演化、trap loss、hold-time heating 和 preparation
 
 分别报告两个 boundary：
 
-1. **image-quality boundary**：framewise signal 不再满足 T14 定义的 working requirement；
+1. **observable-support boundary**：任一 required observable 不再满足 T14 预先定义的 accuracy/uncertainty/support requirement；
 2. **condensate-state boundary**：condensate depletion/shape change 超过实验允许范围。
 
 实际可用 sequence 截止于两者中先发生的一项。不要只用固定 30% loss，也不要只用 SNR threshold。
@@ -968,9 +984,10 @@ control 用于扣除自然演化、trap loss、hold-time heating 和 preparation
 ### 输出
 
 - \(N_0,T,\) fraction and radii versus \(q\) relative to controls；
-- framewise SNR versus frame number；
+- framewise observable estimates, uncertainty and support versus frame number；
+- diagnostic SNR versus frame number；
 - net-disturbance curve；
-- image-quality and condensate-state boundaries；
+- observable-support and condensate-state boundaries；
 - experimentally available sequence length；
 - refined effective disturbance parameter(s)。
 
@@ -986,7 +1003,7 @@ control 用于扣除自然演化、trap loss、hold-time heating 和 preparation
 
 至少预先指定一种 held-out variation：
 
-- 一个未用于 \(\kappa_F\) fitting 的 column-density range；
+- 一个未用于 \(g_F\) fitting 的 column-density range；
 - 一个未用于 fluence fitting 的 pulse area；
 - 若实验允许，一个邻近 detuning；
 - 若干未用于 disturbance fitting 的 \(q\) values；
@@ -997,12 +1014,12 @@ control 用于扣除自然演化、trap loss、hold-time heating 和 preparation
 ### Protocol
 
 1. 完成 T7–T15 calibration；
-2. 冻结：camera calibration、registration、background procedure、\(\kappa_F\)、spatial response 和 net-disturbance parameters；
+2. 冻结：camera calibration、registration、background procedure、atomic \(\kappa_F\) convention、fitted \(g_F\)、spatial response、observable support 和 net-disturbance parameters；
 3. 用冻结参数为 held-out conditions 生成 prediction；
 4. 保存 prediction 和 config hash；
 5. 之后采集 held-out data；
 6. 按冻结 pipeline 处理，不重新拟合；
-7. 比较 amplitude、profile、SNR、state evolution 和 sequence boundary；
+7. 比较 raw-channel residual、observable estimates/uncertainty/support、state evolution 和 sequence boundary；
 8. 报告 residuals 和 uncertainty。
 
 ### 语言规则
@@ -1160,7 +1177,7 @@ raw 目录只读保留；processed output 不得覆盖 raw frames。
 - 按 T12 从低 pulse area 逐步寻找 repeatable signal；
 - 不在首日同时开展完整 fluence scan。
 
-完成首图以后，再安排 T7 精确空间标定、T13 \(\kappa_F\)、T14 fluence scan 和 T15 repeated-exposure sequence。
+完成首图以后，再安排 T7 精确空间标定、T13 \(g_F\)、T14 fluence scan 和 T15 repeated-exposure sequence。
 
 ---
 
@@ -1176,11 +1193,39 @@ raw 目录只读保留；processed output 不得覆盖 raw frames。
 - [ ] frozen port registration/background procedure；
 - [ ] reference-condensate distribution；
 - [ ] first repeatable dual-port Faraday image；
-- [ ] effective \(\kappa_F\) with uncertainty and applicability range；
-- [ ] experimental single-frame SNR–fluence relation；
+- [ ] atomic \(\kappa_F\) applicability statement and effective \(g_F\) with uncertainty/range；
+- [ ] experimental single-frame observable performance versus fluence；
 - [ ] fixed-fluence \(P/\tau\) comparison；
 - [ ] net repeated-exposure disturbance with matched controls；
-- [ ] image-quality and condensate-state sequence boundaries；
+- [ ] observable-support and condensate-state sequence boundaries；
 - [ ] frozen-parameter held-out comparison；
 - [ ] updated Chapter 5 figures from measured parameters；
 - [ ] final experimentally informed operating region。
+
+# 6. Apparatus-response factors outside the ideal comparison model
+
+The ideal comparison model does not apply an empirical method-specific loss to
+PCI, DGI or Faraday imaging. A Faraday-only factor would change the comparison
+without equivalent measurements for the other optical paths. Section 3.3
+therefore contains the atomic conversion and its physical assumptions only.
+
+The implementation stage must measure effects that can reduce or reshape the
+recorded dual-port response:
+
+| Factor | Primary task | Required record |
+|---|---|---|
+| Zeeman-state purity, probe-axis alignment and optical pumping during a pulse | T5, T11, T13 | preparation range, detuning and pulse-duration dependence |
+| viewport birefringence, polarisation drift and analyser extinction | T4, T9 | Jones/Stokes diagnostic, background drift and extinction ratio |
+| unequal H/V transmission and detector gain | T8, T10, T13 | port-gain calibration and uncertainty |
+| H/V registration and measured spatial transfer | T7, T10, T13 | transform, residual and spatial-response data |
+| residual circular dichroism or additional excited-level contributions | T5, T13 | density/detuning dependence and model residual |
+| background construction and technical noise | T9, T10, T14 | no-atom ensemble, covariance and operating range |
+
+The literature value `0.64` is an example of an experiment-specific response
+loss. It is not an erbium `kappa_F`, and it is not inserted into the present
+simulation. If this apparatus shows a comparable loss, the measured components
+are reported separately where possible; their remaining combined effect may be
+represented by `g_F` with an uncertainty and applicability range. Only then may
+the calibrated factor enter an experimentally informed regeneration of the
+Faraday results. Any renewed cross-method comparison must apply the same
+calibration standard to the PCI and DGI optical paths.

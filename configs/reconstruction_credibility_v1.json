@@ -1,0 +1,44 @@
+{
+  "label": "reconstruction_credibility_v1",
+  "purpose": "quantify data support, conditional detector-noise uncertainty, residual structure, prior sensitivity and blank false positives without using a truth map as the credibility measure",
+  "source_benchmark_config": "configs/reconstruction_morphology_benchmark_v3.json",
+  "output_directory": "results/reconstruction_credibility_v1",
+  "representative": {
+    "morphology_name": "held_out_three_peak_fragment",
+    "fluence_mw_us": 90.0,
+    "seeds": {
+      "dual_port": 3914195272,
+      "dark_field": 2868007648
+    }
+  },
+  "frozen_candidates": {
+    "dual_port": "resolution_matched_17x5__curvature_30_um2",
+    "dark_field": "resolution_matched_17x5__curvature_10_um2"
+  },
+  "conditional_bootstrap": {
+    "draws_per_readout": 16,
+    "confidence_level": 0.68,
+    "seeds": {
+      "dual_port": 2026072101,
+      "dark_field": 2026072102
+    },
+    "interpretation": "conditional on the declared forward operator, basis, support, active solution basin and selected regulariser; not an experimental model-discrepancy interval"
+  },
+  "prior_sensitivity": {
+    "curvature_weights_um2": [0.0, 3.0, 10.0, 30.0, 100.0],
+    "interpretation": "same raw observation and basis, changing only the declared curvature weight"
+  },
+  "blank_ensemble": {
+    "draws_per_readout": 12,
+    "seeds": {
+      "dual_port": 2026072111,
+      "dark_field": 2026072112
+    },
+    "interpretation": "development false-positive baseline; not an acceptance threshold for experimental data"
+  },
+  "claims_boundary": {
+    "synthetic_only": true,
+    "kappa_F_status": "illustrative and uncalibrated",
+    "forbidden_interpretation": "a clean reconstruction image alone is not evidence that every displayed feature is measured"
+  }
+}

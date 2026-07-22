@@ -1,3 +1,0 @@
-Delta_over_2pi_GHz,axis,power_mW,exposure_us,ideal_QE1_peak_pixel_SNR,realistic_peak_pixel_SNR,realistic_resolution_element_SNR,camera_model,quantum_efficiency,read_noise_e_rms,NA_PSF_included_in_realistic_values
-1.5,x,2.0,40.0,15.093850636466073,5.781195504124932,11.691905893082325,unspecified,0.4,7.0,True
-13.0,y,2.0,40.0,36.45263879372922,6.0149162768925635,8.525022820339919,unspecified,0.4,7.0,True

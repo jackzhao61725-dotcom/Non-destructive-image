@@ -85,11 +85,11 @@ def faraday_rotation_angle(
     gamma_rad_per_s: float,
     kappa_f: float,
 ) -> float:
-    """Return the notebook's phenomenological peak Faraday rotation angle.
+    """Return the signed peak Faraday rotation ``theta_F = kappa_F * phi``.
 
-    The notebook defines the rotation as the scalar phase lineshape scaled by
-    ``kappa_f``. This helper does not derive circular-component phases or change
-    the placeholder calibration convention.
+    ``kappa_f`` is supplied by the atomic-response model. For the fully
+    spin-polarised axial 166Er reference state used in the dissertation it is
+    ``-45/91``; apparatus-level polarimetric calibration is handled separately.
     """
 
     return kappa_f * scalar_phase_shift(

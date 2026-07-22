@@ -16,14 +16,13 @@ from typing import Any
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_MANIFEST = REPO_ROOT / "results" / "reproducibility_manifest.json"
 NOTEBOOK_CONFIG = "configs/notebook_v1_defaults.json"
-FARADAY_RESULTS_CONFIG = "configs/dissertation_results_v1.json"
-DETUNING_PLOT_CONFIG = "configs/dissertation_plots_v1.json"
-THESIS_NUMERICAL_CONFIG = "configs/thesis_numerical_contract_v1.json"
+ORCA_DETECTOR_PLOT_CONFIG = "configs/dissertation_plots_v2_orca_fusion.json"
+DETUNING_PLOT_CONFIG = ORCA_DETECTOR_PLOT_CONFIG
+ORCA_MODEL_CONFIG = "configs/dissertation_v3_orca_fusion.json"
 FIGURE_4_2_CONFIG = "configs/figure_4_2.json"
 FIGURE_5_1_CONFIG = "configs/figure_5_1.json"
 FIGURE_5_2_CONFIG = "configs/figure_5_2.json"
 FIGURE_5_4_CONFIG = "configs/figure_5_4.json"
-PERFORMANCE_CONFIG = "configs/performance_validation_v1.json"
 
 
 @dataclass(frozen=True)
@@ -163,75 +162,23 @@ RUN_STEPS: tuple[RunStep, ...] = (
         name="generate_detuning_tradeoff_plot",
         script="scripts/generate_detuning_tradeoff_plot.py",
         args=("--config", DETUNING_PLOT_CONFIG),
-        configs=(NOTEBOOK_CONFIG, DETUNING_PLOT_CONFIG),
+        configs=(ORCA_MODEL_CONFIG, DETUNING_PLOT_CONFIG),
         expected_outputs=(
-            "results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff.svg",
-            "results/dissertation_plots_v1/detuning_tradeoff/detuning_tradeoff_data.csv",
-            "results/dissertation_plots_v1/detuning_tradeoff/metadata.json",
+            "results/dissertation_plots_v2_orca_fusion/detuning_tradeoff/detuning_tradeoff.svg",
+            "results/dissertation_plots_v2_orca_fusion/detuning_tradeoff/detuning_tradeoff_data.csv",
+            "results/dissertation_plots_v2_orca_fusion/detuning_tradeoff/metadata.json",
         ),
         result_type="dissertation physics plot",
-    ),
-    RunStep(
-        name="audit_linear_approximation_validity",
-        script="scripts/audit_linear_approximation_validity.py",
-        args=("--config", NOTEBOOK_CONFIG),
-        configs=(NOTEBOOK_CONFIG, FARADAY_RESULTS_CONFIG, DETUNING_PLOT_CONFIG),
-        expected_outputs=(
-            "docs/linear_approximation_validity_audit.md",
-            "results/linear_approximation_audit/linear_approximation_summary.json",
-            "results/linear_approximation_audit/metadata.json",
-        ),
-        result_type="numerical validity audit",
-    ),
-    RunStep(
-        name="generate_accumulated_snr_invariance",
-        script="scripts/generate_accumulated_snr_invariance_plot.py",
-        args=("--config", DETUNING_PLOT_CONFIG),
-        configs=(NOTEBOOK_CONFIG, DETUNING_PLOT_CONFIG),
-        expected_outputs=(
-            "results/dissertation_plots_v1/accumulated_snr_invariance/accumulated_snr_invariance.svg",
-            "results/dissertation_plots_v1/accumulated_snr_invariance/accumulated_snr_invariance_data.csv",
-            "results/dissertation_plots_v1/accumulated_snr_invariance/figure_3_2_parameter_register.csv",
-            "results/dissertation_plots_v1/accumulated_snr_invariance/metadata.json",
-        ),
-        result_type="idealised accumulated-SNR scaling analysis",
-    ),
-    RunStep(
-        name="generate_full_multishot_accumulated_snr",
-        script="scripts/generate_full_multishot_accumulated_snr.py",
-        args=("--config", DETUNING_PLOT_CONFIG),
-        configs=(NOTEBOOK_CONFIG, DETUNING_PLOT_CONFIG),
-        expected_outputs=(
-            "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr.svg",
-            "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr_data.csv",
-            "results/dissertation_plots_v1/full_multishot_accumulated_snr/full_multishot_accumulated_snr_summary.json",
-            "results/dissertation_plots_v1/full_multishot_accumulated_snr/faraday_canonical_reference_at_1p5GHz.csv",
-            "results/dissertation_plots_v1/full_multishot_accumulated_snr/metadata.json",
-        ),
-        result_type="evolving heating-aware accumulated-SNR analysis",
-    ),
-    RunStep(
-        name="audit_thesis_numerical_consistency",
-        script="scripts/audit_thesis_numerical_consistency.py",
-        args=("--config", THESIS_NUMERICAL_CONFIG),
-        configs=(NOTEBOOK_CONFIG, DETUNING_PLOT_CONFIG, THESIS_NUMERICAL_CONFIG),
-        expected_outputs=(
-            "docs/thesis_numerical_consistency_correction_report.md",
-            "results/thesis_numerical_consistency_v1/corrected_numbers.json",
-            "results/thesis_numerical_consistency_v1/canonical_accumulated_snr_table.csv",
-            "results/thesis_numerical_consistency_v1/metadata.json",
-        ),
-        result_type="thesis numerical consistency audit",
     ),
     RunStep(
         name="generate_figure_4_2",
         script="scripts/generate_figure_4_2.py",
         args=("--config", FIGURE_4_2_CONFIG),
-        configs=(FIGURE_4_2_CONFIG,),
+        configs=(ORCA_MODEL_CONFIG, FIGURE_4_2_CONFIG),
         expected_outputs=(
-            "results/dissertation_plots_v1/figure_4_2/figure_4_2.svg",
-            "results/dissertation_plots_v1/figure_4_2/figure_4_2_values.json",
-            "results/dissertation_plots_v1/figure_4_2/metadata.json",
+            "results/dissertation_plots_v2_orca_fusion/figure_4_2/figure_4_2.svg",
+            "results/dissertation_plots_v2_orca_fusion/figure_4_2/figure_4_2_values.json",
+            "results/dissertation_plots_v2_orca_fusion/figure_4_2/metadata.json",
         ),
         result_type="dissertation figure",
     ),
@@ -239,55 +186,29 @@ RUN_STEPS: tuple[RunStep, ...] = (
         name="generate_figure_5_1",
         script="scripts/generate_figure_5_1.py",
         args=("--config", FIGURE_5_1_CONFIG),
-        configs=(FIGURE_5_1_CONFIG,),
+        configs=(ORCA_MODEL_CONFIG, FIGURE_5_1_CONFIG),
         expected_outputs=(
-            "results/dissertation_plots_v1/figure_5_1/figure_5_1.svg",
-            "results/dissertation_plots_v1/figure_5_1/figure_5_1_data.csv",
-            "results/dissertation_plots_v1/figure_5_1/metadata.json",
+            "results/dissertation_plots_v2_orca_fusion/figure_5_1/figure_5_1.svg",
+            "results/dissertation_plots_v2_orca_fusion/figure_5_1/figure_5_1_data.csv",
+            "results/dissertation_plots_v2_orca_fusion/figure_5_1/metadata.json",
         ),
         result_type="dissertation figure",
-    ),
-    RunStep(
-        name="generate_figure_5_2",
-        script="scripts/generate_figure_5_2.py",
-        args=("--config", FIGURE_5_2_CONFIG),
-        configs=(FIGURE_5_2_CONFIG,),
-        expected_outputs=(
-            "results/dissertation_plots_v1/figure_5_2/figure_5_2_dual_port_heatmap.svg",
-            "results/dissertation_plots_v1/figure_5_2/figure_5_2_operating_band.svg",
-            "results/dissertation_plots_v1/figure_5_2/figure_5_2_data.csv",
-            "results/dissertation_plots_v1/figure_5_2/metadata.json",
-        ),
-        result_type="dissertation figure and screening scan",
-    ),
-    RunStep(
-        name="generate_figure_5_4",
-        script="scripts/generate_figure_5_4_snr_panel.py",
-        args=("--config", FIGURE_5_4_CONFIG),
-        configs=(FIGURE_5_4_CONFIG, FIGURE_5_2_CONFIG),
-        expected_outputs=(
-            "results/dissertation_plots_v1/figure_5_4/figure_5_4.svg",
-            "results/dissertation_plots_v1/figure_5_4/figure_5_4_frame_data.csv",
-            "results/dissertation_plots_v1/figure_5_4/metadata.json",
-        ),
-        result_type="dissertation figure",
-    ),
-    RunStep(
-        name="canonical_performance_gate",
-        script="scripts/run_performance_validation.py",
-        args=("--config", PERFORMANCE_CONFIG, "--skip-prerequisites"),
-        configs=(PERFORMANCE_CONFIG, DETUNING_PLOT_CONFIG),
-        expected_outputs=(
-            "results/performance_validation_v1/canonical_gate.csv",
-            "results/performance_validation_v1/canonical_gate.json",
-            "docs/performance_validation_v1_report.md",
-        ),
-        result_type="canonical numerical gate",
     ),
 )
 
 
-PENDING_ITEMS: tuple[dict[str, str], ...] = ()
+PENDING_ITEMS: tuple[dict[str, str], ...] = (
+    {
+        "name": "generate_figure_5_2",
+        "status": "blocked: frozen Version 1 output pending the approved heating replacement",
+        "config": FIGURE_5_2_CONFIG,
+    },
+    {
+        "name": "generate_figure_5_4",
+        "status": "blocked: frozen Version 1 output pending the approved heating replacement",
+        "config": FIGURE_5_4_CONFIG,
+    },
+)
 
 
 def git_commit() -> str:
