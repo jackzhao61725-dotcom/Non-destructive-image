@@ -1,52 +1,52 @@
 # Documentation index
 
-This directory contains the active documentation for the dissertation forward
-model and its experimental hand-off. Date-stamped transition notes and abandoned
-simulation branches have been removed from the active surface; their history
-remains available through Git or the 20 July 2026 cleanup archive.
+- **Status:** single index of active repository documentation
+- **Update trigger:** a document is added, removed, renamed, superseded or
+  changes scientific status
+
+This directory is the active documentation surface. Superseded specifications,
+audits, conventions and transition reports are retained in Git history, not in
+an archive directory.
 
 ## Start here
 
+- [Current Codex hand-off](../CODEX_HANDOFF_CURRENT.md) — dissertation
+  direction, scientific boundaries, worktree state and immediate task.
+- [Dissertation writing conventions](dissertation_writing_conventions.md) —
+  single authority for argument, equations, figures, source use, prose review
+  and file-retention decisions.
 - [Simulation reference parameters](simulation_reference_parameters.md) —
-  current provisional optical, detector and sequence contract.
-- [Figure index](figure_index.md) — figure-to-script-to-config provenance.
-- [Experimental measurement plan](experimental_measurement_plan.md) —
-  laboratory tasks, priorities, recorded data and acceptance criteria.
-- [Reproducibility](reproducibility.md) — validation and regeneration commands.
-- [Repository cleanup report](repository_cleanup_2026_07_20.md) — archived
-  material, contract changes and validation evidence for this transition.
+  current condensate, detector, sampling, sequence and Faraday-response
+  contract, including frozen-output boundaries.
+- [Reproducibility](reproducibility.md) — verified local interpreter, tests,
+  regeneration commands and output-retention rules.
 
-## Model
+## Model and evidence
 
-- [Architecture](architecture.md) — maintained layers and data flow.
-- [Physics model](physics_model.md) — Version 1 equations and approximations.
-- [Faraday model](faraday_model.md) — polarisation readouts and the
-  uncalibrated `kappa_F` boundary.
-- [Baseline specification](baseline_specification.md) — historical numerical
-  baselines retained for regression.
-- [Colab validation](colab_validation.md) — portable validation notes.
+- [Multiframe heating model optimisation basis](multiframe_heating_model_optimisation.md)
+  — approved implementation specification for the direct Oxford initial
+  states, non-saturation closure, recoil-limited energy update, validity gates
+  and replacement tests for the frozen Version 1 Chapter 5 sequence model.
+- [Reconstruction architecture](reconstruction_architecture.md) — raw-channel
+  forward operator, latent nuisance field, observable vector, support,
+  uncertainty and implementation boundaries.
+- [Figure and data index](figure_index.md) — output-to-generator-to-config
+  provenance and the current or frozen status of each result family.
+- [ORCA reconstruction evidence](reconstruction_orca_v4_evidence_2026_07_21.md)
+  — sealed synthetic method-development record. It preserves the historical
+  `kappa_F=1` operator and is not a current quantitative `166Er` Faraday
+  performance prediction.
 
-## Results and audits
+## Experimental implementation
 
-- [Results guide](results_readme.md) — active result directories and focused
-  regeneration commands.
-- [Canonical performance gate](performance_validation_v1_report.md) — current
-  10-frame, 228-pixel matched-ROI evidence.
-- [Thesis numerical consistency audit](thesis_numerical_consistency_correction_report.md)
-  — retained legacy corrections and current contract checks.
-- [Linear-approximation audit](linear_approximation_validity_audit.md) —
-  validity of weak-phase and small-rotation interpretations.
+- [Experimental measurement plan](experimental_measurement_plan.md) — optional
+  HWP–Wollaston dual-port commissioning, calibration, observable-specific
+  performance and held-out assessment plan. It is not a dissertation completion
+  requirement.
 
-## Figure conventions
+## Admission rule
 
-- [Figure language](figure_language_conventions.md)
-- [Quantity labels](figure_quantity_label_conventions.md)
-
-## Publication
-
-- [Zenodo release checklist](zenodo_release_checklist.md)
-
-All current Faraday outputs remain structural or screening comparisons while
-`kappa_F=1` is uncalibrated. Provisional detector and optical values must be
-replaced by apparatus measurements before an experimentally calibrated result
-is claimed.
+A new document is admitted only when an existing authority cannot carry the
+content, a named consumer will use it, its update or retirement event is known,
+and the documentation index will link to it. The complete retention test is in
+Section 20 of the writing conventions.

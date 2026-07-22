@@ -1,0 +1,166 @@
+{
+  "canonical_gate": {
+    "passed": true,
+    "values": {
+      "aperture_throughput": 0.9302787994283651,
+      "centre_filtered_scattered_field_imag": 0.1803899898440997,
+      "centre_filtered_scattered_field_real": -0.015439786478921252,
+      "dgi_background_I_I0": 0.0001,
+      "dgi_peak_I_I0": 0.03257013971289065,
+      "dual_port_abs_peak_signed_S": -0.17833439662712702,
+      "dual_port_centre_I_H_I0": 0.41102438482000514,
+      "dual_port_centre_I_V_I0": 0.5894419438976197,
+      "dual_port_centre_S": -0.17833439662712702,
+      "dual_port_max_S": 0.020174163676313108,
+      "dual_port_min_S": -0.17833439662712702,
+      "faraday_dark_peak_I_I0": 0.008018767598998892,
+      "pci_background_I_I0": 0.9025,
+      "pci_peak_I_I0": 1.2780199161462586,
+      "phase_peak_rad": 0.20294165287929014,
+      "surviving_rotation_abs_rad": 0.08966768249018948,
+      "theta_f_at_phase_peak_rad": -0.1003557624128358
+    }
+  },
+  "condensate": {
+    "imaging_axis": 0,
+    "imaging_axis_label": "x",
+    "peak_column_density_m2": 537596245257846.75,
+    "radii_um": [
+      1.1857996475343457,
+      24.817092623397375,
+      1.4911557799466233
+    ],
+    "transverse_plane_labels": [
+      "y",
+      "z"
+    ]
+  },
+  "grid": {
+    "field_of_view_um": 100.0,
+    "shape": [
+      1024,
+      1024
+    ],
+    "spacing_nm": 97.65625
+  },
+  "optical_input": {
+    "centre_filtered_scattered_field": {
+      "imag": 0.1803899898440997,
+      "magnitude_squared": 0.03277893544246907,
+      "real": -0.015439786478921252,
+      "source": "dgi_stage.notebook_propagated_scattered_field at the image centre"
+    },
+    "detuning_ghz": 1.5,
+    "kappa_F": -0.4945054945054945,
+    "numerical_aperture": 0.13,
+    "phase_peak_rad": 0.20294165287929014,
+    "scattered_power_throughput": 0.9302787994283651,
+    "surviving_rotation_abs_deg": 5.1375797654069695,
+    "surviving_rotation_abs_rad": 0.08966768249018948,
+    "theta_f_abs_peak_rad": 0.1003557624128358,
+    "theta_f_at_scalar_phase_peak_rad": -0.1003557624128358
+  },
+  "readouts": {
+    "dark_field_faraday": {
+      "background_I_I0": 0.0,
+      "stats": {
+        "centre_value": 0.008018767598998892,
+        "max": 0.008018767598998892,
+        "mean": 2.718633698759063e-05,
+        "min": 2.5634520486373756e-21,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      }
+    },
+    "dgi": {
+      "background_I_I0": 0.0001,
+      "peak_signal_change_I_I0": 0.032470139712890644,
+      "stats": {
+        "centre_value": 0.03257013971289065,
+        "max": 0.03257013971289065,
+        "mean": 0.0002099446267485343,
+        "min": 9.628315229569907e-05,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      }
+    },
+    "dual_port_faraday": {
+      "no_atom_background_H_I_I0": 0.5,
+      "no_atom_background_V_I_I0": 0.5,
+      "port_H_stats": {
+        "centre_value": 0.41102438482000514,
+        "max": 0.5106875343186247,
+        "mean": 0.49953363827947994,
+        "min": 0.41102438482000514,
+        "peak_index": [
+          487,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      },
+      "port_V_stats": {
+        "centre_value": 0.5894419438976197,
+        "max": 0.5894419438976197,
+        "mean": 0.5004643265241638,
+        "min": 0.49048962248821765,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      },
+      "port_mapping": "I_H = historical notebook I_v; I_V = historical notebook I_u",
+      "signal_definition": "S = (I_H - I_V)/(I_H + I_V)",
+      "signal_stats": {
+        "centre_value": -0.17833439662712702,
+        "max": 0.020174163676313108,
+        "mean": -0.0009312354749663801,
+        "min": -0.17833439662712702,
+        "peak_index": [
+          487,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      }
+    },
+    "pci": {
+      "background_I_I0": 0.9025,
+      "peak_signal_change_I_I0": 0.3755199161462587,
+      "stats": {
+        "centre_value": 1.2780199161462586,
+        "max": 1.2780199161462586,
+        "mean": 0.9043986119786216,
+        "min": 0.864341072106771,
+        "peak_index": [
+          512,
+          512
+        ],
+        "shape": [
+          1024,
+          1024
+        ]
+      }
+    }
+  }
+}

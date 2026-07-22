@@ -1,0 +1,48 @@
+{
+  "label": "v3_orca_fusion_m10_ultra_quiet_na013",
+  "output_directory": "results/dissertation_plots_v2_orca_fusion/detuning_tradeoff",
+  "notebook_defaults_config": "configs/dissertation_v3_orca_fusion.json",
+  "detuning": {
+    "quantity": "ordinary_frequency_detuning_magnitude",
+    "convention": "positive detuning magnitude Delta_Hz; dimensionless delta = 2 * Delta_Hz * 2*pi / Gamma_rad_s",
+    "display_unit": "GHz",
+    "min_ghz": 0.5,
+    "max_ghz": 5.0,
+    "num_points": 180,
+    "spacing": "log"
+  },
+  "fixed_operating_point": {
+    "source": "configs/dissertation_v3_orca_fusion.json: multishot_recovery",
+    "reason": "The plot describes continuous-imaging destructiveness per frame, so it uses the active dissertation multishot probe power and pulse duration.",
+    "probe_power_mw_key": "multishot_recovery.probe_power_mw",
+    "pulse_duration_us_key": "multishot_recovery.pulse_duration_us",
+    "imaging_axis_key": "multishot_recovery.imaging_axis",
+    "use_peak_intensity": true
+  },
+  "plotted_quantities": {
+    "single_panel": [
+      "normalised_abs_scalar_phase",
+      "normalised_scattered_photons_per_atom",
+      "normalised_signal_per_scattered_photon"
+    ]
+  },
+  "normalisation": {
+    "mode": "normalised_for_display",
+    "rule": "Each plotted curve is divided by its own maximum finite absolute value over the configured detuning range. Absolute values are saved in CSV.",
+    "absolute_values_saved": true
+  },
+  "figure": {
+    "filename": "detuning_tradeoff.svg",
+    "title": "Detuning dependence of dispersive signal and scattering",
+    "figsize_inches": [6.8, 4.4],
+    "x_axis_scale": "log",
+    "y_axis_scale": "log",
+    "style": "dissertation_clean"
+  },
+  "caveats": {
+    "calibration_status": "No experimental RAI / absorption calibration has been applied.",
+    "kappa_F_status": "The ideal 166Er atomic coefficient is fixed at kappa_F=-45/91; absolute apparatus response remains to be measured.",
+    "prediction_status": "This is a representative physics trade-off plot, not a final operating-point prediction.",
+    "model_status": "Uses the current scalar light-atom formulas; no microscopic Faraday model is introduced."
+  }
+}

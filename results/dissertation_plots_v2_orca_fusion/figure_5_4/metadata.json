@@ -1,0 +1,111 @@
+{
+  "atomic_response": {
+    "coefficient_status": "ideal atomic-response coefficient for the fully spin-polarised 166Er reference state probed along the quantisation axis; apparatus-level response remains to be calibrated",
+    "kappa_F": -0.4945054945054945
+  },
+  "camera": {
+    "camera_output_shape": [
+      153,
+      153
+    ],
+    "magnification": 10.0,
+    "model": "Hamamatsu ORCA-Fusion C14440-20UP",
+    "object_plane_pixel_m": 6.5e-07,
+    "quantum_efficiency": 0.65,
+    "read_noise_electrons_per_pixel_per_port": 0.7,
+    "readout_mode": "Ultra quiet scan",
+    "rng_seed": 7,
+    "sampling_method": "centred area-conserving physical-pixel integration"
+  },
+  "caption": "15-frame DPFI sequences at |Delta|/2pi=1.5 GHz for A, B and C (F=90, 150 and 300 mW us). Each tile shows one fixed-noise realisation of the signed signal S=(I_H-I_V)/(I_H+I_V). Row labels report N_use and N_dep. Orange marks SNR failure, red marks depletion above 30%, and striped bands mark simultaneous failure. Frames beyond the first failed criterion remain visible but are excluded from N_use.",
+  "config_path": "configs\\figure_5_4.json",
+  "criteria": {
+    "maximum_post_exposure_condensate_loss": 0.3,
+    "minimum_snr": 8.0,
+    "status_encoding": "orange marks image-quality failure only, red marks depletion failure only, and alternating red-orange diagonal stripes mark simultaneous failure of both criteria"
+  },
+  "detuning_ghz": 1.5,
+  "display": {
+    "cmap": "coolwarm",
+    "rotate_degrees_counterclockwise": 90,
+    "separator_pixels": 1,
+    "status_band_pixels": 3,
+    "status_colours": {
+      "both_limits": [
+        "#C44E52",
+        "#E69F00"
+      ],
+      "depletion_limited": "#C44E52",
+      "quality_limited": "#E69F00"
+    },
+    "vmax": 0.24,
+    "vmin": -0.24,
+    "xlim_um": [
+      -35.0,
+      35.0
+    ],
+    "ylim_um": [
+      -10.0,
+      10.0
+    ]
+  },
+  "displayed_frames": 15,
+  "git_branch": "codex/reconstruction-v4-canonical",
+  "git_commit": "df00b42ae509921e663cccc0adc0a7a7a240c2a8",
+  "label": "figure_5_4_dual_port_multiframe_filmstrip_orca_fusion_m10_v4",
+  "optics": {
+    "effective_numerical_aperture": 0.13
+  },
+  "outputs": {
+    "csv": "results\\dissertation_plots_v2_orca_fusion\\figure_5_4\\figure_5_4_frame_data.csv",
+    "pdf": "results\\dissertation_plots_v2_orca_fusion\\figure_5_4\\figure_5_4.pdf",
+    "png": "results\\dissertation_plots_v2_orca_fusion\\figure_5_4\\figure_5_4.png",
+    "svg": "results\\dissertation_plots_v2_orca_fusion\\figure_5_4\\figure_5_4.svg"
+  },
+  "provenance_correction": {
+    "generation_base_commit": "df00b42ae509921e663cccc0adc0a7a7a240c2a8",
+    "generation_base_commit_status": "pre-rewrite local checkpoint identifier",
+    "generation_worktree_dirty": true,
+    "metadata_annotation_only": true,
+    "original_dirty_diff_sealed": false,
+    "retrospective_source_snapshot_commit": "498166f5d712c0a1f035fb7dd1cacd62619dc62d",
+    "retrospective_source_snapshot_status": "post-generation preserved source/config snapshot; not a clean-generation claim"
+  },
+  "result_status": {
+    "canonical_regeneration_allowed": false,
+    "current_oxford_prediction": false,
+    "regeneration_blocked_pending": "docs/multiframe_heating_model_optimisation.md",
+    "status": "frozen_version_1_screening_output"
+  },
+  "scope": {
+    "atomic_response": "ideal 166Er kappa_F=-45/91",
+    "continuation": "all 15 frames are rendered from the continued model state; frames beyond either screening limit are shown but are not counted as usable",
+    "detector": "ORCA-Fusion Ultra quiet scenario with 0.7 e- rms read noise per pixel and port",
+    "observable": "noisy dual-port normalised difference S",
+    "optics": "effective NA=0.130 pupil",
+    "purpose": "show how the single-frame quality and sequence-length results of Figures 5.1-5.3 appear in complete multiframe camera sequences",
+    "state_model": "Version 1 heating plus initial-density reabsorption with 2 E_rec per scattering cycle"
+  },
+  "selected_fluence_mw_us": [
+    90.0,
+    150.0,
+    300.0
+  ],
+  "sequence_counts": {
+    "150": {
+      "depletion_limited_frames": 6,
+      "photoelectrons_per_incident_i0_pixel": 367.63478795880775,
+      "usable_frames": 6
+    },
+    "300": {
+      "depletion_limited_frames": 3,
+      "photoelectrons_per_incident_i0_pixel": 735.2695759176155,
+      "usable_frames": 3
+    },
+    "90": {
+      "depletion_limited_frames": 10,
+      "photoelectrons_per_incident_i0_pixel": 220.58087277528466,
+      "usable_frames": 3
+    }
+  }
+}

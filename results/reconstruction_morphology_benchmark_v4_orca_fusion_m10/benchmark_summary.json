@@ -1,0 +1,500 @@
+{
+  "grid_convergence_gate_passed": true,
+  "grid_reduction": {
+    "camera_output_shape": [
+      153,
+      153
+    ],
+    "camera_pixel_size_m": 6.5e-07,
+    "canonical_field_of_view_m": 0.0001,
+    "canonical_ngrid": 1024,
+    "maximum_camera_coordinate_mismatch_m": 6.776263578034403e-21,
+    "reduced_field_of_view_m": 0.0001,
+    "reduced_ngrid": 306
+  },
+  "held_out_summaries": {
+    "dark_field": {
+      "150": {
+        "candidate_label": "resolution_matched_17x5__curvature_30_um2",
+        "full_rank_fraction": 1.0,
+        "maximum_data_jacobian_condition": 404.0995983194092,
+        "median_absolute_integrated_density_error": 0.1615415820313374,
+        "median_data_jacobian_condition": 225.68390677277483,
+        "median_supported_band_error": 0.16345848396330603,
+        "morphology_names": [
+          "held_out_modulation_phase",
+          "held_out_off_centre_notch",
+          "held_out_opposite_asymmetry",
+          "held_out_shifted_smooth_cloud",
+          "held_out_three_peak_fragment"
+        ],
+        "observation_keys": [
+          [
+            "held_out_modulation_phase",
+            0,
+            2491060400
+          ],
+          [
+            "held_out_modulation_phase",
+            1,
+            1113987783
+          ],
+          [
+            "held_out_off_centre_notch",
+            0,
+            1001486734
+          ],
+          [
+            "held_out_off_centre_notch",
+            1,
+            4218554672
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            0,
+            3006250895
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            1,
+            4288448420
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            0,
+            1948004515
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            1,
+            4243389533
+          ],
+          [
+            "held_out_three_peak_fragment",
+            0,
+            2928449662
+          ],
+          [
+            "held_out_three_peak_fragment",
+            1,
+            280930832
+          ]
+        ],
+        "parameter_count": 85,
+        "success_fraction": 1.0,
+        "trial_count": 10,
+        "upper_quartile_supported_band_error": 0.20329951341042232
+      },
+      "30": {
+        "candidate_label": "resolution_matched_17x5__curvature_30_um2",
+        "full_rank_fraction": 1.0,
+        "maximum_data_jacobian_condition": 873.8284590418912,
+        "median_absolute_integrated_density_error": 0.3193019858371665,
+        "median_data_jacobian_condition": 370.38707150750633,
+        "median_supported_band_error": 0.32607686832682803,
+        "morphology_names": [
+          "held_out_modulation_phase",
+          "held_out_off_centre_notch",
+          "held_out_opposite_asymmetry",
+          "held_out_shifted_smooth_cloud",
+          "held_out_three_peak_fragment"
+        ],
+        "observation_keys": [
+          [
+            "held_out_modulation_phase",
+            0,
+            3659884712
+          ],
+          [
+            "held_out_modulation_phase",
+            1,
+            2330975009
+          ],
+          [
+            "held_out_off_centre_notch",
+            0,
+            3311499893
+          ],
+          [
+            "held_out_off_centre_notch",
+            1,
+            3500247482
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            0,
+            3405840650
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            1,
+            1917149750
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            0,
+            384674827
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            1,
+            4268159655
+          ],
+          [
+            "held_out_three_peak_fragment",
+            0,
+            2857238556
+          ],
+          [
+            "held_out_three_peak_fragment",
+            1,
+            3126890057
+          ]
+        ],
+        "parameter_count": 85,
+        "success_fraction": 1.0,
+        "trial_count": 10,
+        "upper_quartile_supported_band_error": 0.38457188209357385
+      },
+      "90": {
+        "candidate_label": "resolution_matched_17x5__curvature_30_um2",
+        "full_rank_fraction": 1.0,
+        "maximum_data_jacobian_condition": 613.4885901497472,
+        "median_absolute_integrated_density_error": 0.1835178364757457,
+        "median_data_jacobian_condition": 287.98840588429846,
+        "median_supported_band_error": 0.20702581450367696,
+        "morphology_names": [
+          "held_out_modulation_phase",
+          "held_out_off_centre_notch",
+          "held_out_opposite_asymmetry",
+          "held_out_shifted_smooth_cloud",
+          "held_out_three_peak_fragment"
+        ],
+        "observation_keys": [
+          [
+            "held_out_modulation_phase",
+            0,
+            3158489144
+          ],
+          [
+            "held_out_modulation_phase",
+            1,
+            1784617505
+          ],
+          [
+            "held_out_off_centre_notch",
+            0,
+            3837908492
+          ],
+          [
+            "held_out_off_centre_notch",
+            1,
+            3411072853
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            0,
+            3254067417
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            1,
+            444309646
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            0,
+            2560732191
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            1,
+            2524287218
+          ],
+          [
+            "held_out_three_peak_fragment",
+            0,
+            2868007648
+          ],
+          [
+            "held_out_three_peak_fragment",
+            1,
+            1723347358
+          ]
+        ],
+        "parameter_count": 85,
+        "success_fraction": 1.0,
+        "trial_count": 10,
+        "upper_quartile_supported_band_error": 0.22457575477495978
+      }
+    },
+    "dual_port": {
+      "150": {
+        "candidate_label": "resolution_matched_17x5__curvature_30_um2",
+        "full_rank_fraction": 1.0,
+        "maximum_data_jacobian_condition": 14.846541678240166,
+        "median_absolute_integrated_density_error": 0.044146589306976125,
+        "median_data_jacobian_condition": 14.826222934082168,
+        "median_supported_band_error": 0.10059348913066468,
+        "morphology_names": [
+          "held_out_modulation_phase",
+          "held_out_off_centre_notch",
+          "held_out_opposite_asymmetry",
+          "held_out_shifted_smooth_cloud",
+          "held_out_three_peak_fragment"
+        ],
+        "observation_keys": [
+          [
+            "held_out_modulation_phase",
+            0,
+            4112390894
+          ],
+          [
+            "held_out_modulation_phase",
+            1,
+            2772211576
+          ],
+          [
+            "held_out_off_centre_notch",
+            0,
+            774634348
+          ],
+          [
+            "held_out_off_centre_notch",
+            1,
+            3078723202
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            0,
+            2250552626
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            1,
+            2255629949
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            0,
+            1831882532
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            1,
+            873732633
+          ],
+          [
+            "held_out_three_peak_fragment",
+            0,
+            2013644765
+          ],
+          [
+            "held_out_three_peak_fragment",
+            1,
+            1145002387
+          ]
+        ],
+        "parameter_count": 85,
+        "success_fraction": 1.0,
+        "trial_count": 10,
+        "upper_quartile_supported_band_error": 0.10829507011611902
+      },
+      "30": {
+        "candidate_label": "resolution_matched_17x5__curvature_30_um2",
+        "full_rank_fraction": 1.0,
+        "maximum_data_jacobian_condition": 14.845055360158531,
+        "median_absolute_integrated_density_error": 0.05644627634330701,
+        "median_data_jacobian_condition": 14.803511070822683,
+        "median_supported_band_error": 0.13627263061841063,
+        "morphology_names": [
+          "held_out_modulation_phase",
+          "held_out_off_centre_notch",
+          "held_out_opposite_asymmetry",
+          "held_out_shifted_smooth_cloud",
+          "held_out_three_peak_fragment"
+        ],
+        "observation_keys": [
+          [
+            "held_out_modulation_phase",
+            0,
+            969796810
+          ],
+          [
+            "held_out_modulation_phase",
+            1,
+            4265526634
+          ],
+          [
+            "held_out_off_centre_notch",
+            0,
+            2235013293
+          ],
+          [
+            "held_out_off_centre_notch",
+            1,
+            915733337
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            0,
+            87882049
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            1,
+            537714145
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            0,
+            1459227746
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            1,
+            4253120403
+          ],
+          [
+            "held_out_three_peak_fragment",
+            0,
+            3460347023
+          ],
+          [
+            "held_out_three_peak_fragment",
+            1,
+            2812885258
+          ]
+        ],
+        "parameter_count": 85,
+        "success_fraction": 1.0,
+        "trial_count": 10,
+        "upper_quartile_supported_band_error": 0.15695509202898544
+      },
+      "90": {
+        "candidate_label": "resolution_matched_17x5__curvature_30_um2",
+        "full_rank_fraction": 1.0,
+        "maximum_data_jacobian_condition": 14.848348167488513,
+        "median_absolute_integrated_density_error": 0.04144345212888012,
+        "median_data_jacobian_condition": 14.824205753961612,
+        "median_supported_band_error": 0.11178315887608802,
+        "morphology_names": [
+          "held_out_modulation_phase",
+          "held_out_off_centre_notch",
+          "held_out_opposite_asymmetry",
+          "held_out_shifted_smooth_cloud",
+          "held_out_three_peak_fragment"
+        ],
+        "observation_keys": [
+          [
+            "held_out_modulation_phase",
+            0,
+            1222609666
+          ],
+          [
+            "held_out_modulation_phase",
+            1,
+            2256956209
+          ],
+          [
+            "held_out_off_centre_notch",
+            0,
+            2360754258
+          ],
+          [
+            "held_out_off_centre_notch",
+            1,
+            1183165545
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            0,
+            1640387932
+          ],
+          [
+            "held_out_opposite_asymmetry",
+            1,
+            4252442549
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            0,
+            1665626726
+          ],
+          [
+            "held_out_shifted_smooth_cloud",
+            1,
+            1320512501
+          ],
+          [
+            "held_out_three_peak_fragment",
+            0,
+            3914195272
+          ],
+          [
+            "held_out_three_peak_fragment",
+            1,
+            1710741007
+          ]
+        ],
+        "parameter_count": 85,
+        "success_fraction": 1.0,
+        "trial_count": 10,
+        "upper_quartile_supported_band_error": 0.11584600762695484
+      }
+    }
+  },
+  "interpretation": {
+    "faraday_absolute_scale": "illustrative and uncalibrated; synthetic density and inverse response use the same stated coefficient",
+    "publication_uncertainty_boundary": "initial finite ensemble for contract development; increase realization count before publication-level uncertainty claims",
+    "status": "synthetic calibration and held-out assessment only",
+    "truth_blind_fit": true
+  },
+  "label": "reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+  "representative": {
+    "artifact": "representative_reconstruction.npz",
+    "fluence_mw_us": 90.0,
+    "morphology_name": "held_out_three_peak_fragment",
+    "realization_index": 0,
+    "seeds": {
+      "dark_field": 2868007648,
+      "dual_port": 3914195272
+    },
+    "supported_band_errors": {
+      "dark_field": 0.30527756716113447,
+      "dual_port": 0.09097450216722235
+    }
+  },
+  "run_id": "1fb762ca7211b8df64123a346f92a21457f988ae81a5e6349a65a3249ff755e2",
+  "selected_candidates": {
+    "dark_field": {
+      "calibration_morphology_names": [
+        "calibration_asymmetric_cloud",
+        "calibration_central_notch",
+        "calibration_smooth_reference",
+        "calibration_two_peak_fragment",
+        "calibration_weak_modulation"
+      ],
+      "curvature_weight_um2": 30.0,
+      "label": "resolution_matched_17x5__curvature_30_um2",
+      "parameter_count": 85,
+      "regularisation_boundary_policy": "fixed_zero_ghost_knots",
+      "regularisation_density_scale_m2": 500000000000000.0
+    },
+    "dual_port": {
+      "calibration_morphology_names": [
+        "calibration_asymmetric_cloud",
+        "calibration_central_notch",
+        "calibration_smooth_reference",
+        "calibration_two_peak_fragment",
+        "calibration_weak_modulation"
+      ],
+      "curvature_weight_um2": 30.0,
+      "label": "resolution_matched_17x5__curvature_30_um2",
+      "parameter_count": 85,
+      "regularisation_boundary_policy": "fixed_zero_ghost_knots",
+      "regularisation_density_scale_m2": 500000000000000.0
+    }
+  },
+  "study_elapsed_seconds": 2690.8499061000184
+}

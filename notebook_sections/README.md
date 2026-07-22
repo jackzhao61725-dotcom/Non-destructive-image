@@ -1,14 +1,28 @@
 # Notebook Section Exports
 
-These files are a mechanical first pass at converting `../1 calculations revised 2  multishot  6  extended.ipynb` into source-controlled Python section files. They are intended to make the existing notebook easier to review and refactor without changing the scientific implementation.
+- **Status:** historical mechanical exports retained for regression and provenance
+- **Active consumers:** the deterministic export validator, notebook-recovery
+  scripts and notebook-aligned regression tests
+- **Update trigger:** the source notebook changes or the deterministic export
+  validator changes its accepted cell mapping
+- **Retirement rule:** remove only after every active regression and provenance
+  consumer has migrated to another sealed source
+
+These files are a mechanical export of
+`../1 calculations revised 2  multishot  6  extended.ipynb`. They make the
+historical notebook conventions reviewable without changing them. The
+maintained package and active configs are the current implementation authority.
 
 Important constraints:
 
-- The notebook remains the reference implementation.
+- The notebook is a historical regression reference, not the active physical or
+  software implementation.
 - Equations, numerical algorithms, parameter values, and figure logic should remain unchanged.
 - Code was copied from notebook cells into logical section files; notebook magics such as `%matplotlib inline` are commented out so the exports are valid Python text.
 - Some cells appear in more than one section when they currently mix responsibilities, for example camera helpers embedded in imaging/demo cells. Later refactors should deduplicate these mechanically after regression checks.
-- These section files are an intermediate refactoring aid, not yet a package API. Execute the original notebook for authoritative results until dependency order has been normalised.
+- These section files are not a package API. Use the maintained recovery scripts
+  and validators for historical reproduction; do not execute the notebook as a
+  source of current dissertation results.
 
 Section files:
 

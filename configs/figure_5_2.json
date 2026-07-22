@@ -1,25 +1,41 @@
 {
-  "label": "figure_5_2_usable_frame_screen_v2",
-  "model_config": "configs/dissertation_v2_dcc3260m.json",
-  "output_directory": "results/dissertation_plots_v1/figure_5_2",
+  "label": "figure_5_2_usable_frame_screen_orca_fusion_m10_v4_na013",
+  "model_config": "configs/dissertation_v3_orca_fusion.json",
+  "output_directory": "results/dissertation_plots_v2_orca_fusion/figure_5_2",
+  "lifecycle": {
+    "status": "frozen_version_1_screening_output",
+    "current_oxford_prediction": false,
+    "canonical_regeneration_allowed": false,
+    "regeneration_blocked_pending": "docs/multiframe_heating_model_optimisation.md"
+  },
   "scan": {
     "detuning_min_ghz": 0.75,
     "detuning_max_ghz": 3.0,
     "detuning_points": 25,
     "required_detuning_ghz": [1.5],
-    "fluence_min_mw_us": 10.0,
-    "fluence_max_mw_us": 180.0,
+    "fluence_min_mw_us": 90.0,
+    "fluence_max_mw_us": 300.0,
     "fluence_step_mw_us": 5.0,
-    "required_fluence_mw_us": [30.0, 90.0, 150.0],
+    "required_fluence_mw_us": [90.0, 150.0, 300.0],
     "probe_power_mw": 1.0,
-    "imaging_axis": 0,
-    "kappa_F": 1.0
+    "imaging_axis": 0
   },
   "frame_criteria": {
-    "central_block_half_width_pixels": 1,
-    "minimum_snr": 9.0,
+    "central_block_half_width_pixels": 2,
+    "central_block_shape": [5, 5],
+    "central_block_physical_width_um": 3.25,
+    "minimum_snr": 8.0,
     "maximum_post_exposure_condensate_loss": 0.30,
     "stopping_rule": "strict integer; an exposure is accepted only when its pre-exposure image meets the SNR criterion and its post-exposure state remains within the condensate-loss limit"
+  },
+  "canonical_checks": {
+    "reference_detuning_ghz": 1.5,
+    "reference_fluence_mw_us": 300.0,
+    "depletion_limited_frames": 3,
+    "initial_snr": {
+      "Faraday dark-field": 7.800030869978132,
+      "Faraday dual-port": 15.34463436369928
+    }
   },
   "response_interpolation": {
     "minimum_condensate_fraction": 0.70,
@@ -40,20 +56,20 @@
     "dual_port_heatmap_figsize_inches": [6.8, 4.5],
     "operating_band_figsize_inches": [6.8, 3.8],
     "dpi": 300,
-    "maximum_displayed_frames": 21,
+    "maximum_displayed_frames": 7,
     "high_n_relative_fraction": 0.90,
     "operating_band_detuning_ghz": 1.5,
-    "operating_band_fluence_min_mw_us": 30.0
+    "operating_band_fluence_min_mw_us": 90.0
   },
   "range_rationale": {
     "detuning": "0.75-3.0 GHz retains the reference 1.5 GHz line, covers the detuning range used for the principal screening comparison, and avoids extending the figure into a high-detuning region that would require fluences beyond the displayed experimental range.",
-    "fluence": "10-180 mW us brackets the A, B and C conditions of Figure 5.1 and includes both image-quality-limited and depletion-limited operation.",
-    "quality": "SNR_3x3 >= 9 is the stricter spatial-structure criterion motivated by the visible B-to-C improvement in Figure 5.1; it is a screening requirement for this task, not a universal visibility threshold."
+    "fluence": "90-300 mW us brackets the A, B and C conditions of Figure 5.1, including the high-SNR reference at 300 mW us, and retains the intermediate sequence-length maximum.",
+    "quality": "SNR_5x5 >= 8 is the task-specific spatial-structure criterion motivated by the regenerated ORCA-Fusion Figure 5.1; it is a screening requirement, not a universal visibility threshold."
   },
   "scope": {
-    "detector": "provisional DCC3260M screening model with M=4, QE=0.60 and sigma_r=3 e- rms per pixel and readout",
-    "optics": "reference NA=0.080 pupil",
+    "detector": "ORCA-Fusion C14440-20UP Ultra quiet screening scenario with M=10, QE=0.65 and manufacturer-typical sigma_r=0.7 e- rms per physical pixel and readout",
+    "optics": "active effective NA=0.130 design pupil",
     "disturbance": "Version 1 heating plus initial-density reabsorption with 2 E_rec per scattering cycle",
-    "faraday": "absolute Faraday values use the uncalibrated illustrative setting kappa_F=1"
+    "faraday": "ideal atomic response uses kappa_F=-45/91; apparatus-level polarimetric response remains to be calibrated"
   }
 }

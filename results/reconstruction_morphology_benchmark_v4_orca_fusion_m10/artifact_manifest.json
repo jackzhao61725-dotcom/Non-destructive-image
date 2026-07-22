@@ -1,0 +1,39 @@
+{
+  "artifacts": {
+    "benchmark_summary.json": {
+      "role": "run_summary",
+      "sha256": "cfe712db649aa3c95921b4a596deb086f9fd2ea43403f1b652362a1997300cbd"
+    },
+    "calibration_candidate_summary.csv": {
+      "role": "calibration_candidates",
+      "sha256": "b1ab7ad9248435cad5df89982e33b38593cd90fb9bfdabebc545b7c35f702c9d"
+    },
+    "held_out_summary.csv": {
+      "role": "held_out_summary",
+      "sha256": "c8d1f819b9501f96b509c58a197ca11979d0c60180a9f910ec8dac3fdce9cac5"
+    },
+    "held_out_trials.csv": {
+      "role": "held_out_trials",
+      "sha256": "1bb87892fbf0b408db81664b1cd184c2800eec0dbd890c14a37bd93d2a9c435d"
+    },
+    "reduced_grid_convergence.csv": {
+      "role": "grid_convergence",
+      "sha256": "5499c9d89d5e740b11d5d6d42c948fc494eeb9d57f72159725531c88db4fbe83"
+    },
+    "representative_reconstruction.npz": {
+      "role": "representative_arrays",
+      "sha256": "e5abb8786daf2fcfb8258c51b5a6491e08e3107911651e21b3bcaa781e5d3202"
+    },
+    "study_config.json": {
+      "role": "configuration_snapshot",
+      "sha256": "eef4a0195c0ac56d88c244e7309e43374f69d31a2aea07db50f9ca2146ab8608"
+    }
+  },
+  "config": {
+    "artifact": "study_config.json",
+    "sha256": "eef4a0195c0ac56d88c244e7309e43374f69d31a2aea07db50f9ca2146ab8608"
+  },
+  "label": "reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+  "run_id": "1fb762ca7211b8df64123a346f92a21457f988ae81a5e6349a65a3249ff755e2",
+  "schema_version": 1
+}

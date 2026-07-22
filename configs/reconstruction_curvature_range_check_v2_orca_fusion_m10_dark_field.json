@@ -1,0 +1,16 @@
+{
+  "label": "reconstruction_curvature_range_check_v2_orca_fusion_m10_dark_field",
+  "purpose": "bracket the provisional dark-field curvature selection using stronger regularisation on the identical ORCA-Fusion Version 4 calibration observations",
+  "source_benchmark_config": "configs/reconstruction_morphology_benchmark_v4_orca_fusion_m10.json",
+  "output_directory": "results/reconstruction_curvature_range_check_v2_orca_fusion_m10_dark_field",
+  "readout": "dark_field",
+  "basis_label": "resolution_matched_17x5",
+  "reference_weight_um2": 30.0,
+  "curvature_weights_um2": [30.0, 100.0, 300.0, 1000.0],
+  "consistency_anchor": {
+    "curvature_weight_um2": 30.0,
+    "expected_median_supported_band_relative_l2_error": 0.18524092483982288,
+    "absolute_tolerance": 1e-6
+  },
+  "interpretation": "calibration-set range check only; it tests whether the upper edge of the Version 4 candidate scan brackets the dark-field optimum without using held-out data"
+}

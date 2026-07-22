@@ -1,0 +1,85 @@
+{
+  "basis_label": "resolution_matched_17x5",
+  "calibration_morphology_names": [
+    "calibration_smooth_reference",
+    "calibration_asymmetric_cloud",
+    "calibration_weak_modulation",
+    "calibration_two_peak_fragment",
+    "calibration_central_notch"
+  ],
+  "calibration_realizations_per_morphology": 1,
+  "calibration_seed": 20260720,
+  "checked_results": [
+    {
+      "basis_label": "resolution_matched_17x5",
+      "candidate": "resolution_matched_17x5__curvature_30_um2",
+      "curvature_weight_um2": 30.0,
+      "full_rank_fraction": 1.0,
+      "maximum_data_jacobian_condition": 14.85129719879029,
+      "median_absolute_integrated_density_relative_error": 0.053479273645162806,
+      "median_data_jacobian_condition": 14.81584124763355,
+      "median_supported_band_relative_l2_error": 0.11439210532950851,
+      "parameter_count": 85,
+      "readout": "dual_port",
+      "success_fraction": 1.0,
+      "trial_count": 5,
+      "upper_quartile_supported_band_relative_l2_error": 0.11454797146412954
+    },
+    {
+      "basis_label": "resolution_matched_17x5",
+      "candidate": "resolution_matched_17x5__curvature_100_um2",
+      "curvature_weight_um2": 100.0,
+      "full_rank_fraction": 1.0,
+      "maximum_data_jacobian_condition": 14.856235759603642,
+      "median_absolute_integrated_density_relative_error": 0.050405007491493015,
+      "median_data_jacobian_condition": 14.820041347515373,
+      "median_supported_band_relative_l2_error": 0.11725436794527995,
+      "parameter_count": 85,
+      "readout": "dual_port",
+      "success_fraction": 1.0,
+      "trial_count": 5,
+      "upper_quartile_supported_band_relative_l2_error": 0.12124372867838684
+    },
+    {
+      "basis_label": "resolution_matched_17x5",
+      "candidate": "resolution_matched_17x5__curvature_300_um2",
+      "curvature_weight_um2": 300.0,
+      "full_rank_fraction": 1.0,
+      "maximum_data_jacobian_condition": 14.862804948114125,
+      "median_absolute_integrated_density_relative_error": 0.04829147759449115,
+      "median_data_jacobian_condition": 14.82947407278191,
+      "median_supported_band_relative_l2_error": 0.15743684494003904,
+      "parameter_count": 85,
+      "readout": "dual_port",
+      "success_fraction": 1.0,
+      "trial_count": 5,
+      "upper_quartile_supported_band_relative_l2_error": 0.1595645799244713
+    },
+    {
+      "basis_label": "resolution_matched_17x5",
+      "candidate": "resolution_matched_17x5__curvature_1000_um2",
+      "curvature_weight_um2": 1000.0,
+      "full_rank_fraction": 1.0,
+      "maximum_data_jacobian_condition": 14.870803632957243,
+      "median_absolute_integrated_density_relative_error": 0.058488981352883496,
+      "median_data_jacobian_condition": 14.845740997639165,
+      "median_supported_band_relative_l2_error": 0.25486132581509713,
+      "parameter_count": 85,
+      "readout": "dual_port",
+      "success_fraction": 1.0,
+      "trial_count": 5,
+      "upper_quartile_supported_band_relative_l2_error": 0.25911084278972574
+    }
+  ],
+  "conclusion": {
+    "all_checked_stronger_weights_increase_median_error": true,
+    "scope": "calibration-set bracket for the frozen basis; not a new model selection or held-out performance claim"
+  },
+  "label": "reconstruction_curvature_range_check_v2_orca_fusion_m10_dual_port",
+  "purpose": "bracket the provisional dual-port curvature selection using stronger regularisation on the identical ORCA-Fusion Version 4 calibration observations",
+  "readout": "dual_port",
+  "reference_error": 0.11439210532950851,
+  "reference_weight_um2": 30.0,
+  "source_benchmark_label": "reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+  "study_elapsed_seconds": 290.9881862999755
+}

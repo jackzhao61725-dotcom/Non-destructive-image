@@ -1,0 +1,50 @@
+{
+  "label": "reconstruction_credibility_v2_orca_fusion_m10",
+  "purpose": "quantify data support, conditional detector-noise uncertainty, residual structure, prior sensitivity and blank false positives for the frozen ORCA-Fusion reconstruction contract without using truth error as the credibility measure",
+  "source_benchmark_config": "configs/reconstruction_morphology_benchmark_v4_orca_fusion_m10.json",
+  "historical_predecessor": "configs/reconstruction_credibility_v1.json",
+  "output_directory": "results/reconstruction_credibility_v2_orca_fusion_m10",
+  "representative": {
+    "morphology_name": "held_out_three_peak_fragment",
+    "fluence_mw_us": 90.0,
+    "seeds": {
+      "dual_port": 3914195272,
+      "dark_field": 2868007648
+    }
+  },
+  "frozen_candidates": {
+    "dual_port": "resolution_matched_17x5__curvature_30_um2",
+    "dark_field": "resolution_matched_17x5__curvature_30_um2"
+  },
+  "curvature_range_evidence": {
+    "dual_port": "configs/reconstruction_curvature_range_check_v2_orca_fusion_m10_dual_port.json",
+    "dark_field": "configs/reconstruction_curvature_range_check_v2_orca_fusion_m10_dark_field.json"
+  },
+  "conditional_bootstrap": {
+    "draws_per_readout": 16,
+    "confidence_level": 0.68,
+    "seeds": {
+      "dual_port": 2026072101,
+      "dark_field": 2026072102
+    },
+    "interpretation": "conditional on the declared forward operator, physical-camera sampler, basis, support, active solution basin and selected regulariser; not an experimental model-discrepancy interval"
+  },
+  "prior_sensitivity": {
+    "curvature_weights_um2": [0.0, 3.0, 10.0, 30.0, 100.0],
+    "interpretation": "same raw observation and basis, changing only the declared curvature weight"
+  },
+  "blank_ensemble": {
+    "draws_per_readout": 12,
+    "seeds": {
+      "dual_port": 2026072111,
+      "dark_field": 2026072112
+    },
+    "interpretation": "development false-positive baseline under the ORCA-Fusion detector contract; not an acceptance threshold for experimental data"
+  },
+  "claims_boundary": {
+    "synthetic_only": true,
+    "kappa_F_status": "illustrative and uncalibrated",
+    "detector_contract": "Hamamatsu ORCA-Fusion C14440-20UP, M=10, catalogue-typical QE and fast-scan read-noise inputs",
+    "forbidden_interpretation": "a clean reconstruction image alone is not evidence that every displayed feature is measured"
+  }
+}

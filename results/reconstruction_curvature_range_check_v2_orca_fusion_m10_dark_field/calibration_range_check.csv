@@ -1,0 +1,5 @@
+readout,basis_label,candidate,curvature_weight_um2,parameter_count,trial_count,success_fraction,full_rank_fraction,median_supported_band_relative_l2_error,upper_quartile_supported_band_relative_l2_error,median_absolute_integrated_density_relative_error,median_data_jacobian_condition,maximum_data_jacobian_condition
+dark_field,resolution_matched_17x5,resolution_matched_17x5__curvature_30_um2,30.0,85,5,1.0,1.0,0.18524092483982288,0.20205352357176123,0.16492714469314906,227.0467960106851,498.34533600656096
+dark_field,resolution_matched_17x5,resolution_matched_17x5__curvature_100_um2,100.0,85,5,1.0,1.0,0.2200593297813274,0.2257183907340669,0.20253037828670806,315.3840370423223,1296.3557801496966
+dark_field,resolution_matched_17x5,resolution_matched_17x5__curvature_300_um2,300.0,85,5,1.0,1.0,0.28389159812570164,0.2863813332020048,0.2577623233029924,223.1956723942387,742.149961386741
+dark_field,resolution_matched_17x5,resolution_matched_17x5__curvature_1000_um2,1000.0,85,5,1.0,1.0,0.3587951839286039,0.36476167765149026,0.2963115686710318,165.99208654232882,195.39623400027136

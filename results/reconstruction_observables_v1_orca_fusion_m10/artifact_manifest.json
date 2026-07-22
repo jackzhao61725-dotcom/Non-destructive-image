@@ -1,0 +1,48 @@
+{
+  "artifacts": {
+    "generation_provenance.json": {
+      "role": "generation_provenance",
+      "sha256": "5b5e04030e9054658626f0a91240bd99c32fe0281c5375b2ac7c7ef41c54e809"
+    },
+    "held_out_observable_maps.npz": {
+      "role": "held_out_maps_and_coefficients",
+      "sha256": "5b9fd8cc737a19f5c14cce791cad714732ecc5400beea111ed3f712169b1133a"
+    },
+    "legacy_metric_verification.csv": {
+      "role": "legacy_metric_verification",
+      "sha256": "f5e83a2d0928dc188a574eb2993bad793df7a0111e68c26d487c331c95f65f64"
+    },
+    "observable_benchmark_summary.json": {
+      "role": "run_summary",
+      "sha256": "8bf31d9d714c180b7324076080511df43ae3b574010d235bc847fdf69b820c48"
+    },
+    "observable_recovery_summary.csv": {
+      "role": "observable_aggregate",
+      "sha256": "14a4fe6e2406129c37c5742e7c37b40bb5e9727c3e4f1c709f3448f7b1bc9af7"
+    },
+    "observable_trials.csv": {
+      "role": "observable_trials",
+      "sha256": "18ea3431efa02e2298a0a74c9391cb12d565334125ec826b5a1a8b813b2ce407"
+    },
+    "source_benchmark_config.json": {
+      "role": "source_configuration_snapshot",
+      "sha256": "db8201505cd37284a66f677a98b2072129da5760c7e3dc4fdc01bb3ff47fd954"
+    },
+    "source_benchmark_manifest.json": {
+      "role": "source_manifest_snapshot",
+      "sha256": "201d333a638328959983b6e88b8f9cba7f674be621dea0378184f3b8c090061b"
+    },
+    "study_config.json": {
+      "role": "configuration_snapshot",
+      "sha256": "15cea17f0646ad26c48daa2ee1847b5742c7ce4bd0bc06cce566b08c6a3da399"
+    }
+  },
+  "config": {
+    "artifact": "study_config.json",
+    "sha256": "15cea17f0646ad26c48daa2ee1847b5742c7ce4bd0bc06cce566b08c6a3da399"
+  },
+  "label": "reconstruction_observables_v1_orca_fusion_m10",
+  "run_id": "81f7c045d0745d266dbcf73cb1e908a1c016aff12b2dc53df155b6815540635b",
+  "schema_version": 1,
+  "source_run_id": "1fb762ca7211b8df64123a346f92a21457f988ae81a5e6349a65a3249ff755e2"
+}

@@ -19,7 +19,7 @@ import numpy as np
 from scipy.special import zeta
 
 from non_destructive_image import (
-    bin_to_camera_pixels,
+    resample_to_camera_pixels,
     simulate_faraday_image,
     simulate_noisy_camera_image,
 )
@@ -83,9 +83,11 @@ def _grid_context(model: dict[str, Any], scan_config: dict[str, Any]) -> dict[st
     coordinate_a, coordinate_b = np.meshgrid(coordinate, coordinate)
     imaging_axis = int(scan_config["scan"]["imaging_axis"])
     plane = [index for index in range(3) if index != imaging_axis]
-    bin_size = int(model["camera_recovery"]["bin_size"])
-    camera_shape = (ngrid // bin_size, ngrid // bin_size)
-    object_pixel_um = spacing_m * bin_size * 1e6
+    camera_shape = tuple(
+        int(value) for value in model["camera_recovery"]["camera_output_shape"]
+    )
+    object_pixel_m = float(model["camera_recovery"]["object_plane_pixel_m"])
+    object_pixel_um = object_pixel_m * 1e6
     half_extent_um = object_pixel_um * camera_shape[0] / 2
     camera_coordinate_um = (
         np.arange(camera_shape[0]) - (camera_shape[0] - 1) / 2
@@ -96,7 +98,9 @@ def _grid_context(model: dict[str, Any], scan_config: dict[str, Any]) -> dict[st
         "coordinate_b": coordinate_b,
         "imaging_axis": imaging_axis,
         "plane": plane,
-        "bin_size": bin_size,
+        "input_spacing_m": float(spacing_m),
+        "object_pixel_m": float(object_pixel_m),
+        "camera_shape": camera_shape,
         "object_pixel_um": float(object_pixel_um),
         "camera_coordinate_um": camera_coordinate_um,
         "extent_um": [
@@ -135,12 +139,17 @@ def _dual_port_fields(
         theta_map = np.zeros_like(context["coordinate_a"], dtype=float)
 
     faraday = simulate_faraday_image(theta_map, context["pupil"])
-    # Dissertation convention: H is the historical notebook v port and V is u.
-    port_h = bin_to_camera_pixels(
-        faraday["dual_port_v_intensity"], context["bin_size"]
+    port_h = resample_to_camera_pixels(
+        faraday["analyser_h_intensity"],
+        context["input_spacing_m"],
+        context["object_pixel_m"],
+        context["camera_shape"],
     )
-    port_v = bin_to_camera_pixels(
-        faraday["dual_port_u_intensity"], context["bin_size"]
+    port_v = resample_to_camera_pixels(
+        faraday["analyser_v_intensity"],
+        context["input_spacing_m"],
+        context["object_pixel_m"],
+        context["camera_shape"],
     )
     return np.asarray(port_h, dtype=float), np.asarray(port_v, dtype=float)
 
@@ -301,7 +310,7 @@ def build_sequences(config: dict[str, Any]) -> dict[str, Any]:
     frames_to_show = int(sequence_config["displayed_frames"])
     detuning_hz = float(config["detuning_ghz"]) * 1e9
     power_mw = float(figure_5_2_config["scan"]["probe_power_mw"])
-    kappa_f = float(figure_5_2_config["scan"]["kappa_F"])
+    kappa_f = float(model["faraday_recovery"]["kappa_F"])
     read_noise = float(model["camera_recovery"]["read_noise_electrons"])
     half_width = int(figure_5_2_config["frame_criteria"]["central_block_half_width_pixels"])
     initial_temperature = float(model["condensate"]["temperature_k"])
@@ -388,7 +397,7 @@ def build_sequences(config: dict[str, Any]) -> dict[str, Any]:
                     "condensate_fraction": condensate_atoms / initial_condensate_atoms,
                     "pre_exposure_loss": pre_loss,
                     "post_exposure_loss": post_loss,
-                    "snr_3x3": snr,
+                    "snr_5x5": snr,
                     "status": status,
                     "counted_as_usable": accepted,
                     "camera_signal": display_image,
@@ -414,12 +423,7 @@ def build_sequences(config: dict[str, Any]) -> dict[str, Any]:
             "frames": frames,
         }
 
-    expected_counts = {
-        "30": {"depletion": 32, "usable": 2},
-        "50": {"depletion": 19, "usable": 19},
-        "90": {"depletion": 10, "usable": 10},
-        "150": {"depletion": 6, "usable": 6},
-    }
+    expected_counts = config["canonical_checks"]["sequence_counts"]
     for key, expected in expected_counts.items():
         sequence = sequences[key]
         if sequence["depletion_limited_frames"] != expected["depletion"]:
@@ -619,7 +623,7 @@ def _write_frame_csv(path: Path, result: dict[str, Any]) -> None:
                 {
                     "fluence_mw_us": f"{sequence['fluence_mw_us']:.12g}",
                     "image_number": frame["image_number"],
-                    "snr_3x3": f"{frame['snr_3x3']:.12g}",
+                    "snr_5x5": f"{frame['snr_5x5']:.12g}",
                     "condensate_atoms": f"{frame['condensate_atoms']:.12g}",
                     "condensate_fraction": f"{frame['condensate_fraction']:.12g}",
                     "temperature_k": f"{frame['temperature_k']:.12g}",
@@ -635,13 +639,32 @@ def _write_frame_csv(path: Path, result: dict[str, Any]) -> None:
         writer.writerows(rows)
 
 
+def _output_destination(config: dict[str, Any], output_dir: Path | None) -> Path:
+    canonical = (REPO_ROOT / config["output_directory"]).resolve()
+    destination = output_dir or canonical
+    if not destination.is_absolute():
+        destination = REPO_ROOT / destination
+    destination = destination.resolve()
+    lifecycle = config.get("lifecycle", {})
+    if (
+        not lifecycle.get("canonical_regeneration_allowed", True)
+        and destination == canonical
+    ):
+        raise RuntimeError(
+            "canonical Figure 5.4 is frozen pending the approved heating "
+            "replacement; provide --output-dir for a non-canonical historical "
+            "reproduction"
+        )
+    return destination
+
+
 def generate(
     config_path: Path = DEFAULT_CONFIG,
     output_dir: Path | None = None,
 ) -> dict[str, Path]:
     config_path = config_path if config_path.is_absolute() else REPO_ROOT / config_path
     config = _load_json(config_path)
-    destination = output_dir or REPO_ROOT / config["output_directory"]
+    destination = _output_destination(config, output_dir)
     result = build_sequences(config)
     outputs = _plot(config, result, destination)
     csv_path = destination / "figure_5_4_frame_data.csv"
@@ -656,6 +679,7 @@ def generate(
             "config_path": str(config_path.relative_to(REPO_ROOT)),
             "git_branch": _git_value("branch", "--show-current"),
             "git_commit": _git_value("rev-parse", "HEAD"),
+            "result_status": config["lifecycle"],
             "detuning_ghz": config["detuning_ghz"],
             "selected_fluence_mw_us": config["selected_fluence_mw_us"],
             "displayed_frames": config["sequence"]["displayed_frames"],
@@ -687,11 +711,34 @@ def generate(
                 "read_noise_electrons_per_pixel_per_port": result["model"][
                     "camera_recovery"
                 ]["read_noise_electrons"],
-                "bin_size": result["model"]["camera_recovery"]["bin_size"],
+                "sampling_method": result["model"]["camera_recovery"]["sampling_method"],
+                "camera_output_shape": result["model"]["camera_recovery"]["camera_output_shape"],
+                "object_plane_pixel_m": result["model"]["camera_recovery"]["object_plane_pixel_m"],
                 "rng_seed": config["sequence"]["rng_seed"],
+                "readout_mode": result["model"]["camera_recovery"]["readout_mode"],
+            },
+            "atomic_response": {
+                "kappa_F": result["model"]["faraday_recovery"]["kappa_F"],
+                "coefficient_status": result["model"]["faraday_recovery"][
+                    "kappa_F_status"
+                ],
+            },
+            "optics": {
+                "effective_numerical_aperture": float(
+                    build_pupil(result["model"])["numerical_aperture"]
+                )
             },
             "display": config["image_display"],
             "scope": config["scope"],
+            "caption": (
+                f"{int(config['sequence']['displayed_frames'])}-frame DPFI sequences "
+                "at |Delta|/2pi=1.5 GHz for "
+                "A, B and C (F=90, 150 and 300 mW us). Each tile shows one fixed-noise "
+                "realisation of the signed signal S=(I_H-I_V)/(I_H+I_V). Row labels "
+                "report N_use and N_dep. Orange marks SNR failure, red marks depletion "
+                "above 30%, and striped bands mark simultaneous failure. Frames beyond "
+                "the first failed criterion remain visible but are excluded from N_use."
+            ),
             "outputs": {
                 key: str(path.relative_to(REPO_ROOT))
                 if path.is_relative_to(REPO_ROOT)

@@ -81,14 +81,14 @@ def _assert_close(name: str, actual: float, expected: float, checks: dict[str, A
 def build_figure_data(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
     """Rebuild the cloud and propagate it through all four canonical readouts."""
 
-    notebook_path = REPO_ROOT / config["notebook_defaults_config"]
-    notebook = load_config(notebook_path)
+    model_path = REPO_ROOT / config["model_config"]
+    model = load_config(model_path)
 
     # Each recovery stage starts from the same condensate -> column density ->
     # scalar phase path and then applies the common pupil before its readout.
-    pci_stage = build_pci_stage(notebook)
-    dgi_stage = build_dgi_stage(notebook)
-    faraday_stage = build_faraday_stage(notebook)
+    pci_stage = build_pci_stage(model)
+    dgi_stage = build_dgi_stage(model)
+    faraday_stage = build_faraday_stage(model)
 
     pci_phase = np.asarray(pci_stage["phase_stage"]["notebook_phase_map_rad"])
     dgi_phase = np.asarray(dgi_stage["phase_stage"]["notebook_phase_map_rad"])
@@ -124,6 +124,9 @@ def build_figure_data(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str,
     )
     surviving_rotation = float(np.arcsin(np.sqrt(np.max(dark))))
     centre = tuple(size // 2 for size in filtered_scattered.shape)
+    phase_peak_index = np.unravel_index(int(np.argmax(pci_phase)), pci_phase.shape)
+    theta_at_phase_peak = float(theta_f[phase_peak_index])
+    dual_abs_peak_signed = float(dual_s.flat[int(np.argmax(np.abs(dual_s)))])
     centre_filtered_scattered = complex(filtered_scattered[centre])
 
     data = {
@@ -143,14 +146,14 @@ def build_figure_data(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str,
     metrics = {
         "grid": {
             "shape": [int(value) for value in pci.shape],
-            "field_of_view_um": float(notebook["grid"]["field_of_view_m"]) * 1e6,
-            "spacing_nm": float(notebook["grid"]["field_of_view_m"])
-            / int(notebook["grid"]["ngrid"])
+            "field_of_view_um": float(model["grid"]["field_of_view_m"]) * 1e6,
+            "spacing_nm": float(model["grid"]["field_of_view_m"])
+            / int(model["grid"]["ngrid"])
             * 1e9,
         },
         "condensate": {
             "imaging_axis": int(condensate["imaging_axis"]),
-            "imaging_axis_label": notebook["imaging_geometry"]["axis_labels"][condensate["imaging_axis"]],
+            "imaging_axis_label": model["imaging_geometry"]["axis_labels"][condensate["imaging_axis"]],
             "transverse_plane_labels": condensate["transverse_plane_labels"],
             "radii_um": [float(value) * 1e6 for value in condensate["state"]["radii"]],
             "peak_column_density_m2": float(pci_stage["phase_stage"]["column_density_peak_m2"]),
@@ -159,11 +162,12 @@ def build_figure_data(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str,
             "detuning_ghz": float(pci_stage["phase_stage"]["detuning_hz"]) / 1e9,
             "phase_peak_rad": float(np.max(pci_phase)),
             "kappa_F": float(faraday_stage["kappa_F"]),
-            "theta_f_peak_rad": float(np.max(theta_f)),
+            "theta_f_at_scalar_phase_peak_rad": theta_at_phase_peak,
+            "theta_f_abs_peak_rad": float(np.max(np.abs(theta_f))),
             "numerical_aperture": float(pci_stage["pupil_stage"]["numerical_aperture"]),
             "scattered_power_throughput": throughput,
-            "surviving_rotation_rad": surviving_rotation,
-            "surviving_rotation_deg": float(np.degrees(surviving_rotation)),
+            "surviving_rotation_abs_rad": surviving_rotation,
+            "surviving_rotation_abs_deg": float(np.degrees(surviving_rotation)),
             "centre_filtered_scattered_field": {
                 "real": float(centre_filtered_scattered.real),
                 "imag": float(centre_filtered_scattered.imag),
@@ -207,10 +211,14 @@ def build_figure_data(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str,
         "dgi_background_I_I0": metrics["readouts"]["dgi"]["background_I_I0"],
         "dgi_peak_I_I0": metrics["readouts"]["dgi"]["stats"]["max"],
         "faraday_dark_peak_I_I0": metrics["readouts"]["dark_field_faraday"]["stats"]["max"],
-        "dual_port_peak_S": metrics["readouts"]["dual_port_faraday"]["signal_stats"]["max"],
+        "theta_f_at_phase_peak_rad": theta_at_phase_peak,
+        "dual_port_centre_S": metrics["readouts"]["dual_port_faraday"]["signal_stats"]["centre_value"],
+        "dual_port_min_S": metrics["readouts"]["dual_port_faraday"]["signal_stats"]["min"],
+        "dual_port_max_S": metrics["readouts"]["dual_port_faraday"]["signal_stats"]["max"],
+        "dual_port_abs_peak_signed_S": dual_abs_peak_signed,
         "dual_port_centre_I_H_I0": metrics["readouts"]["dual_port_faraday"]["port_H_stats"]["centre_value"],
         "dual_port_centre_I_V_I0": metrics["readouts"]["dual_port_faraday"]["port_V_stats"]["centre_value"],
-        "surviving_rotation_rad": surviving_rotation,
+        "surviving_rotation_abs_rad": surviving_rotation,
         "centre_filtered_scattered_field_real": centre_filtered_scattered.real,
         "centre_filtered_scattered_field_imag": centre_filtered_scattered.imag,
     }
@@ -261,9 +269,9 @@ def _plot(
             data["pci_I_I0"],
             "(a) PCI",
             "RdBu_r",
-            TwoSlopeNorm(vmin=0.85, vcenter=0.9025, vmax=1.16),
+            TwoSlopeNorm(vmin=0.85, vcenter=0.9025, vmax=1.35),
             r"$I/I_0$",
-            [0.85, 0.90, 1.05, 1.16],
+            [0.85, 0.90, 1.10, 1.35],
             "%.2f",
         ),
         (
@@ -271,9 +279,9 @@ def _plot(
             data["dgi_I_I0"],
             "(b) DGI",
             "magma",
-            matplotlib.colors.Normalize(vmin=0.0, vmax=0.016),
+            matplotlib.colors.Normalize(vmin=0.0, vmax=0.045),
             r"$I/I_0$",
-            [0.0, 0.008, 0.016],
+            [0.0, 0.02, 0.04],
             "%.3f",
         ),
         (
@@ -281,9 +289,9 @@ def _plot(
             data["dark_I_I0"],
             "(c) Dark-field Faraday",
             "magma",
-            matplotlib.colors.Normalize(vmin=0.0, vmax=0.016),
+            matplotlib.colors.Normalize(vmin=0.0, vmax=0.045),
             r"$I/I_0$",
-            [0.0, 0.008, 0.016],
+            [0.0, 0.02, 0.04],
             "%.3f",
         ),
         (
@@ -291,7 +299,7 @@ def _plot(
             data["dual_S"],
             "(d) Dual-port Faraday",
             "RdBu_r",
-            TwoSlopeNorm(vmin=-0.26, vcenter=0.0, vmax=0.26),
+            TwoSlopeNorm(vmin=-0.22, vcenter=0.0, vmax=0.22),
             r"$S$",
             [-0.2, 0.0, 0.2],
             "%.1f",
@@ -386,13 +394,13 @@ def generate(config_path: Path = DEFAULT_CONFIG, output_dir: Path | None = None)
         "pipeline": [
             "contact-only Thomas-Fermi condensate",
             "x-integrated column density",
-            "scalar phase and phenomenological Faraday rotation maps",
-            "common NA=0.080 pupil propagation",
+            "scalar phase and ideal 166Er Faraday rotation maps",
+            f"common effective NA={metrics['optical_input']['numerical_aperture']:.3f} pupil propagation",
             "PCI, DGI, dark-field Faraday, and dual-port Faraday readouts",
         ],
         "script": str(Path(__file__).resolve().relative_to(REPO_ROOT)).replace("\\", "/"),
         "config": str(config_path.resolve().relative_to(REPO_ROOT)).replace("\\", "/"),
-        "notebook_defaults_config": config["notebook_defaults_config"],
+        "model_config": config["model_config"],
         "git_branch": _git_value("branch", "--show-current"),
         "git_commit": _git_value("rev-parse", "HEAD"),
         "canonical_context": config["canonical_context"],
@@ -406,15 +414,16 @@ def generate(config_path: Path = DEFAULT_CONFIG, output_dir: Path | None = None)
         "camera_noise_included": False,
         "camera_binning_included": False,
         "multishot_evolution_included": False,
-        "calibration_status": "kappa_F=1 is an uncalibrated Version 1 placeholder; Faraday amplitudes are structural, not calibrated erbium predictions",
+        "atomic_response_status": "ideal fully spin-polarised axial 166Er response with kappa_F=-45/91",
+        "apparatus_calibration_status": "effective pupil, analyser-port gains, background and registration remain to be measured",
         "canonical_gate": metrics["canonical_gate"],
         "caption": (
-            "Representative noiseless single-frame outputs of the reference condensate at "
-            "|Delta|/2pi=1.5 GHz, imaged along x through the common NA=0.080 pupil. "
-            "PCI, DGI, and dark-field Faraday panels show I/I0; the dual-port panel shows "
-            "S=(I_H-I_V)/(I_H+I_V). Separate colour scales are required by the bright- and "
-            "dark-background readouts. The Faraday panels use the uncalibrated Version 1 "
-            "setting kappa_F=1. Camera noise and multishot evolution are not included."
+            "Representative noiseless finite-aperture readouts of the reference condensate at "
+            "|Delta|/2pi=1.5 GHz, imaged along x through the common effective NA=0.130 pupil. "
+            "Panels (a)-(c) show image-plane intensity normalised to I0; panels (b) and (c) "
+            "use the same intensity scale. Panel (d) shows the signed dual-port signal "
+            "S=(I_H-I_V)/(I_H+I_V), whose negative central value follows the stated H/V "
+            "convention. Camera sampling, detector noise and condensate evolution are omitted."
         ),
     }
     _write_json(outputs["metadata"], metadata)

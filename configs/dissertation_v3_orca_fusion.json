@@ -1,0 +1,161 @@
+{
+  "label": "dissertation_v4_orca_fusion_m10_ultra_quiet_na013",
+  "description": "Active dissertation screening defaults for the Hamamatsu ORCA-Fusion C14440-20UP at the M=10 design magnification. The ideal 166Er atomic Faraday coefficient is fixed analytically; the effective NA=0.130 optical design and catalogue-typical detector values remain commissioning inputs until measured on the apparatus.",
+  "baseline_config": "configs/notebook_v1_defaults.json",
+  "reference_parameter_record": "docs/simulation_reference_parameters.md",
+  "constants": {
+    "hbar": 1.054571817e-34,
+    "speed_of_light": 299792458.0,
+    "boltzmann_constant": 1.380649e-23,
+    "atomic_mass_unit": 1.66053907e-27,
+    "bohr_radius_m": 5.29177211e-11
+  },
+  "atom": {
+    "species": "166Er",
+    "mass_number": 166.0,
+    "transition_wavelength_m": 4.01e-7,
+    "natural_linewidth_rad_s": 185353966.5617978,
+    "resonant_cross_section_m2": 7.678673341230136e-14
+  },
+  "condensate": {
+    "atom_number": 25000.0,
+    "scattering_length_bohr": 72.0,
+    "trap_frequencies_hz": [293.0, 14.0, 233.0],
+    "temperature_k": 2e-7
+  },
+  "imaging_geometry": {
+    "imaging_axis": 0,
+    "axis_labels": ["x", "y", "z"],
+    "imaging_axis_note": "axis 0 is the across-cigar x direction; the plotted transverse plane is y,z.",
+    "probe_diameter_m": 0.024,
+    "focal_length_1_m": 0.09230769230769231,
+    "focal_length_1_role": "effective object-side focal length of the active NA=0.130 design; with the 24 mm entrance pupil it gives NA=(D/2)/f=0.130",
+    "focal_length_2_m": 0.6,
+    "focal_length_2_role": "legacy relay entry retained for optical-model compatibility; it is not used to infer the active camera magnification",
+    "magnification": 10.0,
+    "magnification_status": "current experimental design value; achieved magnification remains to be measured during commissioning",
+    "magnification_source": "explicit design input, not focal_length_2_m/focal_length_1_m",
+    "camera_model": "Hamamatsu ORCA-Fusion C14440-20UP",
+    "camera_pixel_m": 6.5e-6,
+    "camera_pixel_role": "catalogue physical sensor pitch; code divides by magnification exactly once",
+    "object_plane_pixel_m": 6.5e-7
+  },
+  "grid": {
+    "ngrid": 1024,
+    "field_of_view_m": 0.0001,
+    "density_cut_points": 400,
+    "density_cut_span_rmax": 1.5
+  },
+  "phase_recovery": {
+    "detuning_hz": 1500000000.0,
+    "notebook_reference_cells": [10, 59, 67],
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "inferno"
+  },
+  "pci_recovery": {
+    "phase_plate_transmittance": 0.95,
+    "phase_plate_phase_rad": 1.5707963267948966,
+    "notebook_reference_cells": [16, 18],
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "viridis"
+  },
+  "dgi_recovery": {
+    "stop_optical_depth": 4.0,
+    "notebook_reference_cells": [16, 18],
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "inferno"
+  },
+  "faraday_recovery": {
+    "kappa_F": -0.4945054945054945,
+    "kappa_F_exact": "-45/91",
+    "kappa_F_status": "ideal atomic-response coefficient for the fully spin-polarised 166Er reference state probed along the quantisation axis; apparatus-level response remains to be calibrated",
+    "notebook_reference_cells": [39, 43, 51, 85, 89],
+    "figure_size_inches": [12.4, 3.6],
+    "dark_field_cmap": "inferno",
+    "dual_port_cmap": "coolwarm"
+  },
+  "camera_recovery": {
+    "input_stage": "pci_stage",
+    "camera_model": "Hamamatsu ORCA-Fusion C14440-20UP",
+    "probe_power_mw": 1.0,
+    "sampling_method": "centred area-conserving physical-pixel integration",
+    "input_grid_shape": [1024, 1024],
+    "input_grid_spacing_m": 9.765625e-8,
+    "object_plane_pixel_m": 6.5e-7,
+    "camera_output_shape": [153, 153],
+    "camera_output_field_m": 9.945e-5,
+    "sampling_note": "The optical grid remains 100 um/1024. A centred 153x153 analysis crop is integrated at the exact 0.650 um object-plane pitch; it is not claimed to be a directly programmed hardware ROI. ORCA-Fusion sub-array dimensions are set in multiples of four pixels, so commissioning must acquire a legal ROI containing both analyser ports before applying this crop.",
+    "default_exposure_s": 0.00036063235,
+    "camera_exposure_role": "shortest calculated Ultra quiet exposure setting that contains the 300 us optical pulse at the F=300 mW us, P=1 mW reference; tau in F=P tau remains the optical pulse duration and is placed inside a verified common-exposure interval",
+    "quantum_efficiency": 0.65,
+    "quantum_efficiency_note": "catalogue typical QE at 400 nm, used provisionally for the 401 nm transition until effective in-path response is measured",
+    "readout_mode": "Ultra quiet scan",
+    "output_bit_depth": 16,
+    "read_noise_electrons": 0.7,
+    "read_noise_note": "manufacturer-typical rms value for Ultra quiet scan; to be verified with dark frames for the installed camera, ROI and trigger sequence",
+    "read_noise_treatment": "use 0.7 e- rms per physical pixel and readout in the active low-noise dissertation screening scenario",
+    "full_well_electrons": 15000.0,
+    "conversion_factor_electrons_per_count": 0.24,
+    "sensor_shape_pixels": [2304, 2304],
+    "readout_architecture": "rolling shutter",
+    "pulse_timing_requirement": "use a global-reset trigger or place the probe pulse inside a verified common-exposure interval shared by every row of both analyser-port regions",
+    "minimum_exposure_s_ultra_quiet": 0.00028,
+    "exposure_step_s_ultra_quiet": 0.00008,
+    "full_resolution_readout_s_ultra_quiet": 0.1844,
+    "hardware_subarray_step_pixels": 4,
+    "manufacturer_product_url": "https://camera.hamamatsu.com/us/en/product/camera/C14440-20UP.html",
+    "manufacturer_catalog_url": "https://camera.hamamatsu.com/content/dam/hamamatsu-photonics/sites/documents/99_SALES_LIBRARY/sys/SCAS0136E_C14440-20UP.pdf",
+    "dual_port_sampling": "both Wollaston outputs are represented as simultaneous regions of interest on one sensor; port separation and the common exposure timing remain to be measured",
+    "notebook_reference_cells": [20],
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "inferno"
+  },
+  "noisy_camera_recovery": {
+    "input_stage": "deterministic_camera_stage",
+    "rng_seed": 7,
+    "figure_size_inches": [12.4, 3.6],
+    "map_cmap": "inferno",
+    "map_vmin": 0.85,
+    "map_vmax": 1.15
+  },
+  "multishot_recovery": {
+    "detuning_ghz": 1.5,
+    "probe_power_mw": 1.0,
+    "pulse_duration_us": 300.0,
+    "imaging_axis": 0,
+    "loss_fraction_limit": 0.3,
+    "reabsorption_override": null,
+    "max_shots": 400,
+    "eta_coll": 1.3,
+    "recoil_energy_multiplier": 2.0,
+    "recoil_energy_convention": "complete absorption-spontaneous-emission cycle deposits 2 E_rec per primary or reabsorbed scattering event",
+    "notebook_reference_cells": [40, 42],
+    "figure_size_inches": [12.5, 8.4]
+  },
+  "noisy_multishot_filmstrip_recovery": {
+    "selected_frames": [0, 5, 10, 14],
+    "rng_seed": 7,
+    "profile_convention": "fresh-cloud image formation with the evolving frame state supplied by the full multishot model",
+    "figure_size_inches": [15.2, 3.6],
+    "map_cmap": "inferno",
+    "map_vmin": 0.9,
+    "map_vmax": 1.18
+  },
+  "unit_conventions": {
+    "internal": "SI",
+    "density_display": "cm^-3",
+    "column_density_display": "cm^-2",
+    "coordinate_display": "um",
+    "density_conversion_m3_to_cm3": 1e-6,
+    "column_density_conversion_m2_to_cm2": 0.0001,
+    "coordinate_conversion_m_to_um": 1000000.0
+  },
+  "display": {
+    "image_extent_um": [-50.0, 50.0, -50.0, 50.0],
+    "column_density_xlim_um": [-45.0, 45.0],
+    "column_density_ylim_um": [-12.0, 12.0],
+    "figure_size_inches": [11.8, 4.6],
+    "column_density_cmap": "viridis"
+  },
+  "status_note": "Active ORCA-Fusion/M=10 low-noise screening configuration. The ideal atomic coefficient is kappa_F=-45/91. Effective NA=0.130 is an optical design assumption, while QE=0.65 and Ultra quiet read noise=0.7 e- rms are manufacturer-typical inputs that require apparatus verification."
+}

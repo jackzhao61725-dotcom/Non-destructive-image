@@ -1,0 +1,61 @@
+{
+  "apparatus_calibration_status": "effective pupil, analyser-port gains, background and registration remain to be measured",
+  "atomic_response_status": "ideal fully spin-polarised axial 166Er response with kappa_F=-45/91",
+  "camera_binning_included": false,
+  "camera_noise_included": false,
+  "canonical_context": {
+    "detuning_ghz": 1.5,
+    "imaging_axis": 0,
+    "imaging_axis_label": "x",
+    "numerical_aperture": 0.13,
+    "power_exposure_note": "The plotted quantities are noiseless intensities normalised to I0 and the dual-port normalised difference S, so probe power and exposure do not set the displayed values.",
+    "route_a_exposure_time_us_context_only": 90.0,
+    "route_a_fluence_mw_us_context_only": 90.0,
+    "route_a_probe_power_mw_context_only": 1.0
+  },
+  "canonical_gate": {
+    "passed": true,
+    "values": {
+      "aperture_throughput": 0.9302787994283651,
+      "centre_filtered_scattered_field_imag": 0.1803899898440997,
+      "centre_filtered_scattered_field_real": -0.015439786478921252,
+      "dgi_background_I_I0": 0.0001,
+      "dgi_peak_I_I0": 0.03257013971289065,
+      "dual_port_abs_peak_signed_S": -0.17833439662712702,
+      "dual_port_centre_I_H_I0": 0.41102438482000514,
+      "dual_port_centre_I_V_I0": 0.5894419438976197,
+      "dual_port_centre_S": -0.17833439662712702,
+      "dual_port_max_S": 0.020174163676313108,
+      "dual_port_min_S": -0.17833439662712702,
+      "faraday_dark_peak_I_I0": 0.008018767598998892,
+      "pci_background_I_I0": 0.9025,
+      "pci_peak_I_I0": 1.2780199161462586,
+      "phase_peak_rad": 0.20294165287929014,
+      "surviving_rotation_abs_rad": 0.08966768249018948,
+      "theta_f_at_phase_peak_rad": -0.1003557624128358
+    }
+  },
+  "caption": "Representative noiseless finite-aperture readouts of the reference condensate at |Delta|/2pi=1.5 GHz, imaged along x through the common effective NA=0.130 pupil. Panels (a)-(c) show image-plane intensity normalised to I0; panels (b) and (c) use the same intensity scale. Panel (d) shows the signed dual-port signal S=(I_H-I_V)/(I_H+I_V), whose negative central value follows the stated H/V convention. Camera sampling, detector noise and condensate evolution are omitted.",
+  "config": "configs/figure_4_2.json",
+  "figure": "Figure 4.2",
+  "figure_type": "canonical noiseless finite-aperture single-frame readout comparison",
+  "git_branch": "codex/reconstruction-v4-canonical",
+  "git_commit": "498166f5d712c0a1f035fb7dd1cacd62619dc62d",
+  "model_config": "configs/dissertation_v3_orca_fusion.json",
+  "multishot_evolution_included": false,
+  "pipeline": [
+    "contact-only Thomas-Fermi condensate",
+    "x-integrated column density",
+    "scalar phase and ideal 166Er Faraday rotation maps",
+    "common effective NA=0.130 pupil propagation",
+    "PCI, DGI, dark-field Faraday, and dual-port Faraday readouts"
+  ],
+  "plotted_quantities": {
+    "DGI": "noiseless image-plane intensity I/I0 with OD_s=4 residual carrier",
+    "PCI": "noiseless image-plane intensity I/I0",
+    "dark_field_faraday": "noiseless crossed-analyser intensity I/I0",
+    "dual_port_faraday": "normalised difference S=(I_H-I_V)/(I_H+I_V)"
+  },
+  "port_mapping": "I_H = historical notebook I_v; I_V = historical notebook I_u",
+  "script": "scripts/generate_figure_4_2.py"
+}

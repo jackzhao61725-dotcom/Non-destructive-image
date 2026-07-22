@@ -17,7 +17,8 @@ from matplotlib.colors import TwoSlopeNorm
 import numpy as np
 
 from non_destructive_image import (
-    bin_to_camera_pixels,
+    centered_camera_shape,
+    resample_to_camera_pixels,
     scalar_phase_shift,
     simulate_faraday_image,
     simulate_noisy_camera_image,
@@ -65,6 +66,29 @@ def _git_value(*args: str) -> str:
         except (OSError, subprocess.CalledProcessError):
             continue
     return "unknown"
+
+
+def _caption(config: dict[str, Any]) -> str:
+    scan = config["scan"]
+    fixed = config["fixed_context"]
+    half_width = int(fixed["central_block_half_width_pixels"])
+    block_side = 2 * half_width + 1
+    minimum_snr = float(config["screening_guide"]["minimum_snr"])
+    conditions = ", ".join(
+        f"{chr(ord('A') + index)} (F={float(value):g} mW us)"
+        for index, value in enumerate(scan["selected_fluence_mw_us"])
+    )
+    return (
+        "Initial-frame Faraday SNR as a function of F=P tau at "
+        f"|Delta|/2pi={float(scan['detuning_ghz']):g} GHz for the undepleted "
+        "reference condensate. The estimator uses the absolute expected signal in "
+        f"the central {block_side}x{block_side} camera-pixel block and includes "
+        f"Poisson noise plus {float(fixed['read_noise_electrons_per_pixel_per_port']):g} "
+        f"e- rms read noise per pixel and port. The dashed line marks the working "
+        f"SNR={minimum_snr:g} camera-space screening threshold. The labelled conditions "
+        f"are {conditions}. "
+        "The lower panels are fixed noise realisations and do not determine the curves."
+    )
 
 
 def _fluence_axis(scan: dict[str, Any]) -> np.ndarray:
@@ -126,16 +150,16 @@ def _dual_port_snr(
 
 
 def _reference_fields(
-    notebook: dict[str, Any],
+    model: dict[str, Any],
     config: dict[str, Any],
 ) -> dict[str, Any]:
     fixed = config["fixed_context"]
-    constants = _basic_constants(notebook)
-    phase_stage = build_phase_stage(notebook)
+    constants = _basic_constants(model)
+    phase_stage = build_phase_stage(model)
     reference_phase = np.asarray(phase_stage["notebook_phase_map_rad"], dtype=float)
     reference_peak = float(phase_stage["notebook_phase_peak_rad"])
     phase_profile = reference_phase / reference_peak
-    pupil_stage = build_pupil(notebook)
+    pupil_stage = build_pupil(model)
     pupil = np.asarray(pupil_stage["pupil"], dtype=float)
 
     if int(phase_stage["condensate_stage"]["imaging_axis"]) != int(fixed["imaging_axis"]):
@@ -151,28 +175,49 @@ def _reference_fields(
         float(constants["gamma"]),
     )
     phase_map = phase_peak * phase_profile
-    faraday = simulate_faraday_image(float(fixed["kappa_F"]) * phase_map, pupil)
-    bin_size = int(fixed["camera_bin_size"])
+    kappa_f = float(model["faraday_recovery"]["kappa_F"])
+    if not np.isclose(kappa_f, float(fixed["kappa_F"]), rtol=0, atol=1e-15):
+        raise RuntimeError("Figure 5.1 kappa_F does not match the active model")
+    faraday = simulate_faraday_image(kappa_f * phase_map, pupil)
     requested_object_pixel_m = (
         float(fixed["camera_pixel_m"]) / float(fixed["effective_magnification"])
     )
     computational_spacing_m = (
-        float(notebook["grid"]["field_of_view_m"]) / int(notebook["grid"]["ngrid"])
+        float(model["grid"]["field_of_view_m"]) / int(model["grid"]["ngrid"])
     )
-    expected_bin_size = int(round(requested_object_pixel_m / computational_spacing_m))
-    if bin_size != expected_bin_size:
+    output_shape = tuple(int(value) for value in fixed["camera_output_shape"])
+    expected_output_shape = centered_camera_shape(
+        reference_phase.shape,
+        computational_spacing_m,
+        requested_object_pixel_m,
+    )
+    if output_shape != expected_output_shape:
         raise RuntimeError(
-            "Figure 5.1 camera bin size is inconsistent with the configured pixel pitch "
-            "and effective magnification"
+            "Figure 5.1 camera output shape is inconsistent with the numerical field, "
+            "physical pixel pitch and effective magnification"
         )
-    dark = bin_to_camera_pixels(faraday["dark_field_intensity"], bin_size)
-    # Dissertation convention: H is the historical notebook v port and V is u.
-    port_h = bin_to_camera_pixels(faraday["dual_port_v_intensity"], bin_size)
-    port_v = bin_to_camera_pixels(faraday["dual_port_u_intensity"], bin_size)
+    dark = resample_to_camera_pixels(
+        faraday["dark_field_intensity"],
+        computational_spacing_m,
+        requested_object_pixel_m,
+        output_shape,
+    )
+    port_h = resample_to_camera_pixels(
+        faraday["analyser_h_intensity"],
+        computational_spacing_m,
+        requested_object_pixel_m,
+        output_shape,
+    )
+    port_v = resample_to_camera_pixels(
+        faraday["analyser_v_intensity"],
+        computational_spacing_m,
+        requested_object_pixel_m,
+        output_shape,
+    )
 
-    field_of_view_m = float(notebook["grid"]["field_of_view_m"])
-    ngrid = int(notebook["grid"]["ngrid"])
-    object_pixel_um = field_of_view_m / ngrid * bin_size * 1e6
+    field_of_view_m = float(model["grid"]["field_of_view_m"])
+    ngrid = int(model["grid"]["ngrid"])
+    object_pixel_um = requested_object_pixel_m * 1e6
     half_extent_um = object_pixel_um * dark.shape[0] / 2
     return {
         "phase_peak_rad": float(phase_peak),
@@ -237,19 +282,19 @@ def _noisy_images(
 
 
 def build_scan(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
-    notebook = load_config(REPO_ROOT / config["notebook_defaults_config"])
+    model = load_config(REPO_ROOT / config["model_config"])
     fixed = config["fixed_context"]
     scan = config["scan"]
-    fields = _reference_fields(notebook, config)
+    fields = _reference_fields(model, config)
     fluence = _fluence_axis(scan)
-    constants = _basic_constants(notebook)
-    h_planck = 2 * np.pi * float(notebook["constants"]["hbar"])
+    constants = _basic_constants(model)
+    h_planck = 2 * np.pi * float(model["constants"]["hbar"])
     photon_energy = (
         h_planck
-        * float(notebook["constants"]["speed_of_light"])
+        * float(model["constants"]["speed_of_light"])
         / float(constants["wavelength"])
     )
-    incident_intensity_for_1mw = intensity_at_atoms_notebook(notebook, 1.0)
+    incident_intensity_for_1mw = intensity_at_atoms_notebook(model, 1.0)
     photoelectrons = (
         incident_intensity_for_1mw
         * float(fields["physical_object_pixel_m"]) ** 2
@@ -259,7 +304,14 @@ def build_scan(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
         / photon_energy
     )
     half_width = int(fixed["central_block_half_width_pixels"])
-    read_noise = float(fixed["read_noise_electrons_per_pixel_per_port"])
+    read_noise = float(model["camera_recovery"]["read_noise_electrons"])
+    if not np.isclose(
+        read_noise,
+        float(fixed["read_noise_electrons_per_pixel_per_port"]),
+        rtol=0,
+        atol=1e-15,
+    ):
+        raise RuntimeError("Figure 5.1 read noise does not match the active model")
     snr = {
         "Faraday dark-field": _single_output_snr(
             fields["dark"],
@@ -370,6 +422,7 @@ def build_scan(config: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any]]:
             "single_output": "abs(sum(signal_e))/sqrt(sum(total_count_e + read_variance_e2))",
             "dual_port": "abs(sum(N_H-N_V))/sqrt(sum(N_H+N_V+2*sigma_r^2))",
         },
+        "screening_guide": config["screening_guide"],
         "fixed_context": fixed,
         "scope": config["scope"],
     }
@@ -457,6 +510,14 @@ def _plot(data: dict[str, Any], config: dict[str, Any], paths: dict[str, Path]) 
         rf"Initial-frame SNR (central ${block_side}\times{block_side}$ block)"
     )
     curve_axis.grid(color="0.88", linewidth=0.6)
+    minimum_snr = float(config["screening_guide"]["minimum_snr"])
+    curve_axis.axhline(
+        minimum_snr,
+        color="0.35",
+        linewidth=1.0,
+        linestyle="--",
+        label=rf"screening threshold, SNR $={minimum_snr:g}$",
+    )
     curve_axis.legend(frameon=False, loc="lower right")
     curve_axis.set_title(
         rf"(a) Fixed detuning $|\Delta|/2\pi={float(config['scan']['detuning_ghz']):g}$ GHz",
@@ -572,11 +633,13 @@ def generate(config_path: Path = DEFAULT_CONFIG, output_dir: Path | None = None)
                 for key, path in paths.items()
             },
             "estimator": summary["estimator"],
+            "screening_guide": summary["screening_guide"],
             "fixed_context": config["fixed_context"],
             "selected_frames": summary["selected_frames"],
             "scope": config["scope"],
             "faraday_boundary": config["fixed_context"]["faraday_calibration_status"],
             "noise_draw_boundary": config["noise_realisation"]["interpretation"],
+            "caption": _caption(config),
         },
     )
     return paths

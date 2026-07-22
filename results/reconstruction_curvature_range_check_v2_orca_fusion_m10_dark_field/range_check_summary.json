@@ -1,0 +1,85 @@
+{
+  "basis_label": "resolution_matched_17x5",
+  "calibration_morphology_names": [
+    "calibration_smooth_reference",
+    "calibration_asymmetric_cloud",
+    "calibration_weak_modulation",
+    "calibration_two_peak_fragment",
+    "calibration_central_notch"
+  ],
+  "calibration_realizations_per_morphology": 1,
+  "calibration_seed": 20260720,
+  "checked_results": [
+    {
+      "basis_label": "resolution_matched_17x5",
+      "candidate": "resolution_matched_17x5__curvature_30_um2",
+      "curvature_weight_um2": 30.0,
+      "full_rank_fraction": 1.0,
+      "maximum_data_jacobian_condition": 498.34533600656096,
+      "median_absolute_integrated_density_relative_error": 0.16492714469314906,
+      "median_data_jacobian_condition": 227.0467960106851,
+      "median_supported_band_relative_l2_error": 0.18524092483982288,
+      "parameter_count": 85,
+      "readout": "dark_field",
+      "success_fraction": 1.0,
+      "trial_count": 5,
+      "upper_quartile_supported_band_relative_l2_error": 0.20205352357176123
+    },
+    {
+      "basis_label": "resolution_matched_17x5",
+      "candidate": "resolution_matched_17x5__curvature_100_um2",
+      "curvature_weight_um2": 100.0,
+      "full_rank_fraction": 1.0,
+      "maximum_data_jacobian_condition": 1296.3557801496966,
+      "median_absolute_integrated_density_relative_error": 0.20253037828670806,
+      "median_data_jacobian_condition": 315.3840370423223,
+      "median_supported_band_relative_l2_error": 0.2200593297813274,
+      "parameter_count": 85,
+      "readout": "dark_field",
+      "success_fraction": 1.0,
+      "trial_count": 5,
+      "upper_quartile_supported_band_relative_l2_error": 0.2257183907340669
+    },
+    {
+      "basis_label": "resolution_matched_17x5",
+      "candidate": "resolution_matched_17x5__curvature_300_um2",
+      "curvature_weight_um2": 300.0,
+      "full_rank_fraction": 1.0,
+      "maximum_data_jacobian_condition": 742.149961386741,
+      "median_absolute_integrated_density_relative_error": 0.2577623233029924,
+      "median_data_jacobian_condition": 223.1956723942387,
+      "median_supported_band_relative_l2_error": 0.28389159812570164,
+      "parameter_count": 85,
+      "readout": "dark_field",
+      "success_fraction": 1.0,
+      "trial_count": 5,
+      "upper_quartile_supported_band_relative_l2_error": 0.2863813332020048
+    },
+    {
+      "basis_label": "resolution_matched_17x5",
+      "candidate": "resolution_matched_17x5__curvature_1000_um2",
+      "curvature_weight_um2": 1000.0,
+      "full_rank_fraction": 1.0,
+      "maximum_data_jacobian_condition": 195.39623400027136,
+      "median_absolute_integrated_density_relative_error": 0.2963115686710318,
+      "median_data_jacobian_condition": 165.99208654232882,
+      "median_supported_band_relative_l2_error": 0.3587951839286039,
+      "parameter_count": 85,
+      "readout": "dark_field",
+      "success_fraction": 1.0,
+      "trial_count": 5,
+      "upper_quartile_supported_band_relative_l2_error": 0.36476167765149026
+    }
+  ],
+  "conclusion": {
+    "all_checked_stronger_weights_increase_median_error": true,
+    "scope": "calibration-set bracket for the frozen basis; not a new model selection or held-out performance claim"
+  },
+  "label": "reconstruction_curvature_range_check_v2_orca_fusion_m10_dark_field",
+  "purpose": "bracket the provisional dark-field curvature selection using stronger regularisation on the identical ORCA-Fusion Version 4 calibration observations",
+  "readout": "dark_field",
+  "reference_error": 0.18524092483982288,
+  "reference_weight_um2": 30.0,
+  "source_benchmark_label": "reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+  "study_elapsed_seconds": 386.1001375000342
+}
