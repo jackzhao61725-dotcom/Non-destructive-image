@@ -1,12 +1,22 @@
 # ORCA-Fusion reconstruction evidence, 21 July 2026
 
+- **Status:** sealed historical synthetic evidence
+- **Active consumers:** inverse-method and identifiability discussion, artifact
+  verification and provenance review
+- **Frozen contract:** `NA=0.080`, `kappa_F=1`, `sigma_r=1.4 e- rms`
+- **Update trigger:** a demonstrated provenance, hash or transcription error;
+  a new physical contract requires a new result family and evidence record
+- **Retirement rule:** remove only when no current claim or regression depends
+  on the sealed artifacts and the figure index is updated in the same change
+
 ## Scope
 
-This report records the canonical synthetic reconstruction benchmark and
-credibility study for the Hamamatsu ORCA-Fusion C14440-20UP detector contract.
-It covers shape-flexible dual-port and dark-field Faraday inversion. It is not
-experimental validation, and the absolute Faraday density scale remains tied
-to the illustrative uncalibrated setting `kappa_F=1`.
+This report records the canonical synthetic reconstruction benchmark,
+physical-observable recovery and credibility study for the Hamamatsu
+ORCA-Fusion C14440-20UP detector contract. It covers shape-flexible dual-port
+and dark-field Faraday inversion. It is not experimental validation, and the
+absolute Faraday density scale remains tied to the illustrative uncalibrated
+setting `kappa_F=1`.
 
 ## Frozen detector and numerical contract
 
@@ -34,24 +44,43 @@ coordinate mismatch recorded by the study is
 
 ## Source freeze and provenance
 
-The clean source freeze was created before any canonical long run:
+The clean source freeze was created before the sealed long inverse runs:
 
-- source commit: `5e59406200f715f0891c007172f12bba7eeeec5c`;
+- pre-publication local source checkpoint:
+  `5e59406200f715f0891c007172f12bba7eeeec5c`;
 - branch: `codex/reconstruction-v4-canonical`;
-- generation dirty state: false for every canonical run.
+- the sealed morphology, curvature, credibility and observable numerical runs
+  recorded clean generation states.
 
-The result commits are:
+The provenance-relevant checkpoints are:
 
-| Commit | Result |
-| --- | --- |
-| `f03802b` | morphology benchmark and sealed figures |
-| `a05f5ec` | dual-port curvature range check |
-| `62444d4` | dark-field curvature range check |
-| `ea6fdc1` | active entry points, figure-label code and evidence documents |
-| `235cfa8` | refreshed reconstruction credibility artifacts |
-| `bd778c1` | active ORCA Figure 3.2 and Figure 5.2 regression artifacts |
+| Commit | Result | History status |
+| --- | --- | --- |
+| `f03802b` | morphology benchmark and sealed figures | pre-publication local checkpoint ID |
+| `a05f5ec` | dual-port curvature range check | pre-publication local checkpoint ID |
+| `62444d4` | dark-field curvature range check | pre-publication local checkpoint ID |
+| `ea6fdc1` | active entry points, figure-label code and evidence documents | pre-publication local checkpoint ID |
+| `235cfa8` | refreshed reconstruction credibility artifacts | pre-publication local checkpoint ID |
+| `bd778c1` | then-active ORCA Figure 3.2 and Figure 5.2 regression artifacts | pre-publication local checkpoint ID |
+| `cda577a` | production observable extraction and replay workflow | pre-publication local checkpoint ID |
+| `e7e8b1d` | sealed held-out observable maps, tables and figures | pre-publication local checkpoint ID |
 
-The credibility run was generated from commit
+The prepared publication history does not retain any pre-rewrite feature
+commit. The identifiers in the table, together with `5e59406`, `64a07f7` and
+`df00b42`, belong to the pre-publication local DAG retained in the offline safety
+refs and bundle. They remain historical provenance values but are not expected
+to resolve on the eventual public branch. Public verification therefore uses
+the retained config, source and artifact SHA-256 values and the deterministic
+run-ID chain. Commit `498166f5d712c0a1f035fb7dd1cacd62619dc62d` is the
+retrospective publication source snapshot, not the original generation commit.
+
+The retained source-file hashes predate the repository LF contract and were
+captured from a Windows CRLF worktree. Validation still requires an exact raw
+hash first; its fallback accepts only the same bytes under deterministic CRLF
+line-ending reconstruction. Any non-EOL source change continues to fail the
+sealed-source check.
+
+The credibility run was generated from pre-publication local checkpoint
 `ea6fdc1b98c37b9f79e1bd4ef25ef058608432b1`. Its metadata records Python
 3.12.13, NumPy 2.3.5, SciPy 1.18.0 and Matplotlib 3.11.1. All 13 artifact
 hashes listed in that metadata were rechecked after generation and matched.
@@ -115,6 +144,72 @@ errors.
 
 These errors use synthetic truth and therefore evaluate the development
 contract. They are not quantities available for an unknown experimental cloud.
+
+## Held-out physical-observable recovery
+
+The observable study replays only the frozen 60 held-out fits; it does not
+repeat calibration selection or alter the sealed morphology benchmark. Every
+seed, data-Jacobian rank, parameter count and eight stored floating-point
+metrics agree with the source rows. The resulting `600/600` legacy metric
+checks pass.
+
+Moments use physical cell-area weights on the common object-space density-model
+support `|y| <= 27 um`, `|z| <= 7.5 um`. This support contains 7425 cells and
+has area `7.9296424452e-10 m2`. It is not the camera-space fitting ROI. All 60
+truth and reconstruction maps support the centroid, covariance and width
+calculations. All 60 truth/reconstruction pairs also exceed the declared
+fractional-anisotropy angle gate of `0.05`.
+
+The table gives medians over ten held-out trials per readout and fluence. The
+integrated-response and covariance entries are absolute relative errors; the
+centroid entry is the two-dimensional position error.
+
+| Readout | Fluence (`mW us`) | Integrated response | Centroid (`um`) | Covariance tensor |
+| --- | ---: | ---: | ---: | ---: |
+| Dual-port | 30 | 0.05645 | 0.1953 | 0.13866 |
+| Dual-port | 90 | 0.04144 | 0.1522 | 0.06466 |
+| Dual-port | 150 | 0.04415 | 0.1164 | 0.05196 |
+| Dark-field | 30 | 0.31930 | 1.4331 | 0.44673 |
+| Dark-field | 90 | 0.18352 | 0.4735 | 0.29081 |
+| Dark-field | 150 | 0.16154 | 0.2791 | 0.31928 |
+
+The ordered-width and aspect-ratio entries are absolute relative errors. The
+angle error is the absolute axial difference modulo `pi`, evaluated only for
+supported pairs.
+
+| Readout | Fluence (`mW us`) | Major rms width | Minor rms width | Aspect ratio | Axis angle (`deg`) |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Dual-port | 30 | 0.06612 | 0.15457 | 0.09187 | 0.378 |
+| Dual-port | 90 | 0.03089 | 0.12712 | 0.09410 | 0.355 |
+| Dual-port | 150 | 0.02452 | 0.12427 | 0.09045 | 0.242 |
+| Dark-field | 30 | 0.20141 | 0.33958 | 0.12644 | 1.062 |
+| Dark-field | 90 | 0.13477 | 0.22096 | 0.07491 | 0.895 |
+| Dark-field | 150 | 0.14766 | 0.19144 | 0.04839 | 0.967 |
+
+Dual-port has the smaller median integrated-response, centroid, covariance,
+major-width, minor-width and angle errors at every tested fluence. Dark-field
+has a smaller aspect-ratio error at `90` and `150 mW us`; this occurs while its
+two width and covariance errors remain larger, so correlated size biases partly
+cancel in the ratio. It is not evidence that dark-field recovers the complete
+cloud size or shape more accurately.
+
+The plotted bars are the observed minimum-to-maximum range of this finite
+development ensemble, not confidence intervals. These truth-based results
+evaluate the synthetic contract only. A positive reconstructed map does not by
+itself establish cloud presence, and `kappa_F=1` does not make integrated
+response an absolute condensate population. Relative sequence use additionally
+requires stable response, detector gain and optical transfer.
+
+After provenance paths were normalised to repository-relative form and the
+retained artifact bytes were resealed under the byte-preserving result policy, the
+observable numerical run has deterministic ID
+`81f7c045d0745d266dbcf73cb1e908a1c016aff12b2dc53df155b6815540635b`.
+This provenance-only reseal did not change the numerical arrays or tabulated
+values. The run derives from morphology run
+`1fb762ca7211b8df64123a346f92a21457f988ae81a5e6349a65a3249ff755e2`.
+It was generated from clean pre-publication local checkpoint
+`cda577ad934a6d81c03865c5c7aa660e01282401` in 1715.90 seconds using Python
+3.12.13, NumPy 2.3.5, SciPy 1.18.0 and Matplotlib 3.11.1.
 
 ## Truth-independent credibility controls
 
@@ -213,6 +308,7 @@ Canonical directories:
 - `results/reconstruction_curvature_range_check_v2_orca_fusion_m10_dual_port/`
 - `results/reconstruction_curvature_range_check_v2_orca_fusion_m10_dark_field/`
 - `results/reconstruction_credibility_v2_orca_fusion_m10/`
+- `results/reconstruction_observables_v1_orca_fusion_m10/`
 
 Primary figures:
 
@@ -220,21 +316,30 @@ Primary figures:
 - `representative_three_peak_reconstruction_F90.png`
 - `representative_credibility_F90.png`
 - `data_prior_mode_support_F90.png`
+- `observable_recovery_vs_fluence.png`
 
 Reproduction commands:
 
+Use the explicit repository interpreter defined in `reproducibility.md`; the
+commands below assume its `$projectPython` variable.
+
 ```powershell
-python scripts\generate_reconstruction_morphology_benchmark.py
-python scripts\plot_reconstruction_morphology_benchmark.py
-python scripts\run_reconstruction_curvature_range_check.py --config configs\reconstruction_curvature_range_check_v2_orca_fusion_m10_dual_port.json
-python scripts\run_reconstruction_curvature_range_check.py --config configs\reconstruction_curvature_range_check_v2_orca_fusion_m10_dark_field.json
-python scripts\run_reconstruction_credibility_study.py
+& $projectPython scripts\generate_reconstruction_morphology_benchmark.py
+& $projectPython scripts\plot_reconstruction_morphology_benchmark.py
+& $projectPython scripts\run_reconstruction_curvature_range_check.py --config configs\reconstruction_curvature_range_check_v2_orca_fusion_m10_dual_port.json
+& $projectPython scripts\run_reconstruction_curvature_range_check.py --config configs\reconstruction_curvature_range_check_v2_orca_fusion_m10_dark_field.json
+& $projectPython scripts\run_reconstruction_credibility_study.py
+& $projectPython scripts\generate_reconstruction_observable_benchmark.py --validate-only
+& $projectPython scripts\generate_reconstruction_observable_benchmark.py
+& $projectPython scripts\plot_reconstruction_observable_benchmark.py
 ```
 
 The benchmark takes approximately 45 minutes on the recorded runtime, and the
 credibility study approximately 20.5 minutes. The two curvature range checks take
-approximately 5 and 6.5 minutes. Existing artifacts should be inspected and
-hash-verified before any expensive regeneration.
+approximately 5 and 6.5 minutes. The held-out observable replay takes
+approximately 28.6 minutes; its plot command only verifies and renders the
+sealed tables. Existing artifacts should be inspected and hash-verified before
+any expensive regeneration.
 
 ## Verification record
 
@@ -242,6 +347,14 @@ hash-verified before any expensive regeneration.
 - complete repository suite after restoring the active ORCA result contracts:
   `259 passed in 65.97 s`;
 - credibility artifact hash check: `13/13` matched;
-- active Figure 3.2 and Figure 5.2 numeric and PNG outputs matched the preceding
-  ORCA generation byte-for-byte; only clean-branch provenance and vector/PDF
-  generation metadata differed.
+- the then-active Figure 3.2 and Figure 5.2 numeric and PNG outputs matched the
+  preceding ORCA generation byte-for-byte; only clean-branch provenance and
+  vector/PDF generation metadata differed. Figure 3.2 was later retired from
+  the maintained dissertation set.
+- observable extraction and artifact tests: `18 passed` after adding the
+  dissertation-facing numerical regression;
+- complete repository suite after the observable implementation and before the
+  final evidence documentation: `276 passed`; the final documented suite is
+  recorded in `CODEX_HANDOFF_CURRENT.md`;
+- observable replay: `60/60` fits, `600/600` legacy metric checks, six complete
+  readout-by-fluence aggregate rows and zero hash failures.

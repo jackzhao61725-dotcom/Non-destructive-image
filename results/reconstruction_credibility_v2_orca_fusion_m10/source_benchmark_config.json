@@ -1,0 +1,235 @@
+{
+  "configuration_contract": {
+    "inheritance": "none; every executable value used by this benchmark is declared in this file",
+    "study_specific_overrides": {
+      "density_basis.coefficient_upper": "tightened for the declared synthetic density range",
+      "fit.maximum_function_evaluations_and_tolerances": "set explicitly for the reduced-grid benchmark",
+      "grid.reduced_ngrid": "accepted only after signal-level comparison with the canonical 1024-square physical-camera calculation"
+    }
+  },
+  "density_basis": {
+    "candidates": [
+      {
+        "basis_label": "coarse_7x3",
+        "curvature_weights_um2": [
+          0.0,
+          1.0,
+          3.0,
+          10.0,
+          30.0
+        ],
+        "knot_y_um": [
+          -27.0,
+          -18.0,
+          -9.0,
+          0.0,
+          9.0,
+          18.0,
+          27.0
+        ],
+        "knot_z_um": [
+          -6.5,
+          0.0,
+          6.5
+        ]
+      },
+      {
+        "basis_label": "balanced_10x5",
+        "curvature_weights_um2": [
+          0.0,
+          1.0,
+          3.0,
+          10.0,
+          30.0
+        ],
+        "knot_y_um": [
+          -27.0,
+          -21.0,
+          -15.0,
+          -9.0,
+          -3.0,
+          3.0,
+          9.0,
+          15.0,
+          21.0,
+          27.0
+        ],
+        "knot_z_um": [
+          -6.5,
+          -3.25,
+          0.0,
+          3.25,
+          6.5
+        ]
+      },
+      {
+        "basis_label": "resolution_matched_17x5",
+        "curvature_weights_um2": [
+          0.0,
+          1.0,
+          3.0,
+          10.0,
+          30.0
+        ],
+        "knot_y_um": [
+          -27.0,
+          -23.625,
+          -20.25,
+          -16.875,
+          -13.5,
+          -10.125,
+          -6.75,
+          -3.375,
+          0.0,
+          3.375,
+          6.75,
+          10.125,
+          13.5,
+          16.875,
+          20.25,
+          23.625,
+          27.0
+        ],
+        "knot_z_um": [
+          -6.5,
+          -3.25,
+          0.0,
+          3.25,
+          6.5
+        ]
+      }
+    ],
+    "coefficient_scale_m2": 500000000000000.0,
+    "coefficient_upper": 2.5,
+    "regularisation": {
+      "axis_weights": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "boundary_policy": "fixed_zero_ghost_knots",
+      "contract_version": 2,
+      "density_scale_m2": 500000000000000.0
+    },
+    "support_half_width_y_um": 27.0,
+    "support_half_width_z_um": 7.5
+  },
+  "detector": {
+    "camera_model": "Hamamatsu ORCA-Fusion C14440-20UP",
+    "effective_magnification": 10.0,
+    "fluence_scaling": "linear",
+    "parameter_status": "the QE and read-noise inputs are catalogue-typical reference values; the photoelectron scale is derived from those detector inputs, the physical pixel area and the stated probe fluence",
+    "photoelectrons_per_i0_pixel_at_reference": 220.58087277528466,
+    "read_noise_electrons_per_pixel_per_readout": 1.4,
+    "readout_mode": "fast scan",
+    "reference_fluence_mw_us": 90.0
+  },
+  "ensemble": {
+    "calibration_realizations_per_morphology": 1,
+    "calibration_seed": 20260720,
+    "held_out_fluence_mw_us": [
+      30.0,
+      90.0,
+      150.0
+    ],
+    "held_out_realizations_per_morphology": 2,
+    "held_out_seed": 20261720,
+    "minimum_success_fraction": 0.95,
+    "near_equivalent_relative_tolerance": 0.02,
+    "status": "initial finite ensemble for contract development; increase realization count before publication-level uncertainty claims"
+  },
+  "fit": {
+    "dark_field_projection_ridge_strength": 0.0,
+    "dual_port_initialisation_ridge_strength": 0.0,
+    "ftol": 1e-07,
+    "gtol": 1e-07,
+    "irls_iterations": 2,
+    "jacobian_batch_size": 4,
+    "maximum_function_evaluations": 45,
+    "smooth_seed_bounds": {
+      "column_density_peak_m2": [
+        10000000000000.0,
+        1500000000000000.0
+      ],
+      "radius_y_um": [
+        5.0,
+        45.0
+      ],
+      "radius_z_um": [
+        1.0,
+        15.0
+      ],
+      "y0_um": [
+        -10.0,
+        10.0
+      ],
+      "z0_um": [
+        -8.0,
+        8.0
+      ]
+    },
+    "xtol": 1e-07
+  },
+  "grid": {
+    "camera_output_shape": [
+      153,
+      153
+    ],
+    "camera_pixel_size_m": 6.5e-07,
+    "canonical_field_of_view_m": 0.0001,
+    "canonical_ngrid": 1024,
+    "convergence_gate": {
+      "maximum_peak_relative_error": 0.01,
+      "maximum_signal_relative_l2_error": 0.01
+    },
+    "reduced_ngrid": 306,
+    "roi_half_width_y_um": 31.0,
+    "roi_half_width_z_um": 10.5,
+    "sampling_method": "centred area-conserving physical-pixel integration",
+    "sampling_mode": "physical_pixel"
+  },
+  "label": "reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+  "output_directory": "results/reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+  "physics": {
+    "detuning_ghz": 1.5,
+    "faraday_scale_status": "illustrative and uncalibrated; synthetic density and inverse response use the same stated coefficient",
+    "kappa_F": 1.0,
+    "numerical_aperture": 0.08,
+    "phase_per_column_density_rad_m2": 3.77498270624925e-16,
+    "wavelength_m": 4.01e-07
+  },
+  "provenance_references": {
+    "camera_reference": "configs/figure_5_1.json",
+    "forward_model": "configs/dissertation_v3_orca_fusion.json",
+    "historical_predecessor": "configs/reconstruction_morphology_benchmark_v3.json",
+    "reconstruction_contract": "configs/reconstruction_v3.json"
+  },
+  "purpose": "freeze a shape-flexible Faraday reconstruction contract on calibration morphologies and assess it on held-out morphologies using the active ORCA-Fusion M=10 detector and physical-pixel sampling contract",
+  "representative": {
+    "fluence_mw_us": 90.0,
+    "morphology_name": "held_out_three_peak_fragment",
+    "realization_index": 0
+  },
+  "synthetic_morphologies": {
+    "calibration_names": [
+      "calibration_smooth_reference",
+      "calibration_asymmetric_cloud",
+      "calibration_weak_modulation",
+      "calibration_two_peak_fragment",
+      "calibration_central_notch"
+    ],
+    "centre_y_um": 0.0,
+    "centre_z_um": 0.0,
+    "held_out_names": [
+      "held_out_shifted_smooth_cloud",
+      "held_out_opposite_asymmetry",
+      "held_out_modulation_phase",
+      "held_out_three_peak_fragment",
+      "held_out_off_centre_notch"
+    ],
+    "interpretation": "each split covers smooth, asymmetric, modulated, fragmented and locally depleted maps using different analytic instances; these are stress tests, not dipolar Gross-Pitaevskii predictions",
+    "peak_column_density_m2": 537596245257846.75,
+    "radius_y_um": 25.0,
+    "radius_z_um": 6.0
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "claims_boundary": {
+    "detector_contract": "Hamamatsu ORCA-Fusion C14440-20UP, M=10, catalogue-typical QE and fast-scan read-noise inputs",
+    "forbidden_interpretation": "a clean reconstruction image alone is not evidence that every displayed feature is measured",
+    "kappa_F_status": "illustrative and uncalibrated",
+    "synthetic_only": true
+  },
+  "elapsed_seconds": 1229.4920084000332,
+  "label": "reconstruction_credibility_v2_orca_fusion_m10",
+  "purpose": "quantify data support, conditional detector-noise uncertainty, residual structure, prior sensitivity and blank false positives for the frozen ORCA-Fusion reconstruction contract without using truth error as the credibility measure",
+  "readouts": {
+    "dark_field": {
+      "blank_maximum_quasi_deviance_improvement": 26.2262691247397,
+      "blank_median_false_integrated_density_fraction_of_reference": 0.5719354719473093,
+      "blank_requested_draws": 12,
+      "blank_successful_draws": 12,
+      "blank_upper_95_false_integrated_density_fraction_of_reference": 0.7066168028016444,
+      "bootstrap_assumptions": [
+        "parametric resampling from the fitted camera prediction",
+        "declared independent Poisson and Gaussian read noise",
+        "fixed forward operator, basis, support and regulariser",
+        "does not include calibration or instrument-model uncertainty"
+      ],
+      "bootstrap_requested_draws": 16,
+      "bootstrap_successful_draws": 16,
+      "candidate": "resolution_matched_17x5__curvature_30_um2",
+      "combined_constrained_rank": 68,
+      "development_blank_boundary": "Synthetic blank ranks are a development diagnostic only; they do not define an experimental threshold or p value.",
+      "effective_data_degrees_of_freedom": 22.87659081539961,
+      "effective_prior_degrees_of_freedom": 45.12340918460037,
+      "free_coefficient_count": 68,
+      "local_assumptions": [
+        "local linearisation at the fitted solution",
+        "fixed active coefficient set",
+        "declared Poisson-Gaussian variance model",
+        "declared forward operator and curvature regulariser",
+        "does not include instrument mismatch or morphology-model uncertainty"
+      ],
+      "locally_unconstrained_degrees_of_freedom": 2.1316282072803006e-14,
+      "median_generalised_data_mode_fraction": 0.18832309814315984,
+      "minimum_generalised_data_mode_fraction": 6.817868220296072e-05,
+      "representative_development_rank_exceedance_count": 0,
+      "representative_development_rank_reference_count": 12,
+      "representative_evidence_level": "development_rank_only",
+      "representative_quasi_deviance_improvement_over_blank": 1262.5199017968116
+    },
+    "dual_port": {
+      "blank_maximum_quasi_deviance_improvement": 38.15086596387118,
+      "blank_median_false_integrated_density_fraction_of_reference": 0.09510546325020719,
+      "blank_requested_draws": 12,
+      "blank_successful_draws": 12,
+      "blank_upper_95_false_integrated_density_fraction_of_reference": 0.12266568575301694,
+      "bootstrap_assumptions": [
+        "parametric resampling from the fitted camera prediction",
+        "declared independent Poisson and Gaussian read noise",
+        "fixed forward operator, basis, support and regulariser",
+        "does not include calibration or instrument-model uncertainty"
+      ],
+      "bootstrap_requested_draws": 16,
+      "bootstrap_successful_draws": 16,
+      "candidate": "resolution_matched_17x5__curvature_30_um2",
+      "combined_constrained_rank": 45,
+      "development_blank_boundary": "Synthetic blank ranks are a development diagnostic only; they do not define an experimental threshold or p value.",
+      "effective_data_degrees_of_freedom": 34.168842338290325,
+      "effective_prior_degrees_of_freedom": 10.831157661709698,
+      "free_coefficient_count": 45,
+      "local_assumptions": [
+        "local linearisation at the fitted solution",
+        "fixed active coefficient set",
+        "declared Poisson-Gaussian variance model",
+        "declared forward operator and curvature regulariser",
+        "does not include instrument mismatch or morphology-model uncertainty"
+      ],
+      "locally_unconstrained_degrees_of_freedom": 0.0,
+      "median_generalised_data_mode_fraction": 0.8366474650286534,
+      "minimum_generalised_data_mode_fraction": 0.18426349864032465,
+      "representative_development_rank_exceedance_count": 0,
+      "representative_development_rank_reference_count": 12,
+      "representative_evidence_level": "development_rank_only",
+      "representative_quasi_deviance_improvement_over_blank": 3381.6682852480517
+    }
+  }
+}

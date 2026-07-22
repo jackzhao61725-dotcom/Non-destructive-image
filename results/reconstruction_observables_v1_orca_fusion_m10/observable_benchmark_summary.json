@@ -1,0 +1,98 @@
+{
+  "claims_boundary": {
+    "absolute_density_status": "truth and inverse use the same stated synthetic response coefficient",
+    "angle_status": "principal-axis angle is an alignment diagnostic and is omitted below the declared fractional-anisotropy threshold",
+    "independent_single_frame_fits": true,
+    "kappa_F_status": "illustrative and uncalibrated",
+    "synthetic_only": true,
+    "uncertainty_status": "two fixed noise realizations per morphology form a finite development ensemble, not publication-level coverage evidence"
+  },
+  "integration_support": {
+    "angle_anisotropy_threshold": 0.05,
+    "camera_fit_roi_is_not_integration_support": true,
+    "grid_shape": [
+      306,
+      306
+    ],
+    "kind": "source_density_basis_rectangular_support",
+    "minimum_integrated_response": 0.0,
+    "physical_area_m2": 7.929642445213381e-10,
+    "support_half_width_y_um": 27.0,
+    "support_half_width_z_um": 7.5,
+    "supported_cell_count": 7425
+  },
+  "label": "reconstruction_observables_v1_orca_fusion_m10",
+  "maps_schema": {
+    "artifact": "held_out_observable_maps.npz",
+    "coefficient_axis_is_padded_to_maximum_parameter_count": true,
+    "reconstructed_column_density_m2_axis_order": [
+      "readout",
+      "fluence",
+      "morphology",
+      "realization",
+      "z_index",
+      "y_index"
+    ],
+    "reconstructed_column_density_m2_shape": [
+      2,
+      3,
+      5,
+      2,
+      306,
+      306
+    ],
+    "truth_column_density_m2_shape": [
+      5,
+      306,
+      306
+    ]
+  },
+  "purpose": "replay only the frozen held-out ORCA-Fusion morphology fits and evaluate physical low-order density observables on one fixed object-plane support",
+  "replay": {
+    "all_legacy_metrics_verified": true,
+    "elapsed_seconds": 1715.8957154999953,
+    "fluence_mw_us": [
+      30.0,
+      90.0,
+      150.0
+    ],
+    "morphology_names": [
+      "held_out_shifted_smooth_cloud",
+      "held_out_opposite_asymmetry",
+      "held_out_modulation_phase",
+      "held_out_three_peak_fragment",
+      "held_out_off_centre_notch"
+    ],
+    "parameter_count_by_readout": {
+      "dark_field": 85,
+      "dual_port": 85
+    },
+    "readout_names": [
+      "dual_port",
+      "dark_field"
+    ],
+    "realization_indices": [
+      0,
+      1
+    ],
+    "selected_candidates": {
+      "dark_field": "resolution_matched_17x5__curvature_30_um2",
+      "dual_port": "resolution_matched_17x5__curvature_30_um2"
+    },
+    "trial_count": 60
+  },
+  "run_id": "81f7c045d0745d266dbcf73cb1e908a1c016aff12b2dc53df155b6815540635b",
+  "source_benchmark": {
+    "config_sha256": "db8201505cd37284a66f677a98b2072129da5760c7e3dc4fdc01bb3ff47fd954",
+    "directory": "results/reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+    "held_out_trials_sha256": "1bb87892fbf0b408db81664b1cd184c2800eec0dbd890c14a37bd93d2a9c435d",
+    "label": "reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+    "manifest_sha256": "201d333a638328959983b6e88b8f9cba7f674be621dea0378184f3b8c090061b",
+    "run_id": "1fb762ca7211b8df64123a346f92a21457f988ae81a5e6349a65a3249ff755e2"
+  },
+  "tables": {
+    "aggregate": "observable_recovery_summary.csv",
+    "legacy_verification": "legacy_metric_verification.csv",
+    "trials": "observable_trials.csv"
+  }
+}

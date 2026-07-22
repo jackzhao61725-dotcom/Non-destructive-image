@@ -1,0 +1,56 @@
+{
+  "blank_ensemble": {
+    "draws_per_readout": 12,
+    "interpretation": "development false-positive baseline under the ORCA-Fusion detector contract; not an acceptance threshold for experimental data",
+    "seeds": {
+      "dark_field": 2026072112,
+      "dual_port": 2026072111
+    }
+  },
+  "claims_boundary": {
+    "detector_contract": "Hamamatsu ORCA-Fusion C14440-20UP, M=10, catalogue-typical QE and fast-scan read-noise inputs",
+    "forbidden_interpretation": "a clean reconstruction image alone is not evidence that every displayed feature is measured",
+    "kappa_F_status": "illustrative and uncalibrated",
+    "synthetic_only": true
+  },
+  "conditional_bootstrap": {
+    "confidence_level": 0.68,
+    "draws_per_readout": 16,
+    "interpretation": "conditional on the declared forward operator, physical-camera sampler, basis, support, active solution basin and selected regulariser; not an experimental model-discrepancy interval",
+    "seeds": {
+      "dark_field": 2026072102,
+      "dual_port": 2026072101
+    }
+  },
+  "curvature_range_evidence": {
+    "dark_field": "configs/reconstruction_curvature_range_check_v2_orca_fusion_m10_dark_field.json",
+    "dual_port": "configs/reconstruction_curvature_range_check_v2_orca_fusion_m10_dual_port.json"
+  },
+  "frozen_candidates": {
+    "dark_field": "resolution_matched_17x5__curvature_30_um2",
+    "dual_port": "resolution_matched_17x5__curvature_30_um2"
+  },
+  "historical_predecessor": "configs/reconstruction_credibility_v1.json",
+  "label": "reconstruction_credibility_v2_orca_fusion_m10",
+  "output_directory": "results/reconstruction_credibility_v2_orca_fusion_m10",
+  "prior_sensitivity": {
+    "curvature_weights_um2": [
+      0.0,
+      3.0,
+      10.0,
+      30.0,
+      100.0
+    ],
+    "interpretation": "same raw observation and basis, changing only the declared curvature weight"
+  },
+  "purpose": "quantify data support, conditional detector-noise uncertainty, residual structure, prior sensitivity and blank false positives for the frozen ORCA-Fusion reconstruction contract without using truth error as the credibility measure",
+  "representative": {
+    "fluence_mw_us": 90.0,
+    "morphology_name": "held_out_three_peak_fragment",
+    "seeds": {
+      "dark_field": 2868007648,
+      "dual_port": 3914195272
+    }
+  },
+  "source_benchmark_config": "configs/reconstruction_morphology_benchmark_v4_orca_fusion_m10.json"
+}

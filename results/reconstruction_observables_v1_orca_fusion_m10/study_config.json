@@ -1,0 +1,54 @@
+{
+  "label": "reconstruction_observables_v1_orca_fusion_m10",
+  "purpose": "replay only the frozen held-out ORCA-Fusion morphology fits and evaluate physical low-order density observables on one fixed object-plane support",
+  "source_benchmark": {
+    "directory": "results/reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+    "expected_label": "reconstruction_morphology_benchmark_v4_orca_fusion_m10",
+    "expected_run_id": "1fb762ca7211b8df64123a346f92a21457f988ae81a5e6349a65a3249ff755e2",
+    "expected_held_out_trial_count": 60,
+    "critical_source_files": [
+      "src/non_destructive_image/camera.py",
+      "src/non_destructive_image/fourier.py",
+      "src/non_destructive_image/reconstruction/benchmark.py",
+      "src/non_destructive_image/reconstruction/contracts.py",
+      "src/non_destructive_image/reconstruction/density_fit.py",
+      "src/non_destructive_image/reconstruction/density_initialise.py",
+      "src/non_destructive_image/reconstruction/ensemble.py",
+      "src/non_destructive_image/reconstruction/measurements.py",
+      "src/non_destructive_image/reconstruction/noise.py",
+      "src/non_destructive_image/reconstruction/object_models.py",
+      "src/non_destructive_image/reconstruction/parameters.py",
+      "src/non_destructive_image/reconstruction/regularisation.py",
+      "src/non_destructive_image/reconstruction/resolution.py",
+      "src/non_destructive_image/reconstruction/synthetic_morphologies.py",
+      "src/non_destructive_image/reconstruction/studies/morphology.py"
+    ]
+  },
+  "output_directory": "results/reconstruction_observables_v1_orca_fusion_m10",
+  "integration_support": {
+    "kind": "source_density_basis_rectangular_support",
+    "half_widths_source": "source benchmark study_config.json density_basis.support_half_width_y_um and support_half_width_z_um",
+    "angle_anisotropy_threshold": 0.05,
+    "minimum_integrated_response": 0.0
+  },
+  "replay_verification": {
+    "relative_tolerance": 1e-08,
+    "absolute_tolerance": 1e-10,
+    "require_exact_integer_diagnostics": true,
+    "require_all_source_trials_successful": true,
+    "interpretation": "every replayed seed, candidate, legacy map metric and integer rank diagnostic must agree with the sealed source row before observable results are written"
+  },
+  "figure": {
+    "basename": "observable_recovery_vs_fluence",
+    "formats": ["png", "pdf", "svg"],
+    "finite_ensemble_display": "median with observed minimum-to-maximum range; not a confidence interval"
+  },
+  "claims_boundary": {
+    "synthetic_only": true,
+    "independent_single_frame_fits": true,
+    "kappa_F_status": "illustrative and uncalibrated",
+    "absolute_density_status": "truth and inverse use the same stated synthetic response coefficient",
+    "angle_status": "principal-axis angle is an alignment diagnostic and is omitted below the declared fractional-anisotropy threshold",
+    "uncertainty_status": "two fixed noise realizations per morphology form a finite development ensemble, not publication-level coverage evidence"
+  }
+}

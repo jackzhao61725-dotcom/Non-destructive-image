@@ -1,0 +1,57 @@
+{
+  "absolute_faraday_scale": "illustrative and uncalibrated; synthetic density and inverse response use the same stated coefficient",
+  "output_files": [
+    "held_out_summary.csv",
+    "reconstruction_quality_vs_fluence.svg",
+    "reconstruction_quality_vs_fluence.png",
+    "reconstruction_quality_vs_fluence.pdf",
+    "representative_three_peak_reconstruction_F90.svg",
+    "representative_three_peak_reconstruction_F90.png",
+    "representative_three_peak_reconstruction_F90.pdf",
+    "representative_reconstruction.npz"
+  ],
+  "quality_curve_statistic": "median over the finite held-out development ensemble; no uncertainty interval claimed",
+  "rendered_output_sha256": {
+    "reconstruction_quality_vs_fluence.pdf": "80a309f1eaa7dd190cb3a58427eb0ccf6815bb31adea15420430574b6ce735a9",
+    "reconstruction_quality_vs_fluence.png": "c6777d18565c79a7f5451d6f92ee50f02715ebf3744d6521a65070475e2edbb3",
+    "reconstruction_quality_vs_fluence.svg": "7357c282ae4a794073b60f0172b3290ca50b3140eb7bb84666712606742df39d",
+    "representative_three_peak_reconstruction_F90.pdf": "8213ab0617689c62c9749ec97eee5e67ecea15ad84b5d57d2db39980d94c2a35",
+    "representative_three_peak_reconstruction_F90.png": "cd1dfaed2a9410d15c999ab728a2d7454f116a924d8719604a8889d6a454a1b0",
+    "representative_three_peak_reconstruction_F90.svg": "1452cd488bed52d00f28aff8b52d8d41d83eca81a220bbad9127f503c9e6f85c"
+  },
+  "renderer_sha256": "28be001cb6a601bdf282e0543283a5d7195ce0a0e9debf5955782896f45a8f55",
+  "representative": {
+    "fluence_mw_us": 90.0,
+    "morphology_name": "held_out_three_peak_fragment",
+    "realization_index": 0,
+    "supported_band_errors": {
+      "dark_field": 0.30527756716113447,
+      "dual_port": 0.09097450216722235
+    }
+  },
+  "representative_fluence_mw_us": 90.0,
+  "representative_morphology": "held_out_three_peak_fragment",
+  "representative_realization_index": 0,
+  "representative_seeds": {
+    "dark_field": 2868007648,
+    "dual_port": 3914195272
+  },
+  "representative_supported_band_errors": {
+    "dark_field": 0.30527756716113447,
+    "dual_port": 0.09097450216722235
+  },
+  "source_artifact_sha256": {
+    "benchmark_summary.json": "cfe712db649aa3c95921b4a596deb086f9fd2ea43403f1b652362a1997300cbd",
+    "calibration_candidate_summary.csv": "b1ab7ad9248435cad5df89982e33b38593cd90fb9bfdabebc545b7c35f702c9d",
+    "held_out_summary.csv": "c8d1f819b9501f96b509c58a197ca11979d0c60180a9f910ec8dac3fdce9cac5",
+    "held_out_trials.csv": "1bb87892fbf0b408db81664b1cd184c2800eec0dbd890c14a37bd93d2a9c435d",
+    "reduced_grid_convergence.csv": "5499c9d89d5e740b11d5d6d42c948fc494eeb9d57f72159725531c88db4fbe83",
+    "representative_reconstruction.npz": "e5abb8786daf2fcfb8258c51b5a6491e08e3107911651e21b3bcaa781e5d3202",
+    "study_config.json": "eef4a0195c0ac56d88c244e7309e43374f69d31a2aea07db50f9ca2146ab8608"
+  },
+  "source_held_out_summary": "held_out_summary.csv",
+  "source_manifest": "artifact_manifest.json",
+  "source_representative_arrays": "representative_reconstruction.npz",
+  "source_run_id": "1fb762ca7211b8df64123a346f92a21457f988ae81a5e6349a65a3249ff755e2",
+  "source_summary": "benchmark_summary.json"
+}

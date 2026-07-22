@@ -1,0 +1,86 @@
+{
+  "caption": "Initial-frame Faraday SNR as a function of F=P tau at |Delta|/2pi=1.5 GHz for the undepleted reference condensate. The estimator uses the absolute expected signal in the central 5x5 camera-pixel block and includes Poisson noise plus 0.7 e- rms read noise per pixel and port. The dashed line marks the working SNR=8 camera-space screening threshold. The labelled conditions are A (F=90 mW us), B (F=150 mW us), C (F=300 mW us). The lower panels are fixed noise realisations and do not determine the curves.",
+  "config_path": "configs\\figure_5_1.json",
+  "estimator": {
+    "dual_port": "abs(sum(N_H-N_V))/sqrt(sum(N_H+N_V+2*sigma_r^2))",
+    "name": "central 5x5 binned-camera-pixel block",
+    "single_output": "abs(sum(signal_e))/sqrt(sum(total_count_e + read_variance_e2))"
+  },
+  "faraday_boundary": "ideal atomic coefficient fixed at -45/91; apparatus-level response remains to be calibrated",
+  "fixed_context": {
+    "camera_model": "Hamamatsu ORCA-Fusion C14440-20UP",
+    "camera_output_shape": [
+      153,
+      153
+    ],
+    "camera_pixel_m": 6.5e-06,
+    "central_block_basis": "fixed local estimator spanning 3.25 um, compared with the 1.88 um ideal Rayleigh scale at effective NA=0.130",
+    "central_block_half_width_pixels": 2,
+    "central_block_physical_width_um": 3.25,
+    "central_block_shape": [
+      5,
+      5
+    ],
+    "effective_magnification": 10.0,
+    "faraday_calibration_status": "ideal atomic coefficient fixed at -45/91; apparatus-level response remains to be calibrated",
+    "imaging_axis": 0,
+    "imaging_axis_label": "x",
+    "kappa_F": -0.4945054945054945,
+    "numerical_aperture": 0.13,
+    "quantum_efficiency": 0.65,
+    "quantum_efficiency_status": "catalogue typical at 400 nm; provisional at 401 nm until measured in the installed path",
+    "read_noise_electrons_per_pixel_per_port": 0.7,
+    "read_noise_status": "manufacturer-typical rms value for Ultra quiet scan; provisional until verified for the installed camera, ROI and trigger timing",
+    "readout_mode": "Ultra quiet scan",
+    "sampling_method": "centred area-conserving physical-pixel integration"
+  },
+  "git_branch": "codex/reconstruction-v4-canonical",
+  "git_commit": "498166f5d712c0a1f035fb7dd1cacd62619dc62d",
+  "label": "figure_5_1_faraday_snr_and_camera_frames_orca_fusion_m10_v4_na013",
+  "noise_draw_boundary": "one fixed representative draw per mode and selected fluence; random draws illustrate camera appearance and do not estimate the analytic SNR",
+  "outputs": {
+    "csv": "results\\dissertation_plots_v2_orca_fusion\\figure_5_1\\figure_5_1_data.csv",
+    "metadata": "results\\dissertation_plots_v2_orca_fusion\\figure_5_1\\metadata.json",
+    "pdf": "results\\dissertation_plots_v2_orca_fusion\\figure_5_1\\figure_5_1.pdf",
+    "png": "results\\dissertation_plots_v2_orca_fusion\\figure_5_1\\figure_5_1.png",
+    "svg": "results\\dissertation_plots_v2_orca_fusion\\figure_5_1\\figure_5_1.svg",
+    "values": "results\\dissertation_plots_v2_orca_fusion\\figure_5_1\\figure_5_1_values.json"
+  },
+  "scope": {
+    "camera_noise": "Poisson variance plus the ORCA-Fusion Ultra quiet manufacturer-typical value sigma_r=0.7 e- rms per physical pixel and readout",
+    "multishot_evolution_included": false,
+    "prediction_status": "screening calculation within the Version 1 forward model, not guaranteed experimental performance",
+    "recoil_energy_dependent": false,
+    "state": "same undepleted reference condensate at every fluence"
+  },
+  "screening_guide": {
+    "interpretation": "working camera-space screening threshold for the spatial-structure task; not a universal visibility boundary",
+    "minimum_snr": 8.0
+  },
+  "selected_frames": {
+    "fluence_mw_us": [
+      90.0,
+      150.0,
+      300.0
+    ],
+    "interpretation": "fixed representative draws for camera appearance; not used to estimate SNR",
+    "photoelectrons_per_incident_I0_pixel": [
+      220.58087277528466,
+      367.63478795880775,
+      735.2695759176155
+    ],
+    "rng_seed": 7,
+    "snr": {
+      "Faraday dark-field": [
+        3.6877291730915167,
+        5.150743161494631,
+        7.800030869978132
+      ],
+      "Faraday dual-port": [
+        8.391572042384801,
+        10.843075956189569,
+        15.34463436369928
+      ]
+    }
+  }
+}
